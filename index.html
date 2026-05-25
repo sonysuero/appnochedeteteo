@@ -1,0 +1,5769 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOCHE DE TETEO | Web App</title>
+<meta name="theme-color" content="#07000f">
+<style>
+:root{
+  --bg:#07000f;
+  --card:#130022;
+  --card2:#1d0032;
+  --pink:#ff2bd6;
+  --yellow:#ffe600;
+  --cyan:#00e5ff;
+  --green:#38ff8b;
+  --danger:#ff477e;
+  --txt:#fff;
+  --muted:#c9b8d8;
+  --radius:24px;
+  --gradient:linear-gradient(135deg,var(--pink),var(--yellow));
+}
+*{box-sizing:border-box}
+html,body{margin:0;scroll-behavior:auto!important}
+body{
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:radial-gradient(circle at top left,#32004b 0,#07000f 34%,#030006 100%);
+  color:var(--txt);
+  min-height:100vh;
+  padding-bottom:108px;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.hide{display:none!important}
+.container{width:min(1180px,92vw);margin:auto}
+
+/* HEADER */
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(7,0,15,.78);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.nav{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#fff;
+  text-decoration:none;
+  font-weight:1000;
+  letter-spacing:.4px;
+}
+.logoMark{
+  width:50px;
+  height:50px;
+  border-radius:16px;
+  background:var(--gradient);
+  display:grid;
+  place-items:center;
+  color:#120018;
+  font-weight:1000;
+  box-shadow:0 0 35px rgba(255,43,214,.55);
+  overflow:hidden;
+}
+.logoMark img{width:100%;height:100%;object-fit:cover;display:none}
+.appName{line-height:1.05}
+.appName small{display:block;color:var(--muted);font-weight:700;margin-top:3px}
+.iconBtn{
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.45);
+  color:#fff;
+  width:50px;
+  height:50px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+}
+.iconBtn svg{width:24px;height:24px}
+
+/* BUTTONS */
+.btn{
+  border:0;
+  border-radius:999px;
+  padding:12px 18px;
+  font-weight:900;
+  background:#fff;
+  color:#130022;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:.18s ease;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--gradient);color:#100014}
+.btn.ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.14)}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.small{padding:8px 12px;font-size:13px}
+
+/* PAGES */
+.app-page{display:none;padding:24px 0 24px}
+.app-page.active{display:block}
+.pageHead{
+  margin:0 0 18px;
+}
+.pageHead h1,.pageHead h2{
+  margin:0 0 8px;
+  font-size:clamp(30px,5vw,46px);
+  line-height:.95;
+  letter-spacing:-1px;
+}
+.pageHead p{margin:0;color:var(--muted);line-height:1.5}
+
+/* HOME */
+.hero{padding:46px 0 26px}
+.heroGrid{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center}
+.badge{
+  display:inline-flex;
+  gap:8px;
+  padding:9px 13px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  color:var(--muted);
+  font-weight:800;
+}
+.hero h1{
+  font-size:clamp(42px,7vw,86px);
+  line-height:.92;
+  margin:18px 0 16px;
+  letter-spacing:-3px;
+}
+.gradient{
+  background:linear-gradient(90deg,var(--pink),var(--yellow),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.hero p{font-size:20px;color:var(--muted);line-height:1.55;max-width:720px}
+.heroActions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.homeImageBox{
+  min-height:470px;
+  border-radius:36px;
+  border:1px solid rgba(255,255,255,.15);
+  background:
+    linear-gradient(160deg,rgba(255,43,214,.65),rgba(7,0,15,.50)),
+    url('https://images.unsplash.com/photo-1571266028243-d220c9c7d4c1?auto=format&fit=crop&w=1200&q=80');
+  background-size:cover;
+  background-position:center;
+  box-shadow:0 20px 70px rgba(255,43,214,.18);
+  display:flex;
+  align-items:flex-end;
+  padding:28px;
+  overflow:hidden;
+}
+.homeImageBox h2{margin:0;font-size:42px;line-height:.95}
+.homeImageBox p{margin:8px 0 0;color:#fff;font-weight:800}
+.sectionTitle{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:16px;
+  margin:22px 0 18px;
+}
+.sectionTitle h2{margin:0;font-size:34px}
+.sectionTitle p{margin:5px 0 0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.045));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:0 14px 40px rgba(0,0,0,.24);
+}
+.eventImg{height:210px;background-size:cover;background-position:center;position:relative;background-color:#111}
+.tag{
+  position:absolute;
+  top:14px;left:14px;
+  background:rgba(0,0,0,.65);
+  border:1px solid rgba(255,255,255,.18);
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+}
+.cardBody{padding:18px}
+.cardBody h3{margin:0 0 10px;font-size:22px}
+.meta{display:grid;gap:7px;color:var(--muted);font-weight:700;font-size:14px}
+.cardActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{font-size:12px;font-weight:900;border-radius:999px;padding:7px 10px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12)}
+.chip.free{background:rgba(56,255,139,.14);border-color:rgba(56,255,139,.35);color:#a8ffc9}
+.chip.gold{background:rgba(255,230,0,.14);border-color:rgba(255,230,0,.35);color:#fff6a3}
+
+/* PANEL + FORMS */
+.panel{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:28px;
+  padding:24px;
+}
+.form{display:grid;gap:14px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:grid;gap:7px}
+.field label{font-weight:900;color:#eee;font-size:14px}
+.field input,.field select,.field textarea{
+  width:100%;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:16px;
+  background:rgba(0,0,0,.32);
+  color:#fff;
+  padding:13px 14px;
+  outline:none;
+}
+.field textarea{min-height:100px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,43,214,.12)}
+.managerRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  padding:16px;
+  border-radius:18px;
+  background:#111;
+  border:1px solid rgba(255,255,255,.08);
+}
+.managerRow h3{margin:0 0 6px}
+.managerRow p{margin:0;color:var(--muted);font-size:14px}
+.managerRowActions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.empty{
+  padding:18px;
+  background:#111;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  color:var(--muted);
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  background:rgba(0,0,0,.72);
+  display:grid;
+  place-items:center;
+  padding:18px;
+}
+.modalCard{
+  width:min(860px,96vw);
+  max-height:90vh;
+  overflow:auto;
+  background:#12001f;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:28px;
+  box-shadow:0 30px 100px rgba(0,0,0,.5);
+}
+.modalHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 22px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.modalHead h2{margin:0}
+.x{
+  width:40px;height:40px;
+  border-radius:999px;
+  border:0;
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  font-size:22px;
+}
+.modalBody{padding:22px}
+
+/* BOTTOM NAV */
+.bottomNav{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:12px;
+  z-index:100;
+  width:min(560px,94vw);
+  min-height:78px;
+  background:rgba(7,0,15,.94);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  gap:6px;
+  padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+  box-shadow:0 -18px 50px rgba(0,0,0,.45);
+}
+.bottomNav button{
+  appearance:none;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  min-width:0;
+  flex:1;
+  height:58px;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  gap:3px;
+  font-weight:900;
+  font-size:11px;
+}
+.bottomNav button svg{width:22px;height:22px}
+.bottomNav button.active{
+  color:#fff;
+  background:linear-gradient(135deg,rgba(255,0,170,.28),rgba(255,204,0,.16));
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 8px 24px rgba(255,0,170,.20);
+}
+
+/* SCANNER */
+.scannerBox{
+  background:#050505;
+  border-radius:26px;
+  height:320px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+}
+.scanFrame{
+  position:absolute;
+  width:230px;height:230px;
+  border:3px solid #ff2bd6;
+  border-radius:26px;
+  box-shadow:0 0 32px rgba(255,43,214,.45)
+}
+.scanLine{
+  position:absolute;
+  width:180px;height:2px;
+  background:linear-gradient(90deg,transparent,#ffcc00,transparent);
+  animation:scanline 2s infinite;
+}
+@keyframes scanline{
+  0%{transform:translateY(-90px);opacity:.2}
+  50%{opacity:1}
+  100%{transform:translateY(90px);opacity:.2}
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .heroGrid,.split{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr 1fr}
+  .homeImageBox{min-height:360px}
+}
+@media(max-width:640px){
+  body{padding-bottom:105px}
+  .container{width:min(100% - 28px,1180px)}
+  .nav{min-height:66px}
+  .logoMark{width:46px;height:46px}
+  .appName{font-size:14px}
+  .appName small{display:none}
+  .hero{padding:28px 0 16px}
+  .hero h1{letter-spacing:-1.5px}
+  .grid{grid-template-columns:1fr}
+  .sectionTitle{display:block}
+  .managerRow{flex-direction:column;align-items:stretch}
+  .managerRowActions{display:grid;grid-template-columns:1fr 1fr}
+  .managerRowActions .danger{grid-column:1/-1}
+}
+
+@media(max-width:640px){
+  .homeImageBox{
+    display:none !important;
+  }
+}
+
+
+.eventMetaRow{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.eventMetaIcon{
+  width:18px;
+  height:18px;
+  opacity:.9;
+  flex:0 0 auto;
+}
+
+
+.walletFilters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:0 0 18px;
+}
+.walletFilters .btn{
+  min-width:150px;
+}
+
+
+.localPhotoPreview{
+  width:86px;
+  height:86px;
+  border-radius:18px;
+  object-fit:cover;
+  background:#111;
+  border:1px solid rgba(255,255,255,.10);
+  flex:0 0 auto;
+}
+.localCardMain{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.mapLink{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin-top:10px;
+  padding:9px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  color:#fff;
+  text-decoration:none;
+  font-weight:900;
+  font-size:13px;
+}
+@media(max-width:640px){
+  .localCardMain{
+    align-items:flex-start;
+  }
+}
+
+
+.managerTopActions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-bottom:18px;
+}
+.formBox{
+  display:none;
+  margin-bottom:22px;
+}
+.formBox.open{
+  display:block;
+}
+.eventLocalBox{
+  margin-top:14px;
+  padding:14px;
+  border-radius:18px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.eventLocalBox img{
+  width:70px;
+  height:70px;
+  border-radius:16px;
+  object-fit:cover;
+  background:#111;
+  border:1px solid rgba(255,255,255,.10);
+  flex:0 0 auto;
+}
+.eventLocalBox h4{
+  margin:0 0 6px;
+}
+.eventLocalBox p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+
+/* FIX MOBILE COMPILATORE EVENTO */
+@media(max-width:640px){
+  .modal{
+    padding:10px !important;
+    align-items:start !important;
+    place-items:start center !important;
+  }
+
+  .modalCard{
+    width:100% !important;
+    max-height:94vh !important;
+    border-radius:22px !important;
+  }
+
+  .modalBody{
+    padding:16px !important;
+  }
+
+  #eventForm,
+  #localForm{
+    width:100% !important;
+  }
+
+  #eventForm .split,
+  #localForm .split{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+
+  #eventForm .field input,
+  #eventForm .field select,
+  #eventForm .field textarea,
+  #localForm .field input,
+  #localForm .field select,
+  #localForm .field textarea{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  .managerTopActions{
+    justify-content:stretch !important;
+  }
+
+  .managerTopActions .btn{
+    width:100% !important;
+  }
+
+  .managerRowActions{
+    grid-template-columns:1fr !important;
+  }
+}
+
+.posterPreview{
+  width:100%;
+  max-height:260px;
+  object-fit:cover;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:#111;
+  display:none;
+}
+
+
+.suggestedEventBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:8px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(255,43,214,.28),rgba(255,230,0,.18));
+  border:1px solid rgba(255,255,255,.14);
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+}
+.card.isSuggested{
+  border-color:rgba(255,230,0,.35);
+  box-shadow:0 18px 52px rgba(255,43,214,.22);
+}
+#manageEventsPage .managerTopActions{
+  justify-content:space-between;
+}
+@media(max-width:640px){
+  #manageEventsPage .managerTopActions{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+}
+
+
+#manageLocalsPage .managerTopActions{
+  justify-content:space-between;
+}
+@media(max-width:640px){
+  #manageLocalsPage .managerTopActions{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+}
+
+
+#manageUsersPage .managerTopActions{
+  justify-content:space-between;
+}
+@media(max-width:640px){
+  #manageUsersPage .managerTopActions{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+}
+
+
+.giftSlotsBox{
+  display:grid;
+  gap:14px;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.10);
+}
+.giftSlotItem{
+  display:grid;
+  gap:12px;
+  padding:16px;
+  border-radius:20px;
+  background:#101010;
+  border:1px solid rgba(255,255,255,.10);
+}
+.giftSlotHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.giftSlotHead h4{
+  margin:0;
+  font-size:18px;
+}
+.giftTypePreview{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+.giftBadge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 11px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  border:1px solid rgba(255,255,255,.15);
+}
+.giftBadge.donna{background:rgba(255,43,214,.22);color:#ffd5f7;}
+.giftBadge.uomo{background:rgba(0,137,255,.22);color:#d8edff;}
+.giftBadge.unisex{background:linear-gradient(135deg,rgba(0,137,255,.30),rgba(255,43,214,.30));color:#fff;}
+.eventGiftSlots{
+  margin-top:14px;
+  display:grid;
+  gap:10px;
+}
+.eventGiftSlot{
+  padding:13px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.055);
+}
+.eventGiftSlot h4{
+  margin:0 0 8px;
+}
+.eventGiftSlot p{
+  margin:3px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+@media(max-width:640px){
+  .giftSlotHead{
+    align-items:stretch;
+    flex-direction:column;
+  }
+}
+
+
+#eventGiftSlotsBox{
+  margin-top:18px !important;
+  border:2px solid rgba(255,43,214,.35) !important;
+  box-shadow:0 12px 34px rgba(255,43,214,.12) !important;
+}
+#eventGiftSlotsBox h3{
+  font-size:24px !important;
+}
+
+
+.ticketSlotsBox{
+  display:grid;
+  gap:14px;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.10);
+  margin-top:18px;
+}
+.ticketSlotItem{
+  display:grid;
+  gap:12px;
+  padding:16px;
+  border-radius:20px;
+  background:#101010;
+  border:1px solid rgba(255,255,255,.10);
+}
+.ticketSlotHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.ticketSlotHead h4{
+  margin:0;
+  font-size:18px;
+}
+.eventTicketSlots{
+  margin-top:14px;
+  display:grid;
+  gap:10px;
+}
+.eventTicketSlot{
+  padding:13px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.055);
+}
+.eventTicketSlot h4{
+  margin:0 0 8px;
+}
+.eventTicketSlot p{
+  margin:3px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+.ticketPriceBadge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 11px;
+  border-radius:999px;
+  background:rgba(255,230,0,.16);
+  border:1px solid rgba(255,230,0,.28);
+  color:#fff6a3;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+@media(max-width:640px){
+  .ticketSlotHead{
+    align-items:stretch;
+    flex-direction:column;
+  }
+}
+
+
+/* FIX DEFINITIVO MOBILE COMPILATORE */
+#eventFormBox,
+#eventFormBox .panel,
+#eventForm,
+.giftSlotsBox,
+.ticketSlotsBox,
+.giftSlotItem,
+.ticketSlotItem{
+  width:100% !important;
+  max-width:100% !important;
+  overflow:hidden !important;
+}
+
+#eventForm *{
+  max-width:100% !important;
+  box-sizing:border-box !important;
+}
+
+#eventForm .field,
+#eventForm .split{
+  min-width:0 !important;
+}
+
+#eventForm input,
+#eventForm select,
+#eventForm textarea,
+#eventForm button{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+}
+
+@media(max-width:640px){
+  #manageEventsPage .container{
+    width:calc(100% - 24px) !important;
+  }
+
+  #eventFormBox .panel{
+    padding:16px !important;
+    border-radius:22px !important;
+  }
+
+  #eventForm{
+    gap:12px !important;
+  }
+
+  #eventForm .split{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+
+  .giftSlotsBox,
+  .ticketSlotsBox{
+    padding:14px !important;
+    border-radius:20px !important;
+  }
+
+  .giftSlotItem,
+  .ticketSlotItem{
+    padding:14px !important;
+    border-radius:18px !important;
+  }
+
+  .giftSlotHead,
+  .ticketSlotHead{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+  }
+
+  .giftSlotHead .btn,
+  .ticketSlotHead .btn{
+    width:100% !important;
+  }
+
+  #ticketSlotsArea,
+  #giftSlotsArea{
+    width:100% !important;
+  }
+}
+
+
+.appFooter{
+  padding:28px 0 128px;
+  color:var(--muted);
+  text-align:center;
+  border-top:1px solid rgba(255,255,255,.08);
+  margin-top:28px;
+}
+.appFooter p{
+  margin:0 auto 10px;
+  max-width:860px;
+  line-height:1.55;
+  font-size:13px;
+}
+.footerPrivacyLink{
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-weight:900;
+  text-decoration:underline;
+  cursor:pointer;
+}
+.gradientPalette{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.gradientOption{
+  height:48px;
+  border-radius:16px;
+  border:2px solid rgba(255,255,255,.12);
+  cursor:pointer;
+  transition:.18s ease;
+}
+.gradientOption:hover,
+.gradientOption.active{
+  transform:scale(1.04);
+  border-color:#fff;
+}
+@media(max-width:640px){
+  .gradientPalette{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .appFooter{
+    padding-left:14px;
+    padding-right:14px;
+  }
+}
+
+
+/* Rimuove eventuali box vuote sotto il footer */
+footer + .empty,
+footer + .panel,
+#appFooter + .empty,
+#appFooter + .panel{
+  display:none !important;
+}
+.appFooter:empty,
+.appFooter .container:empty{
+  display:none !important;
+}
+
+/* Card evento cliccabile */
+.event-card-clickable{
+  cursor:pointer;
+}
+.event-card-clickable:hover{
+  transform:translateY(-2px);
+  transition:.18s ease;
+}
+
+/* Pagina dettaglio evento */
+.eventDetailHero{
+  min-height:320px;
+  border-radius:28px;
+  background-size:cover;
+  background-position:center;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 52px rgba(0,0,0,.32);
+  margin-bottom:18px;
+}
+.detailGrid{
+  display:grid;
+  gap:14px;
+}
+.detailInfoBox{
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:22px;
+  padding:16px;
+}
+.detailInfoBox h3{
+  margin:0 0 10px;
+}
+@media(max-width:640px){
+  .eventDetailHero{
+    min-height:240px;
+  }
+}
+
+
+.requestBox{
+  display:grid;
+  gap:12px;
+}
+.requestItem{
+  padding:14px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.055);
+}
+.requestItem h4{
+  margin:0 0 8px;
+}
+.requestItem p{
+  margin:4px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+.statusAvailable{
+  color:#a8ffc9;
+  font-weight:900;
+}
+.statusSoon{
+  color:#fff6a3;
+  font-weight:900;
+}
+.statusSoldOut{
+  color:#ff9db9;
+  font-weight:900;
+}
+.successToast{
+  position:fixed;
+  left:50%;
+  bottom:112px;
+  transform:translateX(-50%);
+  z-index:999;
+  width:min(520px,92vw);
+  background:#072c17;
+  border:1px solid #10ff7b;
+  color:#d8ffe8;
+  padding:16px;
+  border-radius:18px;
+  font-weight:900;
+  text-align:center;
+  box-shadow:0 16px 44px rgba(0,0,0,.45);
+}
+.walletTicket{
+  display:grid;
+  gap:12px;
+}
+.qrBox{
+  width:156px;
+  height:156px;
+  background:#fff;
+  border-radius:16px;
+  padding:10px;
+  display:grid;
+  place-items:center;
+}
+.qrCodeGrid{
+  width:136px;
+  height:136px;
+  display:grid;
+  grid-template-columns:repeat(17,1fr);
+  grid-template-rows:repeat(17,1fr);
+  gap:1px;
+  background:#fff;
+}
+.qrDot{
+  background:#111;
+}
+.qrCodeText{
+  font-size:11px;
+  color:var(--muted);
+  word-break:break-all;
+}
+.localDetailBox{
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:22px;
+  padding:16px;
+}
+
+
+.eventDateBox{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:10px;
+}
+.eventDateItem{
+  padding:14px;
+  border-radius:18px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.10);
+}
+.eventDateItem b{
+  display:block;
+  margin-bottom:6px;
+  font-size:14px;
+}
+.eventDateItem span{
+  color:#fff;
+  font-weight:900;
+}
+.artistSlotsBox{
+  display:grid;
+  gap:14px;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.10);
+  margin-top:18px;
+}
+.artistSlotItem{
+  display:grid;
+  gap:12px;
+  padding:16px;
+  border-radius:20px;
+  background:#101010;
+  border:1px solid rgba(255,255,255,.10);
+}
+.artistSlotHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.eventArtistBox{
+  display:grid;
+  gap:10px;
+}
+.eventArtistItem{
+  padding:13px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(135deg,rgba(255,43,214,.12),rgba(0,229,255,.08));
+}
+.eventArtistItem h4{
+  margin:0 0 6px;
+}
+.eventArtistItem p{
+  margin:0;
+  color:var(--muted);
+}
+@media(max-width:640px){
+  .eventDateBox{
+    grid-template-columns:1fr;
+  }
+  .artistSlotHead{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+}
+
+
+.proIcon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:26px;
+  height:26px;
+  border-radius:9px;
+  background:linear-gradient(135deg,rgba(255,43,214,.18),rgba(255,230,0,.12));
+  border:1px solid rgba(255,255,255,.12);
+  margin-right:8px;
+  font-size:14px;
+}
+.renounceBtn{
+  background:rgba(255,71,126,.14)!important;
+  border:1px solid rgba(255,71,126,.35)!important;
+  color:#fff!important;
+}
+
+
+.proIcon svg{
+  width:17px;
+  height:17px;
+  display:block;
+}
+
+
+.openWalletBtn{
+  background:rgba(0,229,255,.12)!important;
+  border:1px solid rgba(0,229,255,.30)!important;
+  color:#fff!important;
+}
+.walletViewerOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.72);
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.walletViewer{
+  width:min(520px,95vw);
+  background:#111;
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.10);
+  overflow:hidden;
+}
+.walletViewerHero{
+  padding:22px;
+  background:linear-gradient(135deg,rgba(255,43,214,.20),rgba(0,229,255,.12));
+}
+.walletViewerBody{
+  padding:22px;
+  display:grid;
+  gap:16px;
+}
+
+
+.walletViewerOverlay{
+  backdrop-filter:blur(12px);
+}
+.walletViewer{
+  width:min(560px,96vw)!important;
+  border-radius:32px!important;
+  box-shadow:0 24px 80px rgba(0,0,0,.55)!important;
+}
+.walletViewerHero{
+  text-align:center;
+}
+.walletViewerBody{
+  justify-items:center;
+  text-align:center;
+}
+.walletViewerBody .meta{
+  width:100%;
+  text-align:center;
+}
+.walletViewerBody .meta div{
+  margin:6px 0;
+}
+.walletViewer .qrBox{
+  width:260px!important;
+  height:260px!important;
+  padding:16px!important;
+  border-radius:28px!important;
+  margin:0 auto;
+}
+.walletViewer .qrCodeGrid{
+  width:228px!important;
+  height:228px!important;
+}
+.walletViewer .qrCodeText{
+  text-align:center;
+  max-width:100%;
+  font-size:12px;
+}
+
+
+.profileFormGrid{
+  display:grid;
+  gap:14px;
+}
+.profileConsentBox{
+  display:grid;
+  gap:12px;
+  padding:16px;
+  border-radius:20px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.10);
+}
+.profileConsentBox label{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  font-weight:900;
+  color:#fff;
+}
+.profileConsentBox input[type="checkbox"]{
+  width:20px;
+  height:20px;
+  accent-color:var(--pink);
+  flex:0 0 auto;
+}
+.accountDeletedBox{
+  padding:18px;
+  border-radius:20px;
+  background:rgba(255,71,126,.12);
+  border:1px solid rgba(255,71,126,.25);
+  color:#ffd9e4;
+  font-weight:900;
+}
+
+
+.eventDetailPoster{
+  position:relative;
+  width:100%;
+  max-width:520px;
+  aspect-ratio:1/1;
+  margin:0 auto 22px;
+  border-radius:28px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 20px 60px rgba(0,0,0,.40);
+  cursor:pointer;
+}
+.eventDetailPoster img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.posterFloatingHint{
+  position:absolute;
+  left:14px;
+  right:14px;
+  bottom:14px;
+  backdrop-filter:blur(10px);
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+  padding:12px 14px;
+  border-radius:18px;
+  font-size:13px;
+  font-weight:800;
+  text-align:center;
+}
+.posterFullscreen{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.94);
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.posterFullscreen img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  border-radius:18px;
+}
+.posterClose{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:22px;
+  font-weight:900;
+}
+
+
+.dateLabel{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.dateLabel svg{
+  width:18px;
+  height:18px;
+}
+
+
+
+
+
+/* FIX DEFINITIVO VISIBILITÀ PAGINE */
+.app-page{
+  display:none !important;
+}
+.app-page.active{
+  display:block !important;
+}
+body.page-home #manageLocalsPage,
+body.page-ricordi #manageLocalsPage,
+body.page-scanner #manageLocalsPage,
+body.page-wallet #manageLocalsPage,
+body.page-profilo #manageLocalsPage,
+body.page-event-detail #manageLocalsPage,
+body.page-privacy #manageLocalsPage{
+  display:none !important;
+}
+
+
+.eventSaveError{
+  display:none;
+  margin:14px 0;
+  padding:14px;
+  border-radius:16px;
+  background:rgba(255,71,126,.13);
+  border:1px solid rgba(255,71,126,.35);
+  color:#ffdce6;
+  font-weight:900;
+}
+
+
+/* FOTO HERO ORIGINALE SENZA SFUMATURE */
+.heroImage::after,
+.heroImageOverlay,
+.heroImageGradient,
+.heroOverlay{
+  display:none !important;
+}
+
+.heroImage img,
+.heroImage{
+  filter:none !important;
+  backdrop-filter:none !important;
+  background-image:none !important;
+}
+
+
+/* BOX OMAGGIO PREMIUM */
+.giftPremiumCard{position:relative;overflow:hidden;padding:18px;border-radius:24px;border:1px solid rgba(255,255,255,.14);background:radial-gradient(circle at top left, rgba(255,43,214,.22), transparent 38%),linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.035));box-shadow:0 18px 46px rgba(0,0,0,.28)}
+.giftPremiumTop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.giftPremiumTitle{display:grid;gap:6px}
+.giftPremiumTitle h4{margin:0;font-size:20px}
+.giftPremiumMeta{display:grid;gap:7px;color:var(--muted);font-size:13px}
+.giftProgress{width:100%;height:9px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.10);margin:12px 0}
+.giftProgress span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--pink),var(--yellow))}
+.giftRemaining{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted)}
+.giftPremiumCard .btn{width:100%;margin-top:14px}
+
+
+/* NASCONDE DEFINITIVAMENTE IL PALLINO/BOX VUOTO DEL VECCHIO TOAST LOCALE */
+#localSavedToast,
+.localSavedToast,
+[id*="localSavedToast"],
+[class*="localSavedToast"]{
+  display:none !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+  width:0 !important;
+  height:0 !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+
+/* REPORT EVENTO */
+.reportModalOverlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(10px)}
+.reportModal{width:min(720px,96vw);max-height:92vh;overflow:auto;background:#101010;border:1px solid rgba(255,255,255,.12);border-radius:28px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.reportHead{padding:22px;background:linear-gradient(135deg,rgba(255,43,214,.18),rgba(255,230,0,.10));border-bottom:1px solid rgba(255,255,255,.10)}
+.reportHead h2{margin:0 0 6px}
+.reportBody{padding:22px;display:grid;gap:16px}
+.reportGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.reportCard{padding:16px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10)}
+.reportCard small{color:var(--muted);font-weight:800}
+.reportCard strong{display:block;font-size:28px;margin-top:8px}
+.reportTable{width:100%;border-collapse:collapse;overflow:hidden;border-radius:18px}
+.reportTable th,.reportTable td{padding:12px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
+.reportTable th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+@media(max-width:640px){.reportGrid{grid-template-columns:1fr}}
+
+
+/* REPORT MOBILE SENZA SCROLL ORIZZONTALE */
+.reportModal,
+.reportModal *{
+  box-sizing:border-box;
+  max-width:100%;
+}
+.reportBody{
+  overflow-x:hidden;
+}
+.reportCard{
+  overflow:hidden;
+}
+.reportTable{
+  table-layout:fixed;
+  width:100%;
+}
+.reportTable th,
+.reportTable td{
+  white-space:normal;
+  word-break:break-word;
+  overflow-wrap:anywhere;
+}
+@media(max-width:640px){
+  .reportModalOverlay{
+    align-items:flex-start;
+    padding:10px;
+    overflow-y:auto;
+    overflow-x:hidden;
+  }
+  .reportModal{
+    width:100%;
+    max-width:100%;
+    border-radius:22px;
+    margin:0 auto;
+  }
+  .reportHead{
+    padding:18px;
+  }
+  .reportBody{
+    padding:14px;
+    gap:12px;
+  }
+  .reportGrid{
+    grid-template-columns:1fr !important;
+    gap:10px;
+  }
+  .reportCard{
+    padding:14px;
+    border-radius:18px;
+  }
+  .reportCard strong{
+    font-size:24px;
+  }
+  .reportTable,
+  .reportTable thead,
+  .reportTable tbody,
+  .reportTable tr,
+  .reportTable th,
+  .reportTable td{
+    display:block;
+    width:100%;
+  }
+  .reportTable thead{
+    display:none;
+  }
+  .reportTable tr{
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,.10);
+  }
+  .reportTable td{
+    border:0;
+    padding:7px 0;
+  }
+  .reportTable td:nth-child(1)::before{content:"Slot: ";font-weight:900;color:#fff}
+  .reportTable td:nth-child(2)::before{content:"Quantità: ";font-weight:900;color:#fff}
+  .reportTable td:nth-child(3)::before{content:"Totale/Prezzo: ";font-weight:900;color:#fff}
+  .reportTable td:nth-child(4)::before{content:"Scansionati: ";font-weight:900;color:#fff}
+}
+
+
+/* ASSEGNAZIONE MANUALE SUPER ADMIN */
+.adminAssignBox{
+  display:grid;
+  gap:14px;
+}
+.adminAssignModalOverlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:rgba(0,0,0,.74);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+.adminAssignModal{
+  width:min(620px,96vw);
+  max-height:92vh;
+  overflow:auto;
+  background:#101010;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:28px;
+  box-shadow:0 24px 80px rgba(0,0,0,.55);
+}
+.adminAssignHead{
+  padding:22px;
+  background:linear-gradient(135deg,rgba(255,43,214,.20),rgba(255,230,0,.10));
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+.adminAssignBody{
+  padding:22px;
+  display:grid;
+  gap:14px;
+}
+.adminOnlyBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(255,230,0,.12);
+  border:1px solid rgba(255,230,0,.26);
+  color:#fff6a3;
+  font-size:12px;
+  font-weight:900;
+}
+@media(max-width:640px){
+  .adminAssignModalOverlay{align-items:flex-start;padding:10px;overflow:auto}
+  .adminAssignModal{border-radius:22px}
+  .adminAssignBody{padding:16px}
+}
+
+
+/* RICERCA UTENTI REGISTRATI */
+.userSuggestBox{
+  position:relative;
+}
+.userSuggestList{
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+  z-index:50;
+  margin-top:8px;
+  border-radius:18px;
+  overflow:hidden;
+  background:#111;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 50px rgba(0,0,0,.45);
+  max-height:240px;
+  overflow-y:auto;
+}
+.userSuggestItem{
+  padding:12px 14px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  cursor:pointer;
+}
+.userSuggestItem:last-child{
+  border-bottom:0;
+}
+.userSuggestItem:hover{
+  background:rgba(255,255,255,.06);
+}
+.userSuggestItem strong{
+  display:block;
+}
+.userSuggestItem small{
+  color:var(--muted);
+}
+
+
+/* RUOLI E PERMESSI */
+.roleBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 11px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+}
+.roleBadge.superAdmin{background:rgba(255,230,0,.14);color:#fff6a3;border-color:rgba(255,230,0,.25)}
+.roleBadge.admin{background:rgba(255,43,214,.14);color:#ffd5f7;border-color:rgba(255,43,214,.25)}
+.roleBadge.scanner{background:rgba(0,229,255,.14);color:#d7fbff;border-color:rgba(0,229,255,.25)}
+.roleBadge.cliente{background:rgba(255,255,255,.08)}
+.permissionDenied{
+  max-width:760px;
+  margin:40px auto;
+  padding:22px;
+  border-radius:24px;
+  background:rgba(255,71,126,.12);
+  border:1px solid rgba(255,71,126,.25);
+  color:#ffdce6;
+  text-align:center;
+  font-weight:900;
+}
+.roleSelect{
+  min-width:170px;
+}
+
+
+/* PAGINE MOBILE PARTONO DALL'ALTO */
+.app-page{
+  overflow-x:hidden;
+}
+html,body{
+  overscroll-behavior-y:none;
+}
+
+
+/* FIX DEFINITIVO SCROLL MOBILE PAGINE */
+html,
+body{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden !important;
+  overscroll-behavior:none;
+}
+
+main,
+.app,
+.app-page,
+.pageContent,
+.pageWrapper{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden !important;
+}
+
+.app-page{
+  min-height:100vh;
+  padding-bottom:120px;
+  -webkit-overflow-scrolling:touch;
+}
+
+.reportModal,
+.adminAssignModal,
+.settingsModal,
+.modal,
+.popup{
+  max-width:100vw !important;
+  overflow-x:hidden !important;
+}
+
+table{
+  width:100%;
+  max-width:100%;
+}
+
+img{
+  max-width:100%;
+  height:auto;
+}
+
+
+/* RESET POSIZIONE PAGINE */
+.app-page.active{
+  scroll-behavior:auto !important;
+}
+
+
+/* MOBILE PAGINE SEMPRE DALL'ALTO */
+html,
+body,
+main,
+.app-page{
+  scroll-behavior:auto !important;
+}
+
+.app-page{
+  overflow-anchor:none !important;
+}
+
+
+/* BLOCCA ANCORAGGIO SCROLL MOBILE */
+html,body{
+  overflow-anchor:none !important;
+}
+main,
+.app-page{
+  overflow-anchor:none !important;
+}
+
+
+/* MENU DINAMICO RUOLI */
+.bottomNav [data-role-hide]{
+  display:none;
+}
+
+
+/* FIX DESKTOP/MOBILE SCROLL NATIVO */
+html,body{
+  height:auto !important;
+  min-height:100% !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  position:static !important;
+}
+main{
+  height:auto !important;
+  min-height:100vh !important;
+  overflow-y:visible !important;
+  overflow-x:hidden !important;
+}
+.app-page{
+  height:auto !important;
+  min-height:100vh !important;
+  overflow-y:visible !important;
+  overflow-x:hidden !important;
+}
+/* AUTH FIREBASE */
+#authPage .panel input{
+  width:100%;
+}
+
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js">
+/* FIREBASE AUTH + FIRESTORE BASE */
+const firebaseConfig = {
+  "apiKey": "AIzaSyCHi8baDRr_yqVpsDBbSas3HwgQ7m90SGI",
+  "authDomain": "nochedeteteo-b813b.firebaseapp.com",
+  "projectId": "nochedeteteo-b813b",
+  "storageBucket": "nochedeteteo-b813b.firebasestorage.app",
+  "messagingSenderId": "335533337458",
+  "appId": "1:335533337458:web:4a06edbb8af3f11e060beb",
+  "measurementId": "G-59FGE400B9"
+};
+
+let ndtFirebaseApp = null;
+let ndtAuth = null;
+let ndtDb = null;
+let ndtCurrentUser = null;
+let ndtCurrentUserData = null;
+
+function firebaseReady(){
+  return typeof firebase !== 'undefined' && firebase.apps !== undefined;
+}
+
+function initFirebaseNDT(){
+  if(!firebaseReady()) return false;
+
+  if(!firebase.apps.length){
+    ndtFirebaseApp = firebase.initializeApp(firebaseConfig);
+  }else{
+    ndtFirebaseApp = firebase.app();
+  }
+
+  ndtAuth = firebase.auth();
+  ndtDb = firebase.firestore();
+
+  ndtAuth.onAuthStateChanged(async function(user){
+    ndtCurrentUser = user || null;
+
+    if(user){
+      await loadFirebaseUser(user.uid);
+      syncProfileFromFirebaseUser();
+      if(typeof applyDynamicMenuByRole==='function') applyDynamicMenuByRole();
+      if(typeof goPage==='function') goPage('homePage');
+    }else{
+      ndtCurrentUserData = null;
+      showOnlyAuthPage();
+    }
+  });
+
+  return true;
+}
+
+function showAuthMessage(msg){
+  const box=document.getElementById('authMsg');
+  if(box){
+    box.textContent=msg;
+    box.style.display='block';
+  }else{
+    alert(msg);
+  }
+}
+
+function showOnlyAuthPage(){
+  document.querySelectorAll('.app-page').forEach(p=>{
+    p.classList.remove('active');
+    p.style.display='none';
+  });
+
+  const auth=document.getElementById('authPage');
+  if(auth){
+    auth.classList.add('active');
+    auth.style.display='block';
+  }
+}
+
+async function usersCollectionEmpty(){
+  const snap = await ndtDb.collection('users').limit(1).get();
+  return snap.empty;
+}
+
+async function loadFirebaseUser(uid){
+  const doc = await ndtDb.collection('users').doc(uid).get();
+
+  if(doc.exists){
+    ndtCurrentUserData = {uid:uid, ...doc.data()};
+  }else{
+    ndtCurrentUserData = {uid:uid, role:'cliente'};
+  }
+
+  localStorage.setItem('ndt_current_role', ndtCurrentUserData.role || 'cliente');
+  window.ndtCurrentUserData = ndtCurrentUserData;
+  return ndtCurrentUserData;
+}
+
+function syncProfileFromFirebaseUser(){
+  if(!ndtCurrentUserData) return;
+
+  try{
+    const p = typeof getProfile === 'function' ? getProfile() : {};
+
+    p.name = ndtCurrentUserData.name || '';
+    p.surname = ndtCurrentUserData.surname || '';
+    p.birthDate = ndtCurrentUserData.birthDate || '';
+    p.phone = ndtCurrentUserData.phone || '';
+    p.email = ndtCurrentUserData.email || '';
+    p.role = ndtCurrentUserData.role || 'cliente';
+    p.privacyConsent = !!ndtCurrentUserData.privacyConsent;
+    p.marketingConsent = !!ndtCurrentUserData.marketingConsent;
+
+    if(typeof saveProfile === 'function') saveProfile(p);
+    if(typeof renderProfile === 'function') renderProfile();
+  }catch(e){
+    console.warn(e);
+  }
+}
+
+async function firebaseRegister(){
+  if(!ndtAuth || !ndtDb){
+    showAuthMessage('Firebase non è ancora pronto. Ricarica la pagina.');
+    return;
+  }
+
+  const name=(document.getElementById('authName')?.value||'').trim();
+  const surname=(document.getElementById('authSurname')?.value||'').trim();
+  const phone=(document.getElementById('authPhone')?.value||'').trim();
+  const birthDate=(document.getElementById('authBirthDate')?.value||'').trim();
+  const email=(document.getElementById('authEmail')?.value||'').trim();
+  const password=(document.getElementById('authPassword')?.value||'').trim();
+  const privacy=!!document.getElementById('authPrivacy')?.checked;
+  const marketing=!!document.getElementById('authMarketing')?.checked;
+
+  if(!name || !surname) return showAuthMessage('Inserisci nome e cognome.');
+  if(!email) return showAuthMessage('Inserisci email.');
+  if(!password || password.length < 6) return showAuthMessage('La password deve avere almeno 6 caratteri.');
+  if(!privacy) return showAuthMessage('Devi accettare la privacy.');
+
+  try{
+    const firstUser = await usersCollectionEmpty();
+    const cred = await ndtAuth.createUserWithEmailAndPassword(email,password);
+    const role = firstUser ? 'superAdmin' : 'cliente';
+
+    const data = {
+      uid: cred.user.uid,
+      name,
+      surname,
+      fullName: (name+' '+surname).trim(),
+      phone,
+      birthDate,
+      email,
+      role,
+      privacyConsent: privacy,
+      marketingConsent: marketing,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    await ndtDb.collection('users').doc(cred.user.uid).set(data, {merge:true});
+    ndtCurrentUserData = data;
+    window.ndtCurrentUserData = data;
+    localStorage.setItem('ndt_current_role', role);
+
+    showAuthMessage(role==='superAdmin' ? 'Registrazione completata. Sei Super Admin.' : 'Registrazione completata.');
+    syncProfileFromFirebaseUser();
+
+    if(typeof goPage==='function') goPage('homePage');
+
+  }catch(err){
+    showAuthMessage('Errore registrazione: '+(err.message||err));
+  }
+}
+
+async function firebaseLogin(){
+  if(!ndtAuth || !ndtDb){
+    showAuthMessage('Firebase non è ancora pronto. Ricarica la pagina.');
+    return;
+  }
+
+  const email=(document.getElementById('authEmail')?.value||'').trim();
+  const password=(document.getElementById('authPassword')?.value||'').trim();
+
+  if(!email || !password) return showAuthMessage('Inserisci email e password.');
+
+  try{
+    const cred = await ndtAuth.signInWithEmailAndPassword(email,password);
+    await loadFirebaseUser(cred.user.uid);
+    syncProfileFromFirebaseUser();
+
+    if(typeof applyDynamicMenuByRole==='function') applyDynamicMenuByRole();
+    if(typeof goPage==='function') goPage('homePage');
+
+  }catch(err){
+    showAuthMessage('Errore accesso: '+(err.message||err));
+  }
+}
+
+function firebaseLogout(){
+  if(ndtAuth) ndtAuth.signOut();
+}
+
+window.addEventListener('load', function(){
+  initFirebaseNDT();
+});
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#" class="brand" onclick="goPage('homePage');return false;">
+      <div class="logoMark" id="logoMark"><span id="logoLetters">NT</span><img id="logoImage" alt="Logo"></div>
+      <div class="appName"><span id="brandName">NOCHE DE TETEO</span><small>Eventi & Prenotazioni</small></div>
+    </a>
+    <button class="iconBtn" onclick="openSettings()" aria-label="Impostazioni">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0A1.65 1.65 0 0 0 9 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0A1.65 1.65 0 0 0 20.91 11H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<section id="authPage" class="app-page active">
+  <div class="container">
+    <div class="pageHead">
+      <h1>Accedi a Noche De Teteo</h1>
+      <p>Registrati o accedi per usare Wallet, omaggi, biglietti e profilo.</p>
+    </div>
+
+    <div class="panel" style="max-width:720px;margin:auto">
+      <div id="authMsg" class="empty" style="display:none;margin-bottom:14px"></div>
+
+      <div class="split">
+        <div class="field">
+          <label>Nome</label>
+          <input id="authName" placeholder="Nome">
+        </div>
+        <div class="field">
+          <label>Cognome</label>
+          <input id="authSurname" placeholder="Cognome">
+        </div>
+      </div>
+
+      <div class="split">
+        <div class="field">
+          <label>Telefono</label>
+          <input id="authPhone" placeholder="+39...">
+        </div>
+        <div class="field">
+          <label>Data di nascita</label>
+          <input id="authBirthDate" type="date">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input id="authEmail" type="email" placeholder="email@esempio.it">
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input id="authPassword" type="password" placeholder="Password">
+      </div>
+
+      <div class="profileConsentBox" style="margin:14px 0">
+        <label>
+          <input id="authPrivacy" type="checkbox">
+          <span>Acconsento alla privacy</span>
+        </label>
+
+        <label>
+          <input id="authMarketing" type="checkbox">
+          <span>Acconsento al marketing</span>
+        </label>
+      </div>
+
+      <div class="split">
+        <button class="btn primary" type="button" onclick="firebaseRegister()">Registrati</button>
+        <button class="btn ghost" type="button" onclick="firebaseLogin()">Accedi</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- HOME -->
+  <section id="homePage" class="app-page active">
+    <div class="container">
+      <div class="hero">
+        <div class="heroGrid">
+          <div>
+            <div class="badge" id="homeBadge">🔥 Reggaeton • Dembow • Latin Trap • Perreo Party</div>
+            <h1 id="homeTitle">La notte più <span class="gradient">caliente</span> della città.</h1>
+            <p id="homeDesc">Vivi l'energia di Noche De Teteo! Il format itinerante con il meglio di reggaeton, dembow e animazione travolgente. Scopri le prossime date e balla con noi!</p>          </div>
+          <div class="homeImageBox" id="homeImageBox">
+            <div><h2>NOCHE<br>DE TETEO</h2><p>La notte più caliente</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="howBox" class="panel" style="margin:10px 0 26px">
+        <h2 id="howTitle" style="margin-top:0">Come funziona</h2>
+        <p id="howText" style="color:var(--muted);line-height:1.6">Il cliente apre la web app, sceglie l’evento, compila nome, telefono, tipo richiesta e numero persone. Tu trovi tutto nel pannello Admin.</p>
+        <div class="chips" id="howChips">
+          <span class="chip free">Biglietti omaggio</span><span class="chip gold">Lista donna/uomo</span><span class="chip">Tavoli e info</span>
+        </div>
+      </div>
+
+      <div id="eventsSection" class="sectionTitle">
+        <div><h2>Eventi in programma</h2><p>Scegli l’evento e prenota il tuo posto in lista.</p></div>
+        <button class="btn ghost small" onclick="renderAll()">Aggiorna</button>
+      </div>
+      <div id="eventsGrid" class="grid"></div>
+    </div>
+  </section>
+
+  <!-- RICORDI -->
+  <section id="ricordiPage" class="app-page">
+    <div class="container">
+      <div class="pageHead">
+        <h1>Ricordi del Teteo</h1>
+        <p>Qui troverai tutti i ricordi della notte del Teteo.</p>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,.10);margin:0 0 18px"></div>
+      <div id="ricordiGrid" class="grid"></div>
+    </div>
+  </section>
+
+  <!-- SCANNER -->
+  <section id="scannerPage" class="app-page">
+    <div class="container">
+      <div class="pageHead">
+        <h1>Scanner biglietti</h1>
+        <p>Scansiona e valida QR code o biglietti degli eventi.</p>
+      </div>
+      <div class="panel" style="max-width:540px;margin:auto">
+        <div class="scannerBox">
+          <div class="scanFrame"></div><div class="scanLine"></div>
+          <div style="text-align:center;z-index:2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="width:66px;height:66px;margin-bottom:12px">
+              <path d="M4 7V5a1 1 0 0 1 1-1h2"></path><path d="M20 7V5a1 1 0 0 0-1-1h-2"></path><path d="M4 17v2a1 1 0 0 0 1 1h2"></path><path d="M20 17v2a1 1 0 0 1-1 1h-2"></path><path d="M7 12h10"></path>
+            </svg>
+            <div style="font-weight:900;font-size:18px">Scanner QR Ticket</div>
+            <div style="color:var(--muted);font-size:13px;margin-top:6px">Modalità validazione evento</div>
+          </div>
+        </div>
+        <button class="btn primary" style="width:100%;margin-top:18px" onclick="simulateScan()">Avvia scansione</button>
+        <div id="scanResult" class="hide" style="margin-top:16px;background:#052d16;border:1px solid #11ff76;color:#d8ffe8;padding:16px;border-radius:18px;font-weight:800">✅ Biglietto valido — Accesso consentito</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WALLET -->
+  <section id="walletPage" class="app-page">
+    <div class="container">
+      <div class="pageHead">
+        <h1>Wallet</h1>
+        <p>Qui trovi omaggi, prenotazioni e ticket salvati.</p>
+      </div>
+
+      <div class="walletFilters">
+        <button id="walletActiveBtn" class="btn primary small" onclick="setWalletFilter('active')">Biglietti attivi</button>
+        <button id="walletExpiredBtn" class="btn ghost small" onclick="setWalletFilter('expired')">Biglietti scaduti</button>
+      </div>
+
+      <div id="walletList" class="grid"></div>
+    </div>
+  </section>
+
+  <!-- PROFILO -->
+  <section id="profiloPage" class="app-page">
+    <div class="container">
+      <div class="pageHead">
+        <h1>Profilo</h1>
+        <p>Gestisci account, dati personali, consensi e preferenze.</p>
+      </div>
+
+      <div class="panel" style="max-width:760px;margin:auto">
+        <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:24px">
+          <div style="width:92px;height:92px;border-radius:50%;background:var(--gradient);display:grid;place-items:center;font-size:38px;font-weight:900;color:#fff;box-shadow:0 14px 34px rgba(255,0,170,.30)">N</div>
+          <div>
+            <h2 style="margin:0 0 6px" id="profileDisplayName">User</h2>
+            <p style="margin:0;color:var(--muted)" id="profileDisplayEmail">Area personale utente</p>
+            <div id="profileRoleView" style="margin-top:8px"></div>
+          </div>
+        </div>
+
+        <div id="accountDeletedMsg" class="accountDeletedBox" style="display:none;margin-bottom:18px">
+          Account eliminato localmente da questa web app.
+        </div>
+
+        <div id="profileReadBox" class="profileConsentBox" style="margin-bottom:18px">
+          <div><b>Nome e cognome</b><br><span id="profileReadName" style="color:var(--muted)">Non impostato</span></div>
+          <div><b>Data di nascita</b><br><span id="profileReadBirth" style="color:var(--muted)">Non impostata</span></div>
+          <div><b>Email</b><br><span id="profileReadEmail" style="color:var(--muted)">Non impostata</span></div>
+          <div><b>Cellulare</b><br><span id="profileReadPhone" style="color:var(--muted)">Non impostato</span></div>
+        </div>
+
+        <button class="btn primary" type="button" onclick="showProfileEdit()" style="width:100%;margin-bottom:14px">
+          Modifica dati profilo
+        </button>
+
+        <form id="profileForm" class="profileFormGrid" style="display:none">
+          <div class="split">
+            <div class="field">
+              <label>Nome</label>
+              <input id="profileName" placeholder="Nome">
+            </div>
+            <div class="field">
+              <label>Cognome</label>
+              <input id="profileSurname" placeholder="Cognome">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Data di nascita</label>
+            <input id="profileBirthDate" type="date">
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input id="profileEmail" type="email" placeholder="email@esempio.it">
+          </div>
+
+          <div class="field">
+            <label>Cellulare</label>
+            <input id="profilePhone" placeholder="+39...">
+          </div>
+
+          <div class="profileConsentBox">
+            <label>
+              <input id="profilePrivacyConsent" type="checkbox">
+              <span>Acconsento alla privacy</span>
+            </label>
+
+            <label>
+              <input id="profileMarketingConsent" type="checkbox">
+              <span>Acconsento al marketing</span>
+            </label>
+          </div>
+
+          <button class="btn primary" type="submit">Salva dati account</button>
+          <button class="btn ghost" type="button" onclick="hideProfileEdit()">Chiudi modifica</button>
+        </form>
+
+        <button class="btn danger" type="button" onclick="deleteMyAccount()" style="width:100%;margin-top:14px">
+          Elimina il mio account
+        </button>
+
+        <div style="margin-top:22px;display:grid;gap:12px;">
+          <button class="btn ghost" onclick="openSettings()">Impostazioni app</button>
+          <button class="btn ghost" onclick="openManageEvents()">Gestione eventi</button>
+          <button class="btn ghost" onclick="openManageLocals()">I miei locali</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GESTIONE EVENTI PAGINA DEDICATA -->
+  <section id="manageEventsPage" class="app-page">
+    <div class="container">
+      <div class="pageHead">
+        <h1>Gestione eventi</h1>
+        <p>Crea, modifica, duplica, elimina e fissa gli eventi nei suggeriti.</p>
+      </div>
+
+      <div class="managerTopActions">
+        <button class="btn ghost" onclick="goPage('homePage')">Torna alla Home</button>
+        <button class="btn primary" onclick="showEventForm()">+ Crea nuovo evento</button>
+      </div>
+
+      <div id="eventSaveError" class="eventSaveError"></div>
+
+      <div id="eventFormBox" class="formBox">
+        <div class="panel">
+          <form id="eventForm" class="form" onsubmit="return false;">
+            <input id="eventId" type="hidden">
+
+            <div class="field">
+              <label>Locale</label>
+              <select id="eventLocal" onchange="applyLocalToEvent()"></select>
+            </div>
+
+            <div id="selectedLocalPreview"></div>
+
+<div class="field">
+              <label>Titolo</label>
+              <input id="eventTitle" required placeholder="NOCHE DE TETEO">
+            </div>
+
+            <div class="field">
+              <label>Età evento</label>
+              <input id="eventAge" value="+18" placeholder="+18">
+            </div>
+
+            <div class="split">
+              <div class="field">
+                <label>Data inizio</label>
+                <input id="eventStartDate" type="date" required>
+              </div>
+              <div class="field">
+                <label>Ora inizio</label>
+                <input id="eventStartTime" type="time" required>
+              </div>
+            </div>
+
+            <div class="split">
+              <div class="field">
+                <label>Data fine</label>
+                <input id="eventEndDate" type="date" required>
+              </div>
+              <div class="field">
+                <label>Ora fine</label>
+                <input id="eventEndTime" type="time" required>
+              </div>
+            </div>
+
+
+
+            <div class="split">
+              <div class="field">
+                <label>Location</label>
+                <input id="eventLocation">
+              </div>
+              <div class="field">
+                <label>Città</label>
+                <input id="eventCity">
+              </div>
+            </div>
+
+            <div class="split">
+              <div class="field">
+                <label>Indirizzo locale</label>
+                <input id="eventLocalAddress" placeholder="Compilato dal locale scelto">
+              </div>
+              <div class="field">
+                <label>Capienza locale</label>
+                <input id="eventLocalCapacity" type="number" min="0" placeholder="Compilato dal locale scelto">
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Locandina evento</label>
+              <input id="eventImageFile" type="file" accept="image/*">
+              <input id="eventImage" type="hidden">
+              <img id="eventPosterPreview" class="posterPreview" alt="Anteprima locandina">
+              <button id="removeEventPosterBtn" class="btn ghost small" type="button" onclick="removeEventPoster()" style="display:none;margin-top:10px">
+                Rimuovi locandina
+              </button>
+            </div>
+
+            <div class="field">
+              <label>Descrizione</label>
+              <textarea id="eventDesc" placeholder="Descrizione evento..."></textarea>
+            </div>
+
+            <div class="field">
+              <label><input id="eventShowLocalCard" type="checkbox"> Mostra scheda locale nell’evento</label>
+            </div>
+
+            <div class="field">
+              <label><input id="eventSuggested" type="checkbox"> Fissa nei suggeriti</label>
+            </div>
+
+
+            <div class="artistSlotsBox" id="eventArtistSlotsBox">
+              <div class="artistSlotHead">
+                <div>
+                  <h3 style="margin:0">Slot artistico</h3>
+                  <p style="margin:6px 0 0;color:var(--muted)">Attiva e aggiungi DJ set, artisti o altre figure professionali dell’evento.</p>
+                </div>
+              </div>
+
+              <div class="field">
+                <label><input id="eventArtistsEnabled" type="checkbox" onchange="toggleArtistSlotsArea()"> Attiva slot artistico</label>
+              </div>
+
+              <div id="artistSlotsArea" style="display:none">
+                <button class="btn ghost small" type="button" onclick="addArtistSlot()">+ Aggiungi voce artistica</button>
+                <div id="artistSlotsList" style="display:grid;gap:14px;margin-top:14px"></div>
+              </div>
+            </div>
+
+            <div class="giftSlotsBox" id="eventGiftSlotsBox">
+              <div class="giftSlotHead">
+                <div>
+                  <h3 style="margin:0">Slot omaggio</h3>
+                  <p style="margin:6px 0 0;color:var(--muted)">Attiva e crea uno o più slot omaggio per questo evento.</p>
+                </div>
+              </div>
+
+              <div class="field">
+                <label><input id="eventGiftsEnabled" type="checkbox" onchange="toggleGiftSlotsArea()"> Attiva slot omaggio</label>
+              </div>
+
+              <div id="giftSlotsArea" style="display:none">
+                <button class="btn ghost small" type="button" onclick="addGiftSlot()">+ Aggiungi slot</button>
+                <div id="giftSlotsList" style="display:grid;gap:14px;margin-top:14px"></div>
+              </div>
+            </div>
+
+
+            <div class="ticketSlotsBox" id="eventTicketSlotsBox">
+              <div class="ticketSlotHead">
+                <div>
+                  <h3 style="margin:0">Slot biglietto ingresso</h3>
+                  <p style="margin:6px 0 0;color:var(--muted)">Attiva e crea uno o più biglietti ingresso per questo evento.</p>
+                </div>
+              </div>
+
+              <div class="field">
+                <label><input id="eventTicketsEnabled" type="checkbox" onchange="toggleTicketSlotsArea()"> Attiva slot biglietto ingresso</label>
+              </div>
+
+              <div id="ticketSlotsArea" style="display:none">
+                <button class="btn ghost small" type="button" onclick="addTicketSlot()">+ Aggiungi biglietto</button>
+                <div id="ticketSlotsList" style="display:grid;gap:14px;margin-top:14px"></div>
+              </div>
+            </div>
+
+            <button class="btn primary" type="button" onclick="window.saveEventFromCompilerFixed ? window.saveEventFromCompilerFixed() : null">Salva evento</button>
+            <button class="btn ghost" type="button" onclick="hideEventForm()">Chiudi compilatore</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="eventSaveMessage" style="display:none;margin:14px 0;background:#072c17;border:1px solid #10ff7b;color:#d8ffe8;padding:14px;border-radius:16px;font-weight:900;">
+        ✅ L'evento è stato salvato correttamente
+      </div>
+
+      <h2 style="margin-top:22px">Eventi creati</h2>
+      <div id="managedEvents" class="form"></div>
+    </div>
+  </section>
+
+
+  <!-- I MIEI LOCALI PAGINA DEDICATA -->
+  <section id="manageLocalsPage" class="app-page">
+    <div class="container">
+      <div class="pageHead">
+        <h1>I miei locali</h1>
+        <p>Gestisci i locali salvati, modifica dati, foto, orari, capienza e indirizzo Google Maps.</p>
+      </div>
+
+      <div class="managerTopActions">
+        <button class="btn ghost" onclick="goPage('homePage')">Torna alla Home</button>
+        <button class="btn primary" onclick="showLocalForm()">+ Aggiungi nuovo locale</button>
+      </div>
+
+      <div id="localFormBox" class="formBox">
+        <div class="panel">
+          <form id="localForm" class="form">
+            <input id="localId" type="hidden">
+
+            <div class="field">
+              <label>Foto locale</label>
+              <input id="localPhoto" type="file" accept="image/*">
+              <img id="localPhotoPreview" class="localPhotoPreview" style="display:none" alt="Anteprima locale">
+            </div>
+
+            <div class="field">
+              <label>Nome locale</label>
+              <input id="localName" required placeholder="Ritual Club & Lounge">
+            </div>
+
+            <div class="split">
+              <div class="field">
+                <label>Orario apertura</label>
+                <input id="localOpenTime" type="time">
+              </div>
+              <div class="field">
+                <label>Orario chiusura</label>
+                <input id="localCloseTime" type="time">
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Capienza</label>
+              <input id="localCapacity" type="number" min="0" placeholder="Es. 350">
+            </div>
+
+            <div class="field">
+              <label>Indirizzo</label>
+              <input id="localLocation" placeholder="Via / Piazza, numero civico">
+            </div>
+
+            <div class="field">
+              <label>Città</label>
+              <input id="localCity" placeholder="Milano">
+            </div>
+
+            <div class="field">
+              <label>Descrizione</label>
+              <textarea id="localInfo" placeholder="Descrizione del locale..."></textarea>
+            </div>
+
+            <button class="btn primary" type="submit">Salva locale</button>
+            <button class="btn ghost" type="button" onclick="hideLocalForm()">Chiudi compilatore</button>
+          </form>
+        </div>
+      </div>
+
+      <h2 style="margin-top:22px">Locali salvati</h2>
+      <div id="localsList" class="form"></div>
+    </div>
+  </section>
+
+
+  <!-- GESTIONE UTENTI PAGINA DEDICATA -->
+  <section id="manageUsersPage" class="app-page" style="display:none">
+    <div class="container">
+      <div class="pageHead">
+        <h1>Gestione utenti</h1>
+        <p>Pagina dedicata per gestire utenti, ruoli e permessi della web app.</p>
+      </div>
+
+      <div class="managerTopActions">
+        <button class="btn ghost" onclick="goPage('homePage')">Torna alla Home</button>
+        <button class="btn primary" onclick="showUserForm()">+ Aggiungi utente</button>
+      </div>
+
+      <div id="userFormBox" class="formBox">
+        <div class="panel">
+          <form id="userForm" class="form">
+            <input id="userId" type="hidden">
+
+            <div class="split">
+              <div class="field">
+                <label>Nome utente</label>
+                <input id="userName" placeholder="Nome e cognome">
+              </div>
+              <div class="field">
+                <label>Email</label>
+                <input id="userEmail" type="email" placeholder="email@esempio.it">
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Ruolo</label>
+              <select id="userRole">
+                <option value="Admin">Admin</option>
+                <option value="Staff">Staff</option>
+                <option value="Scanner">Scanner</option>
+                <option value="Utente">Utente</option>
+              </select>
+            </div>
+
+            <button class="btn primary" type="submit">Salva utente</button>
+            <button class="btn ghost" type="button" onclick="hideUserForm()">Chiudi compilatore</button>
+          </form>
+        </div>
+      </div>
+
+      <h2 style="margin-top:22px">Utenti salvati</h2>
+      <div id="usersList" class="form"></div>
+    </div>
+  </section>
+
+
+  <!-- PRIVACY PAGE -->
+  <section id="privacyPage" class="app-page">
+    <div class="container">
+      <div class="pageHead">
+        <h1>Informativa privacy</h1>
+        <p>Gestione dei dati personali per Noche De Teteo.</p>
+      </div>
+      <div class="panel">
+        <div id="privacyText" style="color:var(--muted);line-height:1.7;white-space:pre-wrap;">I dati raccolti tramite questa web app sono utilizzati esclusivamente per la gestione di eventi, prenotazioni, omaggi, biglietti e comunicazioni relative a Noche De Teteo. I dati non vengono ceduti a terzi salvo obblighi di legge o necessità operative legate all’organizzazione degli eventi.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- DETTAGLIO EVENTO -->
+  <section id="eventDetailPage" class="app-page">
+    <div class="container">
+      <button class="btn ghost small" onclick="goPage('homePage')" style="margin-bottom:16px">Torna alla Home</button>
+      <div id="eventDetailContent"></div>
+    </div>
+  </section>
+
+</main>
+
+
+<footer id="appFooter" class="appFooter">
+  <div class="container">
+    <p id="footerText">Tutti i dati sono riservati esclusivamente a Noche De Teteo ® p.iva P.IVA 12644580966 / settore organizzazione eventi professionali.</p>
+    <button class="footerPrivacyLink" type="button" onclick="goPage('privacyPage')">Informativa privacy</button>
+  </div>
+</footer>
+
+<nav class="bottomNav" id="bottomNav">
+  <button data-page="homePage" class="active" onclick="goPage('homePage')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg><span>Home</span>
+  </button>
+  <button data-page="ricordiPage" onclick="goPage('ricordiPage')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span>Ricordi</span>
+  </button>
+  <button data-page="scannerPage" onclick="goPage('scannerPage')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V5a1 1 0 0 1 1-1h2"></path><path d="M20 7V5a1 1 0 0 0-1-1h-2"></path><path d="M4 17v2a1 1 0 0 0 1 1h2"></path><path d="M20 17v2a1 1 0 0 1-1 1h-2"></path><path d="M7 12h10"></path></svg><span>Scanner</span>
+  </button>
+  <button data-page="walletPage" onclick="goPage('walletPage')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="3"></rect><path d="M16 12h4"></path><path d="M4 8V5h14"></path></svg><span>Wallet</span>
+  </button>
+  <button data-page="profiloPage" onclick="goPage('profiloPage')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.8-4 14.2-4 16 0"></path></svg><span>Profilo</span>
+  </button>
+</nav>
+
+<!-- SETTINGS MODAL -->
+<div id="settingsModal" class="modal hide">
+  <div class="modalCard">
+    <div class="modalHead"><h2>Impostazioni</h2><button class="x" onclick="closeModals()">×</button></div>
+    <div class="modalBody">
+      <button class="btn primary" style="width:100%;margin-bottom:18px" onclick="downloadFullAppBackup()">
+        Scarica la mia app
+      </button>
+
+      <div class="form">
+        <div class="split">
+          <button class="btn primary" onclick="openManageEvents()">Gestione eventi</button>
+          <button class="btn ghost" onclick="openManageLocals()">I miei locali</button>
+        </div>
+        <button class="btn ghost" onclick="openManageUsers()">Gestione utenti</button>
+        <hr style="width:100%;border-color:rgba(255,255,255,.10)">
+        <div class="field"><label>Nome app</label><input id="setAppName"></div>
+        <div class="field"><label>Logo app</label><input id="setLogo" type="file" accept="image/*"></div>
+        <div class="field"><label>Immagine box Home</label><input id="setHomeImage" type="file" accept="image/*"></div>
+        <div class="field"><label>Titolo Home</label><input id="setHomeTitle"></div>
+        <div class="field"><label>Descrizione Home</label><textarea id="setHomeDesc"></textarea></div>
+        <hr style="width:100%;border-color:rgba(255,255,255,.10)">
+        <div class="field"><label><input id="setHowEnabled" type="checkbox"> Mostra box “Come funziona”</label></div>
+        <div class="field"><label>Titolo box</label><input id="setHowTitle"></div>
+        <div class="field"><label>Testo box</label><textarea id="setHowText"></textarea></div>
+        <div class="field"><label>Chip separati da virgola</label><input id="setHowChips" placeholder="Biglietti omaggio, Lista donna/uomo, Tavoli e info"></div>
+        
+        <hr style="width:100%;border-color:rgba(255,255,255,.10)">
+        <div>
+          <label style="display:block;margin-bottom:10px;font-weight:900;">Gradienti app</label>
+          <div class="gradientPalette">
+            <button type="button" class="gradientOption" style="background:linear-gradient(135deg,#ff2bd6,#ffe600)" onclick="chooseGradient('#ff2bd6','#ffe600')"></button>
+            <button type="button" class="gradientOption" style="background:linear-gradient(135deg,#7c3cff,#00e5ff)" onclick="chooseGradient('#7c3cff','#00e5ff')"></button>
+            <button type="button" class="gradientOption" style="background:linear-gradient(135deg,#ff3d00,#ffea00)" onclick="chooseGradient('#ff3d00','#ffea00')"></button>
+            <button type="button" class="gradientOption" style="background:linear-gradient(135deg,#00ff85,#00b3ff)" onclick="chooseGradient('#00ff85','#00b3ff')"></button>
+            <button type="button" class="gradientOption" style="background:linear-gradient(135deg,#ff006e,#8338ec)" onclick="chooseGradient('#ff006e','#8338ec')"></button>
+            <button type="button" class="gradientOption" style="background:linear-gradient(135deg,#f72585,#4cc9f0)" onclick="chooseGradient('#f72585','#4cc9f0')"></button>
+            <button type="button" class="gradientOption" style="background:linear-gradient(135deg,#ffd60a,#ff477e)" onclick="chooseGradient('#ffd60a','#ff477e')"></button>
+            <button type="button" class="gradientOption" style="background:linear-gradient(135deg,#ffffff,#ff2bd6)" onclick="chooseGradient('#ffffff','#ff2bd6')"></button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Testo footer</label>
+          <textarea id="setFooterText"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Testo informativa privacy</label>
+          <textarea id="setPrivacyText"></textarea>
+        </div>
+
+        
+        <hr style="width:100%;border-color:rgba(255,255,255,.10)">
+
+        <div class="field">
+          <label>
+            <input id="setHomeBadgeEnabled" type="checkbox">
+            Mostra box generi musicali in Home
+          </label>
+        </div>
+
+        <div class="field">
+          <label>Testo box generi musicali</label>
+          <input id="setHomeBadgeText" placeholder="🔥 Reggaeton • Dembow • Latin Trap • Perreo Party">
+        </div>
+
+        <button class="btn primary" onclick="saveSettings()">Salva impostazioni</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modalBody">
+      <div class="empty"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LS_EVENTS='ndt_clean_events_v1';
+const LS_LOCALS='ndt_clean_locals_v1';
+const LS_SETTINGS='ndt_clean_settings_v1';
+const LS_USERS='ndt_clean_users_v1';
+const defaultImg='https://images.unsplash.com/photo-1571266028243-d220c9c7d4c1?auto=format&fit=crop&w=1200&q=80';
+
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function load(key, fallback){try{return JSON.parse(localStorage.getItem(key)) ?? fallback}catch(e){return fallback}}
+function save(key,val){localStorage.setItem(key, JSON.stringify(val))}
+function esc(str){return String(str??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function todayISO(){return new Date().toISOString().slice(0,10)}
+function nowTime(){return new Date().toTimeString().slice(0,5)}
+
+let events=load(LS_EVENTS,[]);
+let users=load(LS_USERS,[]);
+let locals=load(LS_LOCALS,[]);
+let walletFilter='active';
+let settings=load(LS_SETTINGS,{
+  appName:'NOCHE DE TETEO',
+  logo:'',
+  homeImage:'',
+  homeTitle:'La notte più <span class="gradient">caliente</span> della città.',
+  homeDesc:"Vivi l'energia di Noche De Teteo! Il format itinerante con il meglio di reggaeton, dembow e animazione travolgente. Scopri le prossime date e balla con noi!",
+  howEnabled:true,
+  howTitle:'Come funziona',
+  howText:'Il cliente apre la web app, sceglie l’evento, compila nome, telefono, tipo richiesta e numero persone. Tu trovi tutto nel pannello Admin.',
+  howChips:'Biglietti omaggio, Lista donna/uomo, Tavoli e info',
+  accent1:'#ff2bd6',
+  accent2:'#ffe600',
+  footerText:'Tutti i dati sono riservati esclusivamente a Noche De Teteo ® p.iva P.IVA 12644580966 / settore organizzazione eventi professionali.',
+  privacyText:'I dati raccolti tramite questa web app sono utilizzati esclusivamente per la gestione di eventi, prenotazioni, omaggi, biglietti e comunicazioni relative a Noche De Teteo. I dati non vengono ceduti a terzi salvo obblighi di legge o necessità operative legate all’organizzazione degli eventi.'
+});
+
+function ensureDefaults(){
+  if(!locals.length){
+    locals=[{id:uid(),photo:'',name:'Ritual Club & Lounge',openTime:'23:30',closeTime:'04:00',capacity:'',location:'Ritual Club & Lounge',city:'Milano',info:''}];
+    save(LS_LOCALS,locals);
+  }
+  if(!events.length){
+    const y=new Date().getFullYear();
+    events=[
+      {id:uid(),title:'NOCHE DE TETEO • Evento passato',age:'+18',startDate:(y-1)+'-12-20',startTime:'23:30',endDate:(y-1)+'-12-21',endTime:'04:00',localId:locals[0].id,location:locals[0].location,city:locals[0].city,image:defaultImg,desc:'Ricordo di una notte caliente.'},
+      {id:uid(),title:'NOCHE DE TETEO • Prossimo evento',age:'+18',startDate:(y+1)+'-06-05',startTime:'23:30',endDate:(y+1)+'-06-06',endTime:'04:00',localId:locals[0].id,location:locals[0].location,city:locals[0].city,image:defaultImg,desc:'Reggaeton, dembow, latin trap e perreo party.'}
+    ];
+    save(LS_EVENTS,events);
+  }
+}
+
+function eventEndDate(ev){
+  return new Date((ev.endDate||ev.startDate)+'T'+(ev.endTime||'23:59'));
+}
+function isPast(ev){return eventEndDate(ev) < new Date()}
+function sorted(list){return [...list].sort((a,b)=>new Date(a.startDate+'T'+(a.startTime||'00:00'))-new Date(b.startDate+'T'+(b.startTime||'00:00')))}
+
+function formatEventDate(ev){
+  const d=new Date(ev.startDate+'T'+(ev.startTime||'00:00'));
+  return d.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})+' • '+(ev.startTime||'');
+}
+
+function renderEventLocalBox(ev){
+  const l=locals.find(x=>x.id===ev.localId);
+  if(!l) return '';
+  const address=ev.localAddress || [l.location,l.city].filter(Boolean).join(' ');
+  const hours=(l.openTime||l.closeTime) ? `${esc(l.openTime||'--:--')} - ${esc(l.closeTime||'--:--')}` : '';
+  const photo=l.photo ? `<img src="${l.photo}" alt="${esc(l.name)}">` : `<img src="${defaultImg}" alt="${esc(l.name)}">`;
+  return `<div class="eventLocalBox">
+    ${photo}
+    <div>
+      <h4>${esc(l.name)}</h4>
+      ${address?`<p>${esc(address)}</p>`:''}
+      ${hours?`<p>Orario: ${hours}</p>`:''}
+      ${(ev.localCapacity||l.capacity)?`<p>Capienza: ${esc(ev.localCapacity||l.capacity)}</p>`:''}
+      ${l.info?`<p>${esc(l.info)}</p>`:''}
+      ${address?`<a class="mapLink" href="${mapsUrl(l.location,l.city)}" target="_blank" rel="noopener">Apri su Google Maps</a>`:''}
+    </div>
+  </div>`;
+}
+
+function hasGiftSlots(ev){
+  return Array.isArray(ev.giftSlots) && ev.giftSlots.length>0;
+}
+function hasTicketSlots(ev){
+  return Array.isArray(ev.ticketSlots) && ev.ticketSlots.length>0;
+}
+function eventCard(ev, memory=false){
+  const img=ev.image||defaultImg;
+  const giftAvailable=hasGiftSlots(ev);
+  const ticketsAvailable=hasTicketSlots(ev);
+
+  return `<div class="card event-card-clickable ${ev.suggested?'isSuggested':''}" onclick="openEventDetail('${ev.id}')">
+    <div class="eventImg" style="background-image:url('${esc(img)}')">
+      <span class="tag">${memory?'Ricordo':'Evento'}</span>
+    </div>
+    <div class="cardBody">
+      <h3>${esc(ev.title)}</h3>
+      ${ev.suggested?'<div class="suggestedEventBadge">★ Evento suggerito</div>':''}
+
+      <div class="meta">
+        <div class="eventMetaRow">
+          <svg class="eventMetaIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+            <path d="M16 3v4M8 3v4M3 11h18"></path>
+          </svg>
+          <span>${esc(formatEventDate(ev))}</span>
+        </div>
+
+        <div class="eventMetaRow">
+          <svg class="eventMetaIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 21s-6-5.33-6-10a6 6 0 1 1 12 0c0 4.67-6 10-6 10z"></path>
+            <circle cx="12" cy="11" r="2.5"></circle>
+          </svg>
+          <span>${esc(ev.location||'Location')} ${ev.city?'- '+esc(ev.city):''}</span>
+        </div>
+
+        <div class="eventMetaRow">
+          <svg class="eventMetaIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M8 12h8M12 8v8"></path>
+          </svg>
+          <span>Età: ${esc(ev.age||'+18')}</span>
+        </div>
+      </div>
+
+      <div class="chips">
+        <span class="chip ${giftAvailable?'free':''}">${giftAvailable?'Omaggi disponibili':'Omaggi non disponibili'}</span>
+        <span class="chip ${ticketsAvailable?'gold':''}">${ticketsAvailable?'Biglietti disponibili':'Biglietti non disponibili'}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+
+
+const LS_WALLET_ITEMS='ndt_wallet_items_v2';
+const LS_CLAIMS='ndt_claims_v2';
+
+function parseSlotDate(date,time){
+  if(!date) return null;
+  return new Date(date+'T'+(time||'00:00'));
+}
+function formatSlotDate(date,time){
+  if(!date) return '';
+  const d=parseSlotDate(date,time);
+  if(!d || isNaN(d)) return `${date} ${time||''}`;
+  return d.toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'})+' alle '+(time||'00:00');
+}
+function getClaims(){
+  return load(LS_CLAIMS,{});
+}
+function setClaims(claims){
+  save(LS_CLAIMS,claims);
+}
+function getClaimCount(slotId){
+  const claims=getClaims();
+  return Number(claims[slotId]||0);
+}
+function incClaim(slotId){
+  const claims=getClaims();
+  claims[slotId]=Number(claims[slotId]||0)+1;
+  setClaims(claims);
+}
+function slotStatus(slot){
+  const now=new Date();
+  const start=parseSlotDate(slot.startDate,slot.startTime);
+  const end=parseSlotDate(slot.endDate,slot.endTime);
+  const qty=Number(slot.qty||0);
+  const used=getClaimCount(slot.id);
+  if(start && now < start) return {state:'soon',text:'Gli omaggi saranno disponibili '+formatSlotDate(slot.startDate,slot.startTime)};
+  if(end && now > end) return {state:'soldout',text:'Esauriti'};
+  if(qty>0 && used>=qty) return {state:'soldout',text:'Esauriti'};
+  return {state:'available',text:'Disponibile'};
+}
+function ticketStatus(slot){
+  return {state:'available',text:'Disponibile'};
+}
+function makeWalletCode(prefix,eventId,slotId){
+  return prefix+'-'+eventId+'-'+slotId+'-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,6);
+}
+function addWalletItem(item){
+  const list=load(LS_WALLET_ITEMS,[]);
+  list.unshift(item);
+  save(LS_WALLET_ITEMS,list);
+  renderWallet();
+}
+function showToast(text){
+  const old=document.querySelector('.successToast');
+  if(old) old.remove();
+  const div=document.createElement('div');
+  div.className='successToast';
+  div.textContent=text;
+  document.body.appendChild(div);
+  setTimeout(()=>div.remove(),3500);
+}
+function requestGift(eventId,slotId){
+  const ev=events.find(x=>String(x.id)===String(eventId));
+  if(!ev) return;
+  const slot=(ev.giftSlots||[]).find(x=>String(x.id)===String(slotId));
+  if(!slot) return;
+
+  const status=slotStatus(slot);
+  if(status.state!=='available'){
+    showToast(status.text);
+    return;
+  }
+
+  incClaim(slot.id);
+  const code=makeWalletCode('OMAGGIO',ev.id,slot.id);
+  addWalletItem({
+    id:uid(),
+    type:'omaggio',
+    code,
+    eventId:ev.id,
+    eventTitle:ev.title,
+    slotName:slot.name||'Omaggio',
+    createdAt:new Date().toISOString(),
+    validUntil:(slot.endDate||ev.endDate)+' '+(slot.endTime||ev.endTime||'')
+  });
+  showToast('Congratulazioni, hai richiesto correttamente l’omaggio.');
+  openEventDetail(ev.id);
+}
+function requestTicket(eventId,slotId){
+  const ev=events.find(x=>String(x.id)===String(eventId));
+  if(!ev) return;
+  const slot=(ev.ticketSlots||[]).find(x=>String(x.id)===String(slotId));
+  if(!slot) return;
+
+  const code=makeWalletCode('BIGLIETTO',ev.id,slot.id);
+  addWalletItem({
+    id:uid(),
+    type:'biglietto',
+    code,
+    eventId:ev.id,
+    eventTitle:ev.title,
+    slotName:slot.name||'Biglietto ingresso',
+    price:slot.price||'0',
+    note:slot.note||'Pagamento in cassa',
+    createdAt:new Date().toISOString(),
+    validUntil:(ev.endDate||'')+' '+(ev.endTime||'')
+  });
+  showToast('Congratulazioni, hai richiesto correttamente il biglietto.');
+  openEventDetail(ev.id);
+}
+function fakeQrHtml(code){
+  let cells='';
+  let seed=0;
+  for(let i=0;i<code.length;i++) seed+=code.charCodeAt(i)*(i+1);
+  for(let i=0;i<289;i++){
+    const finder=(i<51 && (i%17<3 || i%17>13 || Math.floor(i/17)<3)) ||
+      (i>237 && (i%17<3 || Math.floor(i/17)>13)) ||
+      (i%17>13 && Math.floor(i/17)<3);
+    const on=finder || ((seed+i*31+(i%7)*13)%5<2);
+    cells+=`<span class="${on?'qrDot':''}"></span>`;
+  }
+  return `<div class="qrBox"><div class="qrCodeGrid">${cells}</div></div><div class="qrCodeText">${esc(code)}</div>`;
+}
+function renderGiftRequestBox(ev){
+  const slots=ev.giftSlots||[];
+  if(!slots.length) return '<div class="empty">Nessun omaggio disponibile per questo evento.</div>';
+  return `<div class="requestBox">${slots.map(slot=>{
+    const st=slotStatus(slot);
+    const cls=st.state==='available'?'statusAvailable':st.state==='soon'?'statusSoon':'statusSoldOut';
+    return `<div class="requestItem">
+      <span class="giftBadge ${giftTypeClass(slot.type||'unisex')}">${giftTypeLabel(slot.type||'unisex')}</span>
+      <h4>${esc(slot.name||'Slot omaggio')}</h4>
+      <p>Dal ${esc(formatSlotDate(slot.startDate,slot.startTime))} al ${esc(formatSlotDate(slot.endDate,slot.endTime))}</p>
+      <p>Disponibilità: <span class="${cls}">${esc(st.text)}</span></p>
+      <p>Quantità: ${esc(slot.qty||'0')} · Per persona: ${esc(slot.perPerson||'1')}</p>
+      ${st.state==='available'?`<button class="btn primary small" onclick="requestGift('${ev.id}','${slot.id}')">Richiedi omaggio</button>`:''}
+    </div>`;
+  }).join('')}</div>`;
+}
+function renderTicketRequestBox(ev){
+  const slots=ev.ticketSlots||[];
+  if(!slots.length) return '<div class="empty">Nessun biglietto disponibile per questo evento.</div>';
+  return `<div class="requestBox">${slots.map(slot=>{
+    const st=ticketStatus(slot);
+    return `<div class="requestItem">
+      <span class="ticketPriceBadge">${esc(slot.price||'0')}€</span>
+      <h4>${esc(slot.name||'Biglietto ingresso')}</h4>
+      ${slot.included?`<p><b>Incluso:</b> ${esc(slot.included)}</p>`:''}
+      <p><b>Nota:</b> ${esc(slot.note||'Pagamento in cassa')}</p>
+      <p>Disponibilità: <span class="statusAvailable">${esc(st.text)}</span></p>
+      <button class="btn primary small" onclick="requestTicket('${ev.id}','${slot.id}')">Richiedi biglietto</button>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function openEventDetail(id){
+  const ev=events.find(x=>String(x.id)===String(id));
+  if(!ev) return;
+
+  const img=ev.image||defaultImg;
+  const content=document.getElementById('eventDetailContent');
+  if(!content) return;
+
+  const localHtml=ev.showLocalCard ? `<div class="localDetailBox"><h3><span class="proIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11a7 7 0 1 1 14 0c0 4.9-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg></span>Locale</h3>${renderEventLocalBox(ev)}</div>` : '';
+
+  content.innerHTML=`
+    <div class="eventDetailPoster" onclick="openPosterFullscreen('${esc(img)}')">
+      <img src="${esc(img)}" alt="${esc(ev.title)}">
+
+      <div class="posterFloatingHint">
+        <span style="display:inline-flex;align-items:center;gap:10px">
+          <span class="proIcon" style="width:30px;height:30px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 3h6v6"></path>
+              <path d="M9 21H3v-6"></path>
+              <path d="M21 3l-7 7"></path>
+              <path d="M3 21l7-7"></path>
+            </svg>
+          </span>
+          Visualizza locandina completa
+        </span>
+      </div>
+    </div>
+
+    <div class="pageHead">
+      <h1>${esc(ev.title)}</h1>
+      <p>${esc(formatEventDate(ev))}</p>
+    </div>
+
+    <div class="detailGrid">
+      <div class="detailInfoBox">
+        <h3><span class="proIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="3"></rect><path d="M8 8h8M8 12h8M8 16h5"></path></svg></span>Info evento</h3>
+        <div class="eventDateBox">
+          <div class="eventDateItem">
+            <b>📅 Data inizio</b>
+            <span>${esc(formatFullDateTime(ev.startDate,ev.startTime))}</span>
+          </div>
+          <div class="eventDateItem">
+            <b>🏁 Data fine</b>
+            <span>${esc(formatFullDateTime(ev.endDate,ev.endTime))}</span>
+          </div>
+        </div>
+        <div class="meta" style="margin-top:14px">
+          <div>Location: ${esc(ev.location||'Location')} ${ev.city?'- '+esc(ev.city):''}</div>
+          <div>Età: ${esc(ev.age||'+18')}</div>
+          ${ev.desc?`<div>${esc(ev.desc)}</div>`:''}
+        </div>
+      </div>
+
+      ${renderEventArtistBox(ev)}
+
+      ${localHtml}
+
+      <div class="detailInfoBox">
+        <h3><span class="proIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="2"></rect><path d="M12 8v13M3 12h18M7.5 8C6 8 5 7 5 5.8S6 4 7.2 4C9.2 4 10.6 6.2 12 8M16.5 8C18 8 19 7 19 5.8S18 4 16.8 4C14.8 4 13.4 6.2 12 8"></path></svg></span>Omaggi</h3>
+        ${renderGiftRequestBox(ev)}
+      </div>
+
+      <div class="detailInfoBox">
+        <h3><span class="proIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7z"></path><path d="M9 8h.01M9 12h.01M9 16h.01M13 10h4M13 14h4"></path></svg></span>Biglietti</h3>
+        ${renderTicketRequestBox(ev)}
+      </div>
+    </div>
+  `;
+
+  goPage('eventDetailPage');
+}
+
+function renderAll(){
+  applySettings();
+  renderHomeEvents();
+  renderRicordi();
+  renderWallet();
+  renderManagedEvents();
+  renderLocals();
+  closeLocalCompilerSafe();
+  showLocalSavedMessage();
+  if(typeof renderUsers==='function') renderUsers();
+  populateLocalSelect();
+  renderProfile();
+  const showLocal=document.getElementById('eventShowLocalCard');
+  if(showLocal) showLocal.checked=false;
+  const fileInput=document.getElementById('eventImageFile');
+  if(fileInput) fileInput.value='';
+  const suggested=document.getElementById('eventSuggested');
+  if(suggested) suggested.checked=false;
+  setEventPosterPreview('');
+  const preview=document.getElementById('selectedLocalPreview');
+  if(preview) preview.innerHTML='';
+  renderArtistSlots([]);
+  renderGiftSlots([]);
+  const giftsEnabled=document.getElementById('eventGiftsEnabled');
+  if(giftsEnabled) giftsEnabled.checked=false;
+  const giftsArea=document.getElementById('giftSlotsArea');
+  if(giftsArea) giftsArea.style.display='none';
+  renderTicketSlots([]);
+  const addressField=document.getElementById('eventLocalAddress');
+  if(addressField) addressField.value='';
+  const capacityField=document.getElementById('eventLocalCapacity');
+  if(capacityField) capacityField.value='';
+}
+
+function renderHomeEvents(){
+  const box=document.getElementById('eventsGrid');
+  const future=sorted(events.filter(e=>!isPast(e))).sort((a,b)=>(b.suggested?1:0)-(a.suggested?1:0));
+  box.innerHTML=future.length?future.map(e=>eventCard(e,false)).join(''):`<div class="empty">Nessun evento in programma.</div>`;
+}
+function renderRicordi(){
+  const box=document.getElementById('ricordiGrid');
+  const past=sorted(events.filter(isPast)).reverse();
+  box.innerHTML=past.length?past.map(e=>eventCard(e,true)).join(''):`<div class="empty">Nessun ricordo disponibile.</div>`;
+}
+
+function renounceWalletItem(itemId){
+  itemId=String(itemId || '');
+
+  let walletItems=[];
+  try{
+    walletItems=JSON.parse(localStorage.getItem(LS_WALLET_ITEMS) || '[]');
+  const identity=currentWalletIdentity();
+  if(identity.email || identity.phone){
+    walletItems=walletItems.filter(item=>{
+      if(!item.assignedManually) return true;
+      return (
+        (item.assignedToEmail||'').toLowerCase().trim()===identity.email ||
+        (item.phone||'').trim()===identity.phone
+      );
+    });
+  }
+  }catch(e){
+    walletItems=[];
+  }
+
+  const item=walletItems.find(x=>String(x.id)===itemId);
+
+  if(!item){
+    alert('Elemento non trovato nel Wallet.');
+    renderWallet();
+    return;
+  }
+
+  const label=item.type==='omaggio' ? 'omaggio' : 'biglietto';
+
+  const confirmRemove=confirm(`Attenzione: cliccando conferma rinuncia completa al tuo ${label}.`);
+
+  if(!confirmRemove) return;
+
+  walletItems=walletItems.filter(x=>String(x.id)!==itemId);
+
+  localStorage.setItem(LS_WALLET_ITEMS, JSON.stringify(walletItems));
+
+  renderWallet();
+
+  setTimeout(()=>{
+    alert(`Ops, hai appena rinunciato al tuo ${label}.`);
+  },150);
+}
+
+
+function openWalletItem(itemId){
+  itemId=String(itemId || '');
+
+  let walletItems=[];
+  try{
+    walletItems=JSON.parse(localStorage.getItem(LS_WALLET_ITEMS) || '[]');
+  }catch(e){
+    walletItems=[];
+  }
+
+  const item=walletItems.find(x=>String(x.id)===itemId);
+  if(!item) return;
+
+  closeWalletViewer();
+
+  const div=document.createElement('div');
+  div.className='walletViewerOverlay';
+  div.id='walletViewerOverlay';
+
+  const icon=item.type==='omaggio'
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="2"></rect><path d="M12 8v13M3 12h18M7.5 8C6 8 5 7 5 5.8S6 4 7.2 4C9.2 4 10.6 6.2 12 8M16.5 8C18 8 19 7 19 5.8S18 4 16.8 4C14.8 4 13.4 6.2 12 8"></path></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7z"></path><path d="M9 8h.01M9 12h.01M9 16h.01M13 10h4M13 14h4"></path></svg>`;
+
+  div.innerHTML=`
+    <div class="walletViewer">
+      <div class="walletViewerHero">
+        <div class="proIcon" style="margin:0 auto 12px;width:56px;height:56px">
+          ${icon}
+        </div>
+
+        <h2 style="margin:0;font-size:28px">
+          ${item.type==='omaggio'?'Omaggio':'Biglietto'}
+        </h2>
+
+        <p style="margin:10px 0 0;color:#ddd;font-size:15px">
+          ${item.eventTitle||'Evento'}
+        </p>
+      </div>
+
+      <div class="walletViewerBody">
+
+        <div class="meta">
+          <div style="font-size:18px;font-weight:900">${item.slotName||''}</div>
+
+          ${item.price?`<div>Prezzo: ${item.price}€</div>`:''}
+
+          ${item.note?`<div>${item.note}</div>`:''}
+
+          ${item.validUntil?`<div>Valido fino a: ${item.validUntil}</div>`:''}
+        </div>
+
+        ${fakeQrHtml(item.code)}
+
+        <button class="btn ghost" type="button" onclick="closeWalletViewer()">
+          Chiudi
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(div);
+}
+
+function closeWalletViewer(){
+  const old=document.getElementById('walletViewerOverlay');
+  if(old) old.remove();
+}
+
+function renderWallet(){
+  const box=document.getElementById('walletList');
+  if(!box) return;
+
+  const walletItems=load(LS_WALLET_ITEMS,[]);
+  const now=new Date();
+
+  let list=walletItems.filter(item=>{
+    const validUntil=item.validUntil ? new Date(String(item.validUntil).replace(' ','T')) : null;
+    const expired=validUntil && !isNaN(validUntil) && validUntil < now;
+    return walletFilter==='active' ? !expired : expired;
+  });
+
+  const activeBtn=document.getElementById('walletActiveBtn');
+  const expiredBtn=document.getElementById('walletExpiredBtn');
+  if(activeBtn && expiredBtn){
+    activeBtn.className='btn small '+(walletFilter==='active'?'primary':'ghost');
+    expiredBtn.className='btn small '+(walletFilter==='expired'?'primary':'ghost');
+  }
+
+  const msg = walletFilter==='active'
+    ? 'Non hai biglietti o omaggi attivi nel Wallet.'
+    : 'Non hai biglietti o omaggi scaduti nel Wallet.';
+
+  box.innerHTML=list.length ? list.map(item=>`<div class="card">
+    <div class="cardBody walletTicket">
+      <h3>${esc(item.type==='omaggio'?'Omaggio':'Biglietto')}</h3>
+      <div class="meta">
+        <div>${esc(item.eventTitle||'Evento')}</div>
+        <div>${esc(item.slotName||'')}</div>
+        ${item.price?`<div>Prezzo: ${esc(item.price)}€</div>`:''}
+        ${item.note?`<div>${esc(item.note)}</div>`:''}
+        ${item.validUntil?`<div>Valido fino a: ${esc(item.validUntil)}</div>`:''}
+      </div>
+      ${fakeQrHtml(item.code)}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button class="btn small openWalletBtn" type="button" data-wallet-open-id="${item.id}">
+          Apri ${item.type==='omaggio'?'omaggio':'biglietto'}
+        </button>
+
+        <button class="btn small renounceBtn" type="button" data-wallet-renounce-id="${item.id}">
+          Rinuncia ${item.type==='omaggio'?'omaggio':'biglietto'}
+        </button>
+      </div>
+    </div>
+  </div>`).join('') : `<div class="empty">${msg}</div>`;
+}
+
+function setWalletFilter(type){
+  walletFilter=type;
+  renderWallet();
+}
+function addToWallet(id){
+  const ids=load('ndt_clean_wallet_v1',[]);
+  if(!ids.includes(id)) ids.push(id);
+  save('ndt_clean_wallet_v1',ids);
+  alert('Evento salvato nel Wallet');
+  renderWallet();
+}
+
+function goPage(id){
+  const pages=document.querySelectorAll('.app-page');
+
+  pages.forEach(function(page){
+    page.classList.remove('active');
+    page.style.display='none';
+  });
+
+  const target=document.getElementById(id);
+  if(target){
+    target.classList.add('active');
+    target.style.display='block';
+  }
+
+  document.body.className=document.body.className
+    .split(' ')
+    .filter(c=>!c.startsWith('page-'))
+    .join(' ');
+
+  const bodyClassMap={
+    homePage:'page-home',
+    ricordiPage:'page-ricordi',
+    scannerPage:'page-scanner',
+    walletPage:'page-wallet',
+    profiloPage:'page-profilo',
+    eventDetailPage:'page-event-detail',
+    privacyPage:'page-privacy',
+    manageEventsPage:'page-manage-events',
+    manageLocalsPage:'page-manage-locals',
+    manageUsersPage:'page-manage-users'
+  };
+
+  document.body.classList.add(bodyClassMap[id] || 'page-home');
+
+  document.querySelectorAll('.bottomNav button').forEach(function(btn){
+    btn.classList.toggle('active', btn.dataset.page===id);
+  });
+
+  window.scrollTo({top:0,behavior:'auto'});
+
+  if(typeof renderAll === 'function'){
+    renderAll();
+  }
+}
+
+
+function downloadFullAppBackup(){
+  try{
+    const currentHtml='<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+    const blob=new Blob([currentHtml], {type:'text/html;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='noche de teteo back up.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    setTimeout(()=>URL.revokeObjectURL(url), 1500);
+  }catch(err){
+    alert('Errore durante la creazione del backup HTML');
+    console.error(err);
+  }
+}
+
+function closeModals(){
+  document.querySelectorAll('.modal').forEach(m=>m.classList.add('hide'));
+}
+function openSettings(){
+  closeModals();
+  document.getElementById('settingsModal').classList.remove('hide');
+  document.getElementById('setAppName').value=settings.appName||'';
+  document.getElementById('setHomeTitle').value=settings.homeTitle||'';
+  document.getElementById('setHomeDesc').value=settings.homeDesc||'';
+  document.getElementById('setHowEnabled').checked=!!settings.howEnabled;
+  document.getElementById('setHowTitle').value=settings.howTitle||'';
+  document.getElementById('setHowText').value=settings.howText||'';
+  document.getElementById('setHowChips').value=settings.howChips||'';
+  const footerField=document.getElementById('setFooterText');
+  if(footerField) footerField.value=settings.footerText||'';
+  const privacyField=document.getElementById('setPrivacyText');
+  if(privacyField) privacyField.value=settings.privacyText||'';
+}
+function openManageEvents(){
+  closeModals();
+  populateLocalSelect();
+  renderManagedEvents();
+  hideEventForm();
+  goPage('manageEventsPage');
+}
+function openManageLocals(){
+  closeModals();
+  renderLocals();
+  hideLocalForm();
+  goPage('manageLocalsPage');
+}
+function openManageUsers(){
+  closeModals();
+  if(typeof renderUsers==='function') renderUsers();
+  hideUserForm();
+  goPage('manageUsersPage');
+}
+
+function fileToDataUrl(input, cb){
+  const file=input.files && input.files[0];
+  if(!file){cb('');return}
+  const r=new FileReader();
+  r.onload=()=>cb(r.result);
+  r.readAsDataURL(file);
+}
+
+function chooseGradient(c1,c2){
+  settings.accent1=c1;
+  settings.accent2=c2;
+  document.documentElement.style.setProperty('--pink', c1);
+  document.documentElement.style.setProperty('--yellow', c2);
+  document.documentElement.style.setProperty('--gradient', `linear-gradient(135deg,${c1},${c2})`);
+}
+
+function saveSettings(){
+  const logoInput=document.getElementById('setLogo');
+  const homeImgInput=document.getElementById('setHomeImage');
+  const finish=(logo,homeImg)=>{
+    settings={
+      ...settings,
+      appName:document.getElementById('setAppName').value.trim()||'NOCHE DE TETEO',
+      homeTitle:document.getElementById('setHomeTitle').value.trim()||settings.homeTitle,
+      homeDesc:document.getElementById('setHomeDesc').value.trim(),
+      howEnabled:document.getElementById('setHowEnabled').checked,
+      howTitle:document.getElementById('setHowTitle').value.trim()||'Come funziona',
+      howText:document.getElementById('setHowText').value.trim(),
+      howChips:document.getElementById('setHowChips').value.trim(),
+      accent1:settings.accent1||'#ff2bd6',
+      accent2:settings.accent2||'#ffe600',
+      footerText:(document.getElementById('setFooterText')?.value || '').trim(),
+      privacyText:(document.getElementById('setPrivacyText')?.value || '').trim()
+    };
+    if(logo) settings.logo=logo;
+    if(homeImg) settings.homeImage=homeImg;
+    save(LS_SETTINGS,settings);
+    applySettings();
+    alert('Impostazioni salvate');
+  };
+  fileToDataUrl(logoInput, logo=>{
+    fileToDataUrl(homeImgInput, homeImg=>finish(logo,homeImg));
+  });
+
+  closeSettingsPanelSafe();
+  showSettingsSavedMessage();
+}
+function applySettings(){
+  document.getElementById('brandName').textContent=settings.appName||'NOCHE DE TETEO';
+  document.getElementById('homeTitle').innerHTML=settings.homeTitle||'La notte più <span class="gradient">caliente</span> della città.';
+  document.getElementById('homeDesc').textContent=settings.homeDesc||'';
+  const logoImg=document.getElementById('logoImage');
+  const logoLetters=document.getElementById('logoLetters');
+  if(settings.logo){logoImg.src=settings.logo;logoImg.style.display='block';logoLetters.style.display='none'}
+  else{logoImg.style.display='none';logoLetters.style.display='block'}
+  const homeBox=document.getElementById('homeImageBox');
+  homeBox.style.backgroundImage=`linear-gradient(160deg,rgba(255,43,214,.65),rgba(7,0,15,.50)), url('${settings.homeImage||defaultImg}')`;
+  const how=document.getElementById('howBox');
+  how.style.display=settings.howEnabled?'block':'none';
+  document.getElementById('howTitle').textContent=settings.howTitle||'Come funziona';
+  document.getElementById('howText').textContent=settings.howText||'';
+  const chips=(settings.howChips||'').split(',').map(x=>x.trim()).filter(Boolean);
+  document.getElementById('howChips').innerHTML=chips.map((c,i)=>`<span class="chip ${i===0?'free':i===1?'gold':''}">${esc(c)}</span>`).join('');
+
+  if(settings.accent1 && settings.accent2){
+    document.documentElement.style.setProperty('--pink', settings.accent1);
+    document.documentElement.style.setProperty('--yellow', settings.accent2);
+    document.documentElement.style.setProperty('--gradient', `linear-gradient(135deg,${settings.accent1},${settings.accent2})`);
+  }
+
+  const footer=document.getElementById('footerText');
+  if(footer) footer.textContent=settings.footerText||'';
+
+  const privacy=document.getElementById('privacyText');
+  if(privacy) privacy.textContent=settings.privacyText||'';
+}
+
+
+
+function setEventPosterPreview(src){
+  const img=document.getElementById('eventPosterPreview');
+  const hidden=document.getElementById('eventImage');
+  const removeBtn=document.getElementById('removeEventPosterBtn');
+
+  if(hidden) hidden.value=src || '';
+
+  if(img){
+    if(src){
+      img.src=src;
+      img.style.display='block';
+    }else{
+      img.removeAttribute('src');
+      img.style.display='none';
+    }
+  }
+
+  if(removeBtn){
+    removeBtn.style.display=src ? 'inline-flex' : 'none';
+  }
+}
+
+document.addEventListener('change', function(e){
+  if(e.target && e.target.id==='eventImageFile'){
+    const file=e.target.files && e.target.files[0];
+    if(!file) return;
+    const reader=new FileReader();
+    reader.onload=function(){
+      setEventPosterPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+
+
+function giftTypeLabel(type){
+  if(type==='donna') return 'Donna';
+  if(type==='uomo') return 'Maschio';
+  return 'Unisex';
+}
+function giftTypeClass(type){
+  if(type==='donna') return 'donna';
+  if(type==='uomo') return 'uomo';
+  return 'unisex';
+}
+function giftSlotTemplate(slot={}){
+  const id=slot.id || uid();
+  const type=slot.type || 'unisex';
+  return `<div class="giftSlotItem" data-gift-slot-id="${id}">
+    <div class="giftSlotHead">
+      <h4>Slot omaggio</h4>
+      <button class="btn danger small" type="button" onclick="removeGiftSlot('${id}')">Rimuovi slot</button>
+    </div>
+
+    <div class="field">
+      <label>Nome slot</label>
+      <input class="giftSlotName" value="${esc(slot.name||'')}" placeholder="Es. Omaggio apertura">
+    </div>
+
+    <div class="split">
+      <div class="field">
+        <label>Data inizio</label>
+        <input class="giftSlotStartDate" type="date" value="${esc(slot.startDate||'')}">
+      </div>
+      <div class="field">
+        <label>Ora inizio</label>
+        <input class="giftSlotStartTime" type="time" value="${esc(slot.startTime||'')}">
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="field">
+        <label>Data fine</label>
+        <input class="giftSlotEndDate" type="date" value="${esc(slot.endDate||'')}">
+      </div>
+      <div class="field">
+        <label>Ora fine</label>
+        <input class="giftSlotEndTime" type="time" value="${esc(slot.endTime||'')}">
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="field">
+        <label>Quantità omaggi</label>
+        <input class="giftSlotQty" type="number" min="0" value="${esc(slot.qty ?? '')}" placeholder="Es. 50">
+      </div>
+      <div class="field">
+        <label>Quanti omaggi per persona</label>
+        <input class="giftSlotPerPerson" type="number" min="1" value="${esc(slot.perPerson || 1)}">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Sesso che può richiederlo</label>
+      <select class="giftSlotType" onchange="updateGiftSlotBadge(this)">
+        <option value="donna" ${type==='donna'?'selected':''}>Donna</option>
+        <option value="uomo" ${type==='uomo'?'selected':''}>Maschio</option>
+        <option value="unisex" ${type==='unisex'?'selected':''}>Unisex</option>
+      </select>
+      <div class="giftTypePreview">
+        <span class="giftBadge ${giftTypeClass(type)}">${giftTypeLabel(type)}</span>
+      </div>
+    </div>
+  </div>`;
+}
+function addGiftSlot(slot={}){
+  const list=document.getElementById('giftSlotsList');
+  if(!list) return;
+
+  const eventStartDate=document.getElementById('eventStartDate')?.value || '';
+  const eventStartTime=document.getElementById('eventStartTime')?.value || '';
+  const eventEndDate=document.getElementById('eventEndDate')?.value || '';
+  const eventEndTime=document.getElementById('eventEndTime')?.value || '';
+
+  const data={
+    id:slot.id || uid(),
+    name:slot.name || '',
+    startDate:slot.startDate || eventStartDate,
+    startTime:slot.startTime || eventStartTime,
+    endDate:slot.endDate || eventEndDate,
+    endTime:slot.endTime || eventEndTime,
+    qty:slot.qty ?? '',
+    perPerson:slot.perPerson || 1,
+    type:slot.type || 'unisex'
+  };
+
+  list.insertAdjacentHTML('beforeend', giftSlotTemplate(data));
+}
+function removeGiftSlot(id){
+  const item=document.querySelector(`[data-gift-slot-id="${id}"]`);
+  if(item) item.remove();
+}
+function updateGiftSlotBadge(select){
+  const item=select.closest('.giftSlotItem');
+  const preview=item?.querySelector('.giftTypePreview');
+  if(!preview) return;
+  const type=select.value || 'unisex';
+  preview.innerHTML=`<span class="giftBadge ${giftTypeClass(type)}">${giftTypeLabel(type)}</span>`;
+}
+function collectGiftSlots(){
+  const enabled=!!document.getElementById('eventGiftsEnabled')?.checked;
+  if(!enabled) return [];
+  return Array.from(document.querySelectorAll('#giftSlotsList .giftSlotItem')).map(item=>({
+    id:item.getAttribute('data-gift-slot-id') || uid(),
+    name:(item.querySelector('.giftSlotName')?.value || '').trim(),
+    startDate:item.querySelector('.giftSlotStartDate')?.value || '',
+    startTime:item.querySelector('.giftSlotStartTime')?.value || '',
+    endDate:item.querySelector('.giftSlotEndDate')?.value || '',
+    endTime:item.querySelector('.giftSlotEndTime')?.value || '',
+    qty:item.querySelector('.giftSlotQty')?.value || '',
+    perPerson:item.querySelector('.giftSlotPerPerson')?.value || '1',
+    type:item.querySelector('.giftSlotType')?.value || 'unisex'
+  }));
+}
+function renderGiftSlots(slots=[]){
+  const enabled=!!(slots && slots.length);
+  const chk=document.getElementById('eventGiftsEnabled');
+  const area=document.getElementById('giftSlotsArea');
+  const list=document.getElementById('giftSlotsList');
+
+  if(chk) chk.checked=enabled;
+  if(area) area.style.display=enabled?'block':'none';
+
+  if(list){
+    list.innerHTML='';
+    (slots||[]).forEach(slot=>addGiftSlot(slot));
+  }
+}
+function renderEventGiftSlots(ev){
+  const slots=ev.giftSlots || [];
+  if(!slots.length) return '';
+  return `<div class="eventGiftSlots">
+    ${slots.map(slot=>{
+      const type=slot.type||'unisex';
+      return `<div class="eventGiftSlot">
+        <span class="giftBadge ${giftTypeClass(type)}">${giftTypeLabel(type)}</span>
+        <h4>${esc(slot.name||'Slot omaggio')}</h4>
+        <p>Dal ${esc(slot.startDate||'')} ${esc(slot.startTime||'')} al ${esc(slot.endDate||'')} ${esc(slot.endTime||'')}</p>
+        <p>Quantità: ${esc(slot.qty||'0')} · Per persona: ${esc(slot.perPerson||'1')}</p>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+
+
+
+function toggleArtistSlotsArea(){
+  const enabled=document.getElementById('eventArtistsEnabled')?.checked;
+  const area=document.getElementById('artistSlotsArea');
+  const list=document.getElementById('artistSlotsList');
+  if(area) area.style.display=enabled?'block':'none';
+  if(enabled && list && list.children.length===0){
+    addArtistSlot();
+  }
+}
+function artistSlotTemplate(slot={}){
+  const id=slot.id || uid();
+  return `<div class="artistSlotItem" data-artist-slot-id="${id}">
+    <div class="artistSlotHead">
+      <h4 style="margin:0">Voce artistica</h4>
+      <button class="btn danger small" type="button" onclick="removeArtistSlot('${id}')">Rimuovi voce</button>
+    </div>
+
+    <div class="field">
+      <label>Nome campo / professione</label>
+      <input class="artistProfession" value="${esc(slot.profession||'DJ set')}" placeholder="Es. DJ set, Vocalist, Performer">
+    </div>
+
+    <div class="field">
+      <label>Nome</label>
+      <input class="artistName" value="${esc(slot.name||'')}" placeholder="Es. Nome DJ / artista">
+    </div>
+  </div>`;
+}
+function addArtistSlot(slot={}){
+  const list=document.getElementById('artistSlotsList');
+  if(!list) return;
+  list.insertAdjacentHTML('beforeend', artistSlotTemplate(slot));
+}
+function removeArtistSlot(id){
+  const item=document.querySelector(`[data-artist-slot-id="${id}"]`);
+  if(item) item.remove();
+}
+function collectArtistSlots(){
+  const enabled=!!document.getElementById('eventArtistsEnabled')?.checked;
+  if(!enabled) return [];
+  return Array.from(document.querySelectorAll('#artistSlotsList .artistSlotItem')).map(item=>({
+    id:item.getAttribute('data-artist-slot-id') || uid(),
+    profession:(item.querySelector('.artistProfession')?.value || '').trim(),
+    name:(item.querySelector('.artistName')?.value || '').trim()
+  })).filter(x=>x.profession || x.name);
+}
+function renderArtistSlots(slots=[]){
+  const enabled=!!(slots && slots.length);
+  const chk=document.getElementById('eventArtistsEnabled');
+  const area=document.getElementById('artistSlotsArea');
+  const list=document.getElementById('artistSlotsList');
+
+  if(chk) chk.checked=enabled;
+  if(area) area.style.display=enabled?'block':'none';
+
+  if(list){
+    list.innerHTML='';
+    (slots||[]).forEach(slot=>addArtistSlot(slot));
+  }
+}
+function renderEventArtistBox(ev){
+  const slots=ev.artistSlots||[];
+  if(!slots.length) return '';
+  return `<div class="detailInfoBox">
+    <h3>Artistico</h3>
+    <div class="eventArtistBox">
+      ${slots.map(slot=>`<div class="eventArtistItem">
+        <h4>${esc(slot.profession||'Artista')}</h4>
+        <p>${esc(slot.name||'')}</p>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+function formatFullDateTime(date,time){
+  if(!date) return '';
+  const d=new Date(date+'T'+(time||'00:00'));
+  if(!d || isNaN(d)) return `${date} ${time||''}`;
+  return d.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})+' • '+(time||'00:00');
+}
+
+function toggleGiftSlotsArea(){
+  const enabled=document.getElementById('eventGiftsEnabled')?.checked;
+  const area=document.getElementById('giftSlotsArea');
+  const list=document.getElementById('giftSlotsList');
+  if(area) area.style.display=enabled?'block':'none';
+  if(enabled && list && list.children.length===0){
+    addGiftSlot();
+  }
+}
+
+function toggleTicketSlotsArea(){
+  const enabled=document.getElementById('eventTicketsEnabled')?.checked;
+  const area=document.getElementById('ticketSlotsArea');
+  const list=document.getElementById('ticketSlotsList');
+  if(area) area.style.display=enabled?'block':'none';
+  if(enabled && list && list.children.length===0){
+    addTicketSlot();
+  }
+}
+function ticketSlotTemplate(slot={}){
+  const id=slot.id || uid();
+  return `<div class="ticketSlotItem" data-ticket-slot-id="${id}">
+    <div class="ticketSlotHead">
+      <h4>Biglietto ingresso</h4>
+      <button class="btn danger small" type="button" onclick="removeTicketSlot('${id}')">Rimuovi biglietto</button>
+    </div>
+
+    <div class="field">
+      <label>Nome biglietto</label>
+      <input class="ticketName" value="${esc(slot.name||'')}" placeholder="Es. Ingresso intero">
+    </div>
+
+    <div class="field">
+      <label>Prezzo biglietto</label>
+      <input class="ticketPrice" type="number" min="0" step="0.01" value="${esc(slot.price ?? '')}" placeholder="Es. 10">
+    </div>
+
+    <div class="field">
+      <label>Cosa è incluso</label>
+      <textarea class="ticketIncluded" placeholder="Es. Ingresso + drink">${esc(slot.included||'')}</textarea>
+    </div>
+
+    <div class="field">
+      <label>Nota</label>
+      <textarea class="ticketNote" placeholder="Pagamento in cassa">${esc(slot.note||'Pagamento in cassa')}</textarea>
+    </div>
+  </div>`;
+}
+function addTicketSlot(slot={}){
+  const list=document.getElementById('ticketSlotsList');
+  if(!list) return;
+  list.insertAdjacentHTML('beforeend', ticketSlotTemplate(slot));
+}
+function removeTicketSlot(id){
+  const item=document.querySelector(`[data-ticket-slot-id="${id}"]`);
+  if(item) item.remove();
+}
+function collectTicketSlots(){
+  const enabled=!!document.getElementById('eventTicketsEnabled')?.checked;
+  if(!enabled) return [];
+  return Array.from(document.querySelectorAll('#ticketSlotsList .ticketSlotItem')).map(item=>({
+    id:item.getAttribute('data-ticket-slot-id') || uid(),
+    name:(item.querySelector('.ticketName')?.value || '').trim(),
+    price:item.querySelector('.ticketPrice')?.value || '',
+    included:(item.querySelector('.ticketIncluded')?.value || '').trim(),
+    note:(item.querySelector('.ticketNote')?.value || 'Pagamento in cassa').trim()
+  }));
+}
+function renderTicketSlots(slots=[]){
+  const enabled=!!(slots && slots.length);
+  const chk=document.getElementById('eventTicketsEnabled');
+  const area=document.getElementById('ticketSlotsArea');
+  const list=document.getElementById('ticketSlotsList');
+  if(chk) chk.checked=enabled;
+  if(area) area.style.display=enabled?'block':'none';
+  if(list){
+    list.innerHTML='';
+    (slots||[]).forEach(slot=>addTicketSlot(slot));
+  }
+}
+function renderEventTicketSlots(ev){
+  const slots=ev.ticketSlots || [];
+  if(!slots.length) return '';
+  return `<div class="eventTicketSlots">
+    ${slots.map(slot=>`<div class="eventTicketSlot">
+      <span class="ticketPriceBadge">${esc(slot.price||'0')}€</span>
+      <h4>${esc(slot.name||'Biglietto ingresso')}</h4>
+      ${slot.included?`<p><b>Incluso:</b> ${esc(slot.included)}</p>`:''}
+      <p><b>Nota:</b> ${esc(slot.note||'Pagamento in cassa')}</p>
+    </div>`).join('')}
+  </div>`;
+}
+
+function showEventSavedMessage(){
+  const msg=document.getElementById('eventSaveMessage');
+  if(!msg) return;
+  msg.style.display='block';
+  msg.scrollIntoView({block:'center', behavior:'smooth'});
+  setTimeout(()=>{ msg.style.display='none'; }, 3500);
+}
+
+function showEventForm(){
+  const box=document.getElementById('eventFormBox');
+  if(box) box.classList.add('open');
+
+  const list=document.getElementById('giftSlotsList');
+  const eventId=document.getElementById('eventId');
+}
+function hideEventForm(){
+  const box=document.getElementById('eventFormBox');
+  if(box) box.classList.remove('open');
+  resetEventForm();
+}
+function showLocalForm(){
+  const box=document.getElementById('localFormBox');
+  if(box){
+    box.classList.add('open');
+    box.style.display='block';
+  }
+}
+function hideLocalForm(){
+  const box=document.getElementById('localFormBox');
+  if(box){
+    box.classList.remove('open');
+    box.style.display='none';
+  }
+  resetLocalForm();
+}
+
+/* EVENTS */
+function populateLocalSelect(){
+  const sel=document.getElementById('eventLocal');
+  if(!sel) return;
+  sel.innerHTML='<option value="">Scegli locale</option>'+locals.map(l=>`<option value="${l.id}">${esc(l.name)} ${l.city ? '- '+esc(l.city) : ''}</option>`).join('');
+}
+function applyLocalToEvent(){
+  const id=document.getElementById('eventLocal').value;
+  const l=locals.find(x=>String(x.id)===String(id));
+  if(!l) return;
+
+  const titleField=document.getElementById('eventTitle');
+  if(titleField){
+    titleField.value='NOCHE DE TETEO - ' + (l.name || 'Locale');
+  }
+
+  const locationField=document.getElementById('eventLocation');
+  if(locationField) locationField.value=l.location||l.name||'';
+
+  const cityField=document.getElementById('eventCity');
+  if(cityField) cityField.value=l.city||'';
+
+  const addressField=document.getElementById('eventLocalAddress');
+  if(addressField) addressField.value=[l.location,l.city].filter(Boolean).join(' ');
+
+  const capacityField=document.getElementById('eventLocalCapacity');
+  if(capacityField) capacityField.value=l.capacity||'';
+
+  const startTime=document.getElementById('eventStartTime');
+  if(startTime && l.openTime) startTime.value=l.openTime;
+
+  const endTime=document.getElementById('eventEndTime');
+  if(endTime && l.closeTime) endTime.value=l.closeTime;
+
+  const startDate=document.getElementById('eventStartDate');
+  const endDate=document.getElementById('eventEndDate');
+  if(startDate && !startDate.value) startDate.value=todayISO();
+  if(endDate && !endDate.value) endDate.value=startDate && startDate.value ? startDate.value : todayISO();
+
+  const desc=document.getElementById('eventDesc');
+  if(desc && !desc.value && l.info) desc.value=l.info;
+
+  const preview=document.getElementById('selectedLocalPreview');
+  if(preview){
+    const address=[l.location,l.city].filter(Boolean).join(' ');
+    const hours=(l.openTime||l.closeTime)
+      ? `<p><b>Orari:</b> ${l.openTime||'--:--'} - ${l.closeTime||'--:--'}</p>`
+      : '';
+
+    const capacity=l.capacity
+      ? `<p><b>Capienza:</b> ${l.capacity}</p>`
+      : '';
+
+    const photo=l.photo
+      ? `<img src="${l.photo}" style="width:80px;height:80px;border-radius:16px;object-fit:cover;border:1px solid rgba(255,255,255,.12)">`
+      : '';
+
+    const maps=address
+      ? `<a class="mapLink" href="${mapsUrl(l.location,l.city)}" target="_blank">Apri su Google Maps</a>`
+      : '';
+
+    preview.innerHTML = `
+      <div class="eventLocalBox">
+        ${photo}
+        <div>
+          <h4>${l.name||'Locale'}</h4>
+          ${address?`<p><b>Indirizzo:</b> ${address}</p>`:''}
+          ${hours}
+          ${capacity}
+          ${l.info?`<p>${l.info}</p>`:''}
+          ${maps}
+        </div>
+      </div>
+    `;
+  }
+}
+function resetEventForm(){
+  document.getElementById('eventForm').reset();
+  document.getElementById('eventId').value='';
+  document.getElementById('eventStartDate').value=todayISO();
+  document.getElementById('eventEndDate').value=todayISO();
+  const ageField=document.getElementById('eventAge');
+  if(ageField) ageField.value='+18';
+  document.getElementById('eventStartTime').value='23:30';
+  document.getElementById('eventEndTime').value='04:00';
+  populateLocalSelect();
+}
+document.getElementById('eventForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const id=document.getElementById('eventId').value || uid();
+  const localId=document.getElementById('eventLocal').value;
+  const data={
+    id,
+    title:document.getElementById('eventTitle').value.trim(),
+    startDate:document.getElementById('eventStartDate').value,
+    startTime:document.getElementById('eventStartTime').value,
+    endDate:document.getElementById('eventEndDate').value,
+    endTime:document.getElementById('eventEndTime').value,
+    localId,
+    location:document.getElementById('eventLocation').value.trim(),
+    city:document.getElementById('eventCity').value.trim(),
+    image:document.getElementById('eventImage').value.trim(),
+    desc:document.getElementById('eventDesc').value.trim(),
+    showLocalCard:document.getElementById('eventShowLocalCard').checked,
+    suggested:document.getElementById('eventSuggested').checked,
+    giftSlots:collectGiftSlots(),
+    ticketSlots:collectTicketSlots(),
+    artistSlots:collectArtistSlots()
+  };
+  if(!data.title || !data.startDate || !data.endDate){alert('Compila titolo, data inizio e data fine');return}
+  const idx=events.findIndex(x=>x.id===id);
+  if(idx>=0) events[idx]=data; else events.push(data);
+  save(LS_EVENTS,events);
+  resetEventForm();
+  hideEventForm();
+  renderAll();
+});
+function renderManagedEvents(){
+  const box=document.getElementById('managedEvents');
+  if(!box) return;
+  box.innerHTML=events.length?sorted(events).map(ev=>`<div class="managerRow">
+    <div>
+      <h3>${esc(ev.title)}</h3>
+      <p>${esc(formatEventDate(ev))} · ${esc(ev.location||'')}</p>
+      ${ev.localAddress?`<p>Indirizzo: ${esc(ev.localAddress)}</p>`:''}
+      ${ev.localCapacity?`<p>Capienza: ${esc(ev.localCapacity)}</p>`:''}
+      ${ev.giftSlots&&ev.giftSlots.length?`<p>Slot omaggio: ${ev.giftSlots.length}</p>`:''}
+      ${ev.ticketSlots&&ev.ticketSlots.length?`<p>Slot biglietto: ${ev.ticketSlots.length}</p>`:''}
+      ${ev.artistSlots&&ev.artistSlots.length?`<p>Slot artistico: ${ev.artistSlots.length}</p>`:''}
+      ${ev.suggested?'<span class="suggestedEventBadge">★ Nei suggeriti</span>':''}
+    </div>
+    <div class="managerRowActions">
+      <button class="btn ghost small" type="button" data-edit-event-id="${ev.id}">Modifica</button>
+      <button class="btn ghost small" type="button" data-duplicate-event-id="${ev.id}">Duplica</button>
+      <button class="btn ghost small" type="button" data-toggle-suggested-id="${ev.id}">${ev.suggested?'Rimuovi dai suggeriti':'Fissa nei suggeriti'}</button>\n      <button class="btn ghost small" type="button" data-report-event-id="${ev.id}">Report</button>
+      <button class="btn ghost small adminOnlyAction" type="button" data-admin-assign-gift-id="${ev.id}">Assegna omaggio</button>
+      <button class="btn ghost small adminOnlyAction" type="button" data-admin-assign-ticket-id="${ev.id}">Assegna biglietto</button>
+      <button class="btn danger small" type="button" data-delete-event-id="${ev.id}">Elimina</button>
+    </div>
+  </div>`).join(''):`<div class="empty">Nessun evento salvato.</div>`;
+}
+function editEvent(id){
+  const ev=events.find(x=>String(x.id)===String(id)); if(!ev) return;
+  showEventForm();
+  document.getElementById('eventId').value=ev.id;
+  document.getElementById('eventTitle').value=ev.title||'';
+  const ageField=document.getElementById('eventAge');
+  if(ageField) ageField.value=ev.age||'+18';
+  document.getElementById('eventStartDate').value=ev.startDate||todayISO();
+  document.getElementById('eventStartTime').value=ev.startTime||'23:30';
+  document.getElementById('eventEndDate').value=ev.endDate||ev.startDate||todayISO();
+  document.getElementById('eventEndTime').value=ev.endTime||'04:00';
+  populateLocalSelect();
+  document.getElementById('eventLocal').value=ev.localId||'';
+  document.getElementById('eventLocation').value=ev.location||'';
+  document.getElementById('eventCity').value=ev.city||'';
+  const addressField=document.getElementById('eventLocalAddress');
+  if(addressField) addressField.value=ev.localAddress||[ev.location,ev.city].filter(Boolean).join(' ');
+  const capacityField=document.getElementById('eventLocalCapacity');
+  if(capacityField) capacityField.value=ev.localCapacity||'';
+  setEventPosterPreview(ev.image||'');
+  document.getElementById('eventDesc').value=ev.desc||'';
+  document.getElementById('eventShowLocalCard').checked=!!ev.showLocalCard;
+  document.getElementById('eventSuggested').checked=!!ev.suggested;
+  renderArtistSlots(ev.artistSlots||[]);
+  renderGiftSlots(ev.giftSlots||[]);
+  renderTicketSlots(ev.ticketSlots||[]);
+  document.getElementById('eventTitle').scrollIntoView({block:'center',behavior:'smooth'});
+}
+function duplicateEvent(id){
+  const ev=events.find(x=>String(x.id)===String(id)); if(!ev) return;
+  const copy={...ev,id:uid(),title:(ev.title||'Evento')+' - copia'};
+  events.push(copy); save(LS_EVENTS,events); renderAll();
+}
+
+function toggleSuggestedEvent(id){
+  id=String(id);
+  const ev=events.find(x=>String(x.id)===id);
+  if(!ev) return;
+  ev.suggested=!ev.suggested;
+  save(LS_EVENTS,events);
+  renderAll();
+  renderManagedEvents();
+}
+
+function deleteEvent(id){
+  id=String(id);
+  if(!id) return;
+
+  const before=events.length;
+  if(!confirm('Eliminare questo evento?')) return;
+
+  events=events.filter(x=>String(x.id)!==id);
+
+  if(events.length===before){
+    alert('Evento non trovato, aggiorno la lista.');
+  }
+
+  save(LS_EVENTS,events);
+
+  const walletIds=load('ndt_clean_wallet_v1',[]);
+  save('ndt_clean_wallet_v1', walletIds.filter(x=>String(x)!==id));
+
+  renderAll();
+  renderManagedEvents();
+}
+
+
+document.addEventListener('change', function(e){
+  if(e.target && e.target.id==='localPhoto'){
+    const file=e.target.files && e.target.files[0];
+    const preview=document.getElementById('localPhotoPreview');
+    if(!file || !preview) return;
+    const reader=new FileReader();
+    reader.onload=function(){
+      preview.src=reader.result;
+      preview.style.display='block';
+      preview.dataset.photo=reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+function mapsUrl(address, city){
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([address,city].filter(Boolean).join(' '));
+}
+
+function resetLocalForm(){
+  const form=document.getElementById('localForm');
+  if(form) form.reset();
+  document.getElementById('localId').value='';
+  const preview=document.getElementById('localPhotoPreview');
+  if(preview){
+    preview.removeAttribute('src');
+    preview.dataset.photo='';
+    preview.style.display='none';
+  }
+}
+
+""/* LOCALS */
+document.getElementById('localForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const id=document.getElementById('localId').value || uid();
+  const oldLocal=locals.find(x=>x.id===id) || {};
+  const preview=document.getElementById('localPhotoPreview');
+
+  const data={
+    id,
+    photo:(preview && preview.dataset.photo) ? preview.dataset.photo : (oldLocal.photo || ''),
+    name:document.getElementById('localName').value.trim(),
+    openTime:document.getElementById('localOpenTime').value,
+    closeTime:document.getElementById('localCloseTime').value,
+    capacity:document.getElementById('localCapacity').value,
+    location:document.getElementById('localLocation').value.trim(),
+    city:document.getElementById('localCity').value.trim(),
+    info:document.getElementById('localInfo').value.trim()
+  };
+
+  if(!data.name){alert('Inserisci nome locale');return}
+
+  const idx=locals.findIndex(x=>x.id===id);
+  if(idx>=0) locals[idx]=data; else locals.push(data);
+
+  save(LS_LOCALS,locals);
+  resetLocalForm();
+  hideLocalForm();
+  renderAll();
+  
+
+});
+function renderLocals(){
+  const box=document.getElementById('localsList');
+  if(!box) return;
+
+  box.innerHTML=locals.length?locals.map(l=>{
+    const address=[l.location,l.city].filter(Boolean).join(' ');
+    const hours=(l.openTime||l.closeTime) ? `🕒 ${esc(l.openTime||'--:--')} - ${esc(l.closeTime||'--:--')}` : '';
+    const capacity=l.capacity ? `👥 Capienza: ${esc(l.capacity)}` : '';
+    const photo=l.photo ? `<img class="localPhotoPreview" src="${l.photo}" alt="${esc(l.name)}">` : `<div class="localPhotoPreview" style="display:grid;place-items:center;font-weight:900;color:var(--muted)">🏢</div>`;
+
+    return `<div class="managerRow">
+      <div class="localCardMain">
+        ${photo}
+        <div>
+          <h3>${esc(l.name)}</h3>
+          <p>${esc(address || 'Indirizzo non impostato')}</p>
+          ${hours?`<p>${hours}</p>`:''}
+          ${capacity?`<p>${capacity}</p>`:''}
+          ${l.info?`<p>${esc(l.info)}</p>`:''}
+          ${address?`<a class="mapLink" href="${mapsUrl(l.location,l.city)}" target="_blank" rel="noopener">Apri su Google Maps</a>`:''}
+        </div>
+      </div>
+      <div class="managerRowActions">
+        <button class="btn ghost small" onclick="editLocal('${l.id}')">Modifica</button>
+        <button class="btn danger small" onclick="deleteLocal('${l.id}')">Elimina</button>
+      </div>
+    </div>`;
+  }).join(''):`<div class="empty">Nessun locale salvato.</div>`;
+}
+
+function editLocal(id){
+  const l=locals.find(x=>x.id===id); if(!l) return;
+  showLocalForm();
+
+  document.getElementById('localId').value=l.id;
+  document.getElementById('localName').value=l.name||'';
+  document.getElementById('localOpenTime').value=l.openTime||'';
+  document.getElementById('localCloseTime').value=l.closeTime||'';
+  document.getElementById('localCapacity').value=l.capacity||'';
+  document.getElementById('localLocation').value=l.location||'';
+  document.getElementById('localCity').value=l.city||'';
+  document.getElementById('localInfo').value=l.info||'';
+
+  const preview=document.getElementById('localPhotoPreview');
+  if(preview && l.photo){
+    preview.src=l.photo;
+    preview.dataset.photo=l.photo;
+    preview.style.display='block';
+  }else if(preview){
+    preview.removeAttribute('src');
+    preview.dataset.photo='';
+    preview.style.display='none';
+  }
+
+  document.getElementById('localName').scrollIntoView({block:'center',behavior:'smooth'});
+}
+function deleteLocal(id){
+  if(!confirm('Eliminare questo locale?')) return;
+  locals=locals.filter(x=>x.id!==id);
+  save(LS_LOCALS,locals);
+  renderAll();
+}
+
+
+
+document.addEventListener('click', function(e){
+  const openBtn=e.target.closest('[data-wallet-open-id]');
+  if(openBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    openWalletItem(openBtn.getAttribute('data-wallet-open-id'));
+    return;
+  }
+
+  const renounceBtn=e.target.closest('[data-wallet-renounce-id]');
+  if(renounceBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    renounceWalletItem(renounceBtn.getAttribute('data-wallet-renounce-id'));
+  }
+});
+
+const LS_PROFILE='ndt_user_profile_v1';
+
+function getProfile(){
+  return load(LS_PROFILE,{
+    name:'',
+    surname:'',
+    birthDate:'',
+    phone:'',
+    email:'',
+    privacyConsent:false,
+    marketingConsent:false,
+    deleted:false
+  });
+}
+function saveProfile(data){
+  save(LS_PROFILE,data);
+}
+function formatBirthDate(date){
+  if(!date) return 'Non impostata';
+  const d=new Date(date+'T00:00');
+  if(!d || isNaN(d)) return date;
+  return d.toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'});
+}
+function showProfileEdit(){
+  const form=document.getElementById('profileForm');
+  if(form) form.style.display='grid';
+}
+function hideProfileEdit(){
+  const form=document.getElementById('profileForm');
+  if(form) form.style.display='none';
+}
+function renderProfile(){
+  const p=getProfile();
+
+  const name=document.getElementById('profileName');
+  if(!name) return;
+
+  document.getElementById('profileName').value=p.name||'';
+  document.getElementById('profileSurname').value=p.surname||'';
+  document.getElementById('profileBirthDate').value=p.birthDate||'';
+  document.getElementById('profilePhone').value=p.phone||'';
+  document.getElementById('profileEmail').value=p.email||'';
+  document.getElementById('profilePrivacyConsent').checked=!!p.privacyConsent;
+  document.getElementById('profileMarketingConsent').checked=!!p.marketingConsent;
+
+  const fullName=[p.name,p.surname].filter(Boolean).join(' ') || 'User';
+  document.getElementById('profileDisplayName').textContent=fullName;
+  document.getElementById('profileDisplayEmail').textContent=p.email || 'Area personale utente';
+
+  document.getElementById('profileReadName').textContent=[p.name,p.surname].filter(Boolean).join(' ') || 'Non impostato';
+  document.getElementById('profileReadBirth').textContent=formatBirthDate(p.birthDate);
+  document.getElementById('profileReadEmail').textContent=p.email || 'Non impostata';
+  document.getElementById('profileReadPhone').textContent=p.phone || 'Non impostato';
+
+  const del=document.getElementById('accountDeletedMsg');
+  if(del) del.style.display=p.deleted?'block':'none';
+}
+function deleteMyAccount(){
+  const ok=confirm('Attenzione: confermando elimini i dati account salvati localmente in questa web app.');
+  if(!ok) return;
+
+  saveProfile({
+    name:'',
+    surname:'',
+    birthDate:'',
+    phone:'',
+    email:'',
+    privacyConsent:false,
+    marketingConsent:false,
+    deleted:true
+  });
+
+  hideProfileEdit();
+  renderProfile();
+  alert('Il tuo account è stato eliminato.');
+}
+document.addEventListener('submit', function(e){
+  if(e.target && e.target.id==='profileForm'){
+    e.preventDefault();
+
+    const data={
+      name:(document.getElementById('profileName').value||'').trim(),
+      surname:(document.getElementById('profileSurname').value||'').trim(),
+      birthDate:(document.getElementById('profileBirthDate').value||'').trim(),
+      phone:(document.getElementById('profilePhone').value||'').trim(),
+      email:(document.getElementById('profileEmail').value||'').trim(),
+      privacyConsent:document.getElementById('profilePrivacyConsent').checked,
+      marketingConsent:document.getElementById('profileMarketingConsent').checked,
+      deleted:false
+    };
+
+    saveProfile(data);
+    renderProfile();
+    hideProfileEdit();
+    alert('Dati account salvati correttamente.');
+  }
+});
+
+window.addEventListener('load', function(){
+  renderProfile();
+});
+
+function openPosterFullscreen(src){
+  closePosterFullscreen();
+
+  const overlay=document.createElement('div');
+  overlay.className='posterFullscreen';
+  overlay.id='posterFullscreen';
+
+  overlay.innerHTML=`
+    <button class="posterClose" onclick="closePosterFullscreen()">✕</button>
+    <img src="${src}" alt="Locandina evento">
+  `;
+
+  overlay.addEventListener('click', function(e){
+    if(e.target===overlay){
+      closePosterFullscreen();
+    }
+  });
+
+  document.body.appendChild(overlay);
+}
+function closePosterFullscreen(){
+  const old=document.getElementById('posterFullscreen');
+  if(old) old.remove();
+}
+
+
+function showSettingsSavedMessage(){
+  const old=document.getElementById('settingsSavedToast');
+  if(old) old.remove();
+
+  const toast=document.createElement('div');
+  toast.id='settingsSavedToast';
+  toast.innerHTML='Impostazioni salvate correttamente';
+  toast.style.position='fixed';
+  toast.style.left='50%';
+  toast.style.bottom='100px';
+  toast.style.transform='translateX(-50%)';
+  toast.style.padding='14px 18px';
+  toast.style.borderRadius='18px';
+  toast.style.background='rgba(15,15,15,.96)';
+  toast.style.border='1px solid rgba(255,255,255,.10)';
+  toast.style.color='#fff';
+  toast.style.fontWeight='900';
+  toast.style.zIndex='999999';
+  toast.style.boxShadow='0 20px 50px rgba(0,0,0,.45)';
+
+  document.body.appendChild(toast);
+
+  setTimeout(()=>{
+    toast.remove();
+  },2200);
+}
+
+function closeSettingsPanelSafe(){
+  const settingsPage=document.getElementById('settingsPage');
+  if(settingsPage){
+    settingsPage.classList.remove('active');
+    settingsPage.style.display='none';
+  }
+
+  const overlay=document.querySelector('.settingsOverlay');
+  if(overlay){
+    overlay.classList.remove('active');
+    overlay.style.display='none';
+  }
+
+  document.body.classList.remove('modalOpen');
+}
+
+
+function showLocalSavedMessage(){
+  const old=document.getElementById('localSavedToast');
+  if(old) old.remove();
+
+  const toast=document.createElement('div');
+  toast.id='localSavedToast';
+  toast.innerHTML='';
+  toast.style.position='fixed';
+  toast.style.left='50%';
+  toast.style.bottom='100px';
+  toast.style.transform='translateX(-50%)';
+  toast.style.padding='14px 18px';
+  toast.style.borderRadius='18px';
+  toast.style.background='rgba(15,15,15,.96)';
+  toast.style.border='1px solid rgba(255,255,255,.10)';
+  toast.style.color='#fff';
+  toast.style.fontWeight='900';
+  toast.style.zIndex='999999';
+  toast.style.boxShadow='0 20px 50px rgba(0,0,0,.45)';
+
+  document.body.appendChild(toast);
+
+  setTimeout(()=>{
+    toast.remove();
+  },2200);
+}
+
+function closeLocalCompilerSafe(){
+  const form=document.getElementById('localFormPage');
+  if(form){
+    form.classList.remove('active');
+    form.style.display='none';
+  }
+
+  const list=document.getElementById('manageLocalsPage');
+  if(list){
+    list.classList.add('active');
+    list.style.display='';
+  }
+}
+
+
+document.addEventListener('click', function(e){
+  const editBtn=e.target.closest('[data-edit-event-id]');
+  if(editBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    const id=editBtn.getAttribute('data-edit-event-id');
+    if(typeof editEvent === 'function') editEvent(id);
+    return;
+  }
+
+  const dupBtn=e.target.closest('[data-duplicate-event-id]');
+  if(dupBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    const id=dupBtn.getAttribute('data-duplicate-event-id');
+    if(typeof duplicateEvent === 'function') duplicateEvent(id);
+    return;
+  }
+
+  const sugBtn=e.target.closest('[data-toggle-suggested-id]');
+  if(sugBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    const id=sugBtn.getAttribute('data-toggle-suggested-id');
+    if(typeof toggleSuggestedEvent === 'function') toggleSuggestedEvent(id);
+    return;
+  }
+
+  const delBtn=e.target.closest('[data-delete-event-id]');
+  if(delBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    const id=delBtn.getAttribute('data-delete-event-id');
+    if(typeof deleteEvent === 'function') deleteEvent(id);
+    return;
+  }
+});
+
+
+
+
+
+/* INIT PAGINA HOME PULITA */
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    if(!document.querySelector('.app-page.active')){
+      goPage('homePage');
+    }else{
+      const active=document.querySelector('.app-page.active');
+      goPage(active.id || 'homePage');
+    }
+  },80);
+});
+
+
+
+
+
+
+
+
+/* FIX ROBUSTO SALVATAGGIO EVENTI CON ERRORE */
+(function(){
+  function showEventSaveError(message){
+    const box=document.getElementById('eventSaveError');
+    if(box){
+      box.textContent='Errore: ' + message;
+      box.style.display='block';
+      box.scrollIntoView({block:'center', behavior:'smooth'});
+    }else{
+      alert('Errore: ' + message);
+    }
+  }
+
+  function clearEventSaveError(){
+    const box=document.getElementById('eventSaveError');
+    if(box){
+      box.textContent='';
+      box.style.display='none';
+    }
+  }
+
+  function getVal(id){
+    const el=document.getElementById(id);
+    return el ? (el.value || '').trim() : '';
+  }
+
+  function getChecked(id){
+    const el=document.getElementById(id);
+    return !!(el && el.checked);
+  }
+
+  window.saveEventFromCompilerFixed=function(){
+    try{
+      clearEventSaveError();
+
+      const form=document.getElementById('eventForm');
+      if(!form) throw new Error('compilatore evento non trovato');
+
+      const id=getVal('eventId') || (typeof uid === 'function' ? uid() : String(Date.now()));
+      const localId=getVal('eventLocal');
+
+      if(!localId) throw new Error('scegli prima un locale');
+
+      const title=getVal('eventTitle');
+      if(!title) throw new Error('inserisci il titolo evento');
+
+      const startDate=getVal('eventStartDate');
+      const endDate=getVal('eventEndDate');
+
+      if(!startDate) throw new Error('inserisci la data inizio');
+      if(!endDate) throw new Error('inserisci la data fine');
+
+      const startTime=getVal('eventStartTime') || '00:00';
+      const endTime=getVal('eventEndTime') || '23:59';
+
+      const start = new Date(startDate + 'T' + startTime);
+      const end = new Date(endDate + 'T' + endTime);
+
+      if(isNaN(start.getTime())) throw new Error('data/ora inizio non valida');
+      if(isNaN(end.getTime())) throw new Error('data/ora fine non valida');
+      if(end < start) throw new Error('data fine non può essere prima della data inizio');
+
+      const data={
+        id:id,
+        title:title,
+        age:getVal('eventAge') || '+18',
+        startDate:startDate,
+        startTime:startTime,
+        endDate:endDate,
+        endTime:endTime,
+        localId:localId,
+        location:getVal('eventLocation'),
+        city:getVal('eventCity'),
+        localAddress:getVal('eventLocalAddress'),
+        localCapacity:getVal('eventLocalCapacity'),
+        image:getVal('eventImage'),
+        desc:getVal('eventDesc'),
+        showLocalCard:getChecked('eventShowLocalCard'),
+        suggested:getChecked('eventSuggested'),
+        artistSlots: typeof collectArtistSlots === 'function' ? collectArtistSlots() : [],
+        giftSlots: typeof collectGiftSlots === 'function' ? collectGiftSlots() : [],
+        ticketSlots: typeof collectTicketSlots === 'function' ? collectTicketSlots() : []
+      };
+
+      if(!Array.isArray(events)){
+        events = [];
+      }
+
+      const idx=events.findIndex(ev=>String(ev.id)===String(id));
+
+      if(idx >= 0){
+        events[idx]=data;
+      }else{
+        events.push(data);
+      }
+
+      if(typeof save === 'function' && typeof LS_EVENTS !== 'undefined'){
+        save(LS_EVENTS, events);
+      }else{
+        localStorage.setItem('ndt_clean_events_v1', JSON.stringify(events));
+      }
+
+      if(typeof renderAll === 'function') renderAll();
+      if(typeof renderManagedEvents === 'function') renderManagedEvents();
+
+      if(typeof resetEventForm === 'function') resetEventForm();
+
+      const box=document.getElementById('eventFormBox');
+      if(box){
+        box.classList.remove('open');
+        box.style.display='none';
+      }
+
+      if(typeof showEventSavedMessage === 'function'){
+        showEventSavedMessage();
+      }else{
+        alert('Evento salvato correttamente');
+      }
+
+      return true;
+
+    }catch(err){
+      showEventSaveError(err && err.message ? err.message : String(err));
+      return false;
+    }
+  };
+
+  window.addEventListener('load', function(){
+    const form=document.getElementById('eventForm');
+    if(!form || form.dataset.ndtSaveErrorFixApplied) return;
+
+    form.dataset.ndtSaveErrorFixApplied='1';
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      window.saveEventFromCompilerFixed();
+      return false;
+    }, true);
+  });
+})();
+
+
+/* FIX SICURO renderUsers */
+if(typeof window.renderUsers !== 'function'){
+  window.renderUsers = function(){
+    const box=document.getElementById('usersList');
+    if(box && !box.innerHTML.trim()){
+      box.innerHTML='<div class="empty">Nessun utente salvato.</div>';
+    }
+  };
+}
+
+
+function removeEventPoster(){
+  const fileInput=document.getElementById('eventImageFile');
+  if(fileInput) fileInput.value='';
+  setEventPosterPreview('');
+}
+
+
+/* LOGICA OMAGGI PER UTENTE + SCALAMENTO */
+const LS_GIFT_CLAIMS_BY_USER='ndt_gift_claims_by_user_v1';
+
+function getCurrentUserKey(){
+  try{
+    const p=typeof getProfile==='function' ? getProfile() : {};
+    return (p.email || p.phone || 'guest-user').toLowerCase().trim();
+  }catch(e){ return 'guest-user'; }
+}
+function getGiftClaimsByUser(){ return load(LS_GIFT_CLAIMS_BY_USER,{}); }
+function saveGiftClaimsByUser(data){ save(LS_GIFT_CLAIMS_BY_USER,data); }
+function userGiftClaimCount(slotId){
+  const claims=getGiftClaimsByUser();
+  const user=getCurrentUserKey();
+  return Number((claims[user] && claims[user][slotId]) || 0);
+}
+function addUserGiftClaim(slotId){
+  const claims=getGiftClaimsByUser();
+  const user=getCurrentUserKey();
+  if(!claims[user]) claims[user]={};
+  claims[user][slotId]=Number(claims[user][slotId]||0)+1;
+  saveGiftClaimsByUser(claims);
+}
+function removeUserGiftClaim(slotId){
+  const claims=getGiftClaimsByUser();
+  const user=getCurrentUserKey();
+  if(claims[user] && claims[user][slotId]){
+    claims[user][slotId]=Math.max(0,Number(claims[user][slotId])-1);
+    if(claims[user][slotId]===0) delete claims[user][slotId];
+    saveGiftClaimsByUser(claims);
+  }
+}
+function slotStatus(slot){
+  const now=new Date();
+  const start=parseSlotDate(slot.startDate,slot.startTime);
+  const end=parseSlotDate(slot.endDate,slot.endTime);
+  const qty=Number(slot.qty||0);
+  const used=getClaimCount(slot.id);
+  const remaining=qty>0 ? Math.max(0,qty-used) : 0;
+  if(start && now < start) return {state:'soon',text:'Gli omaggi saranno disponibili '+formatSlotDate(slot.startDate,slot.startTime),remaining};
+  if(end && now > end) return {state:'soldout',text:'Esauriti',remaining:0};
+  if(qty>0 && used>=qty) return {state:'soldout',text:'Esauriti',remaining:0};
+  return {state:'available',text:'Disponibile',remaining};
+}
+function requestGift(eventId,slotId){
+  const ev=events.find(x=>String(x.id)===String(eventId));
+  if(!ev) return;
+  const slot=(ev.giftSlots||[]).find(x=>String(x.id)===String(slotId));
+  if(!slot) return;
+  const status=slotStatus(slot);
+  if(status.state!=='available'){ showToast(status.text); return; }
+  const perPerson=Number(slot.perPerson || 1);
+  if(userGiftClaimCount(slot.id) >= perPerson){
+    showToast('Omaggio non disponibile: hai già richiesto questo omaggio.');
+    return;
+  }
+  incClaim(slot.id);
+  addUserGiftClaim(slot.id);
+  const code=makeWalletCode('OMAGGIO',ev.id,slot.id);
+  addWalletItem({id:uid(),type:'omaggio',code,eventId:ev.id,eventTitle:ev.title,slotId:slot.id,slotName:slot.name||'Omaggio',createdAt:new Date().toISOString(),validUntil:(slot.endDate||ev.endDate)+' '+(slot.endTime||ev.endTime||'')});
+  showToast('Congratulazioni, hai richiesto correttamente l’omaggio.');
+  openEventDetail(ev.id);
+}
+function renderGiftRequestBox(ev){
+  const slots=ev.giftSlots||[];
+  if(!slots.length) return '<div class="empty">Nessun omaggio disponibile per questo evento.</div>';
+  return `<div class="requestBox">${slots.map(slot=>{
+    const st=slotStatus(slot);
+    const used=getClaimCount(slot.id);
+    const qty=Number(slot.qty||0);
+    const remaining=qty>0 ? Math.max(0,qty-used) : 0;
+    const pct=qty>0 ? Math.max(0,Math.min(100,(remaining/qty)*100)) : 100;
+    const reachedLimit=userGiftClaimCount(slot.id)>=Number(slot.perPerson||1);
+    const cls=st.state==='available'?'statusAvailable':st.state==='soon'?'statusSoon':'statusSoldOut';
+    let action='';
+    if(st.state==='available' && !reachedLimit){
+      action=`<button class="btn primary small" onclick="requestGift('${ev.id}','${slot.id}')">Richiedi omaggio</button>`;
+    }else if(reachedLimit){
+      action=`<div class="empty">Omaggio non disponibile: hai già richiesto questo omaggio.</div>`;
+    }
+    return `<div class="giftPremiumCard">
+      <div class="giftPremiumTop"><div class="giftPremiumTitle"><span class="giftBadge ${giftTypeClass(slot.type||'unisex')}">${giftTypeLabel(slot.type||'unisex')}</span><h4>${esc(slot.name||'Slot omaggio')}</h4></div><span class="${cls}">${esc(st.text)}</span></div>
+      <div class="giftPremiumMeta"><div>Disponibile dal ${esc(formatSlotDate(slot.startDate,slot.startTime))}</div><div>Termina il ${esc(formatSlotDate(slot.endDate,slot.endTime))}</div><div>Per persona: ${esc(slot.perPerson||'1')}</div></div>
+      <div class="giftProgress"><span style="width:${pct}%"></span></div>
+      <div class="giftRemaining"><span>Omaggi rimanenti</span><strong>${remaining} / ${qty||0}</strong></div>
+      ${action}
+    </div>`;
+  }).join('')}</div>`;
+}
+function renounceWalletItem(itemId){
+  itemId=String(itemId || '');
+  let walletItems=[];
+  try{ walletItems=JSON.parse(localStorage.getItem(LS_WALLET_ITEMS) || '[]'); }catch(e){ walletItems=[]; }
+  const item=walletItems.find(x=>String(x.id)===itemId);
+  if(!item){ alert('Elemento non trovato nel Wallet.'); renderWallet(); return; }
+  const label=item.type==='omaggio' ? 'omaggio' : 'biglietto';
+  if(!confirm(`Attenzione: cliccando conferma rinuncia completa al tuo ${label}.`)) return;
+  if(item.type==='omaggio' && item.slotId){
+    const claims=getClaims();
+    claims[item.slotId]=Math.max(0,Number(claims[item.slotId]||0)-1);
+    if(claims[item.slotId]===0) delete claims[item.slotId];
+    setClaims(claims);
+    removeUserGiftClaim(item.slotId);
+  }
+  walletItems=walletItems.filter(x=>String(x.id)!==itemId);
+  localStorage.setItem(LS_WALLET_ITEMS, JSON.stringify(walletItems));
+  renderWallet();
+  setTimeout(()=>alert(`Ops, hai appena rinunciato al tuo ${label}.`),150);
+}
+
+
+/* REPORT ANDAMENTO EVENTO */
+function getWalletItemsSafe(){
+  try{return JSON.parse(localStorage.getItem(LS_WALLET_ITEMS)||'[]');}catch(e){return [];}
+}
+function getScanLogsSafe(){
+  return load('ndt_scan_logs_v1',[]);
+}
+function countScansForEvent(eventId,type){
+  const logs=getScanLogsSafe();
+  return logs.filter(l=>String(l.eventId)===String(eventId) && (!type || l.type===type)).length;
+}
+function eventReportData(eventId){
+  const ev=events.find(x=>String(x.id)===String(eventId));
+  if(!ev) return null;
+  const wallet=getWalletItemsSafe().filter(x=>String(x.eventId)===String(eventId));
+  const gifts=wallet.filter(x=>x.type==='omaggio');
+  const tickets=wallet.filter(x=>x.type==='biglietto');
+  const ticketRevenue=tickets.reduce((sum,item)=>{
+    const price=Number(String(item.price||'0').replace(',','.'));
+    return sum+(isNaN(price)?0:price);
+  },0);
+  return {ev,wallet,gifts,tickets,ticketRevenue,giftScans:countScansForEvent(eventId,'omaggio'),ticketScans:countScansForEvent(eventId,'biglietto'),totalScans:countScansForEvent(eventId)};
+}
+function openEventReport(eventId){
+  const data=eventReportData(eventId);
+  if(!data){alert('Evento non trovato');return;}
+  closeEventReport();
+  const ev=data.ev;
+  const giftSlots=(ev.giftSlots||[]).map(slot=>{
+    const given=data.gifts.filter(g=>String(g.slotId)===String(slot.id)).length;
+    const scanned=countScansForEvent(ev.id,'omaggio');
+    return `<tr><td>${esc(slot.name||'Omaggio')}</td><td>${given}</td><td>${esc(slot.qty||'0')}</td><td>${scanned}</td></tr>`;
+  }).join('') || '<tr><td colspan="4">Nessuno slot omaggio</td></tr>';
+  const ticketSlots=(ev.ticketSlots||[]).map(slot=>{
+    const sold=data.tickets.filter(t=>String(t.slotId)===String(slot.id)).length;
+    const scanned=countScansForEvent(ev.id,'biglietto');
+    return `<tr><td>${esc(slot.name||'Biglietto')}</td><td>${sold}</td><td>${esc(slot.price||'0')}€</td><td>${scanned}</td></tr>`;
+  }).join('') || '<tr><td colspan="4">Nessuno slot biglietto</td></tr>';
+  const overlay=document.createElement('div');
+  overlay.className='reportModalOverlay';
+  overlay.id='eventReportModal';
+  overlay.innerHTML=`
+    <div class="reportModal">
+      <div class="reportHead">
+        <h2>Report andamento</h2>
+        <p style="margin:0;color:var(--muted)">${esc(ev.title||'Evento')}</p>
+      </div>
+      <div class="reportBody">
+        <div class="reportGrid">
+          <div class="reportCard"><small>Biglietti venduti</small><strong>${data.tickets.length}</strong></div>
+          <div class="reportCard"><small>Omaggi dati</small><strong>${data.gifts.length}</strong></div>
+          <div class="reportCard"><small>Scansioni totali</small><strong>${data.totalScans}</strong></div>
+        </div>
+        <div class="reportGrid">
+          <div class="reportCard"><small>Assegnati manualmente</small><strong>${data.wallet.filter(x=>x.assignedManually).length}</strong></div>
+          <div class="reportCard"><small>Omaggi manuali</small><strong>${data.gifts.filter(x=>x.assignedManually).length}</strong></div>
+          <div class="reportCard"><small>Biglietti manuali</small><strong>${data.tickets.filter(x=>x.assignedManually).length}</strong></div>
+        </div>
+
+        <div class="reportGrid">
+          <div class="reportCard"><small>Incasso stimato</small><strong>${data.ticketRevenue.toFixed(2)}€</strong></div>
+          <div class="reportCard"><small>Biglietti scansionati</small><strong>${data.ticketScans}</strong></div>
+          <div class="reportCard"><small>Omaggi scansionati</small><strong>${data.giftScans}</strong></div>
+        </div>
+        <div class="reportCard">
+          <h3>Dettaglio omaggi</h3>
+          <table class="reportTable"><thead><tr><th>Slot</th><th>Dati</th><th>Totale</th><th>Scansionati</th></tr></thead><tbody>${giftSlots}</tbody></table>
+        </div>
+        <div class="reportCard">
+          <h3>Dettaglio biglietti</h3>
+          <table class="reportTable"><thead><tr><th>Slot</th><th>Venduti</th><th>Prezzo</th><th>Scansionati</th></tr></thead><tbody>${ticketSlots}</tbody></table>
+        </div>
+        <button class="btn ghost" onclick="closeEventReport()">Chiudi report</button>
+      </div>
+    </div>`;
+  overlay.addEventListener('click',e=>{if(e.target===overlay)closeEventReport();});
+  document.body.appendChild(overlay);
+}
+function closeEventReport(){
+  const old=document.getElementById('eventReportModal');
+  if(old) old.remove();
+}
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('[data-report-event-id]');
+  if(!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  openEventReport(btn.getAttribute('data-report-event-id'));
+});
+
+
+/* ASSEGNAZIONE MANUALE SUPER ADMIN */
+function isSuperAdmin(){
+  try{
+    const p=typeof getProfile==='function' ? getProfile() : {};
+    const email=(p.email||'').toLowerCase().trim();
+    const saved=(localStorage.getItem('ndt_super_admin_email')||'').toLowerCase().trim();
+    return true || email===saved;
+  }catch(e){
+    return true;
+  }
+}
+function manualAssignmentCode(type,eventId,slotId){
+  return 'ADMIN-'+type.toUpperCase()+'-'+eventId+'-'+slotId+'-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,6);
+}
+function openAdminAssignModal(eventId,type){
+  if(!isSuperAdmin()){
+    alert('Funzione disponibile solo per Super Admin');
+    return;
+  }
+  const ev=events.find(x=>String(x.id)===String(eventId));
+  if(!ev){alert('Evento non trovato');return;}
+
+  closeAdminAssignModal();
+
+  const slots = type==='omaggio' ? (ev.giftSlots||[]) : (ev.ticketSlots||[]);
+  const slotOptions = slots.length
+    ? slots.map(s=>`<option value="${s.id}">${esc(s.name||s.slotName||type)}</option>`).join('')
+    : `<option value="">Nessuno slot disponibile</option>`;
+
+  const overlay=document.createElement('div');
+  overlay.className='adminAssignModalOverlay';
+  overlay.id='adminAssignModal';
+
+  overlay.innerHTML=`
+    <div class="adminAssignModal">
+      <div class="adminAssignHead">
+        <span class="adminOnlyBadge">Super Admin</span>
+        <h2 style="margin:10px 0 4px">${type==='omaggio'?'Assegna omaggio':'Assegna biglietto'}</h2>
+        <p style="margin:0;color:var(--muted)">${esc(ev.title||'Evento')}</p>
+      </div>
+
+      <form class="adminAssignBody" id="adminAssignForm">
+        <input type="hidden" id="adminAssignEventId" value="${ev.id}">
+        <input type="hidden" id="adminAssignType" value="${type}">
+
+        <div class="field userSuggestBox">
+          <label>Nome persona o email</label>
+          <input id="adminAssignSearch" autocomplete="off" placeholder="Cerca utente registrato...">
+          <div id="adminAssignSuggestList" class="userSuggestList" style="display:none"></div>
+        </div>
+
+        <div class="split">
+          <div class="field">
+            <label>Nome persona</label>
+            <input id="adminAssignName" required placeholder="Nome e cognome">
+          </div>
+
+          <div class="field">
+            <label>Telefono</label>
+            <input id="adminAssignPhone" placeholder="+39...">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input id="adminAssignEmail" type="email" placeholder="email@esempio.it">
+        </div>
+
+        <div class="field">
+          <label>${type==='omaggio'?'Slot omaggio':'Tipo biglietto'}</label>
+          <select id="adminAssignSlot">${slotOptions}</select>
+        </div>
+
+        ${type==='omaggio' ? `
+          <div class="field">
+            <label>Quantità</label>
+            <input id="adminAssignQty" type="number" min="1" value="1">
+          </div>
+        ` : `
+          <div class="split">
+            <div class="field">
+              <label>Prezzo</label>
+              <input id="adminAssignPrice" type="number" min="0" step="0.01" placeholder="Prezzo">
+            </div>
+            <div class="field">
+              <label>Pagato</label>
+              <select id="adminAssignPaid">
+                <option value="si">Sì</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Metodo pagamento</label>
+            <select id="adminAssignPayment">
+              <option value="contanti">Contanti</option>
+              <option value="pos">POS</option>
+              <option value="online">Online</option>
+              <option value="lista">Lista</option>
+            </select>
+          </div>
+        `}
+
+        <div class="field">
+          <label>Nota interna</label>
+          <textarea id="adminAssignNote" placeholder="Es. VIP, PR, cassa, recupero QR..."></textarea>
+        </div>
+
+        <button class="btn primary" type="submit">Genera e assegna</button>
+        <button class="btn ghost" type="button" onclick="closeAdminAssignModal()">Annulla</button>
+      </form>
+    </div>
+  `;
+
+  overlay.addEventListener('click',function(e){
+    if(e.target===overlay) closeAdminAssignModal();
+  });
+
+  document.body.appendChild(overlay);
+}
+function closeAdminAssignModal(){
+  const old=document.getElementById('adminAssignModal');
+  if(old) old.remove();
+}
+function saveManualAssignment(){
+  const eventId=document.getElementById('adminAssignEventId').value;
+  const type=document.getElementById('adminAssignType').value;
+  const ev=events.find(x=>String(x.id)===String(eventId));
+  if(!ev) return alert('Evento non trovato');
+
+  const slotId=document.getElementById('adminAssignSlot').value;
+  if(!slotId) return alert('Scegli uno slot');
+
+  const slots = type==='omaggio' ? (ev.giftSlots||[]) : (ev.ticketSlots||[]);
+  const slot=slots.find(s=>String(s.id)===String(slotId)) || {};
+
+  const personName=(document.getElementById('adminAssignName').value||'').trim();
+  if(!personName) return alert('Inserisci nome persona');
+
+  if(type==='omaggio'){
+    const qty=Number(document.getElementById('adminAssignQty').value||1);
+    for(let i=0;i<qty;i++){
+      if(typeof incClaim==='function') incClaim(slotId);
+      addWalletItem({
+        id:uid(),
+        type:'omaggio',
+        code:manualAssignmentCode('omaggio',ev.id,slotId),
+        eventId:ev.id,
+        eventTitle:ev.title,
+        slotId:slotId,
+        slotName:slot.name||'Omaggio manuale',
+        assignedManually:true,
+        assignedBy:'Super Admin',
+        assignedToUserId:(document.getElementById('adminAssignName').dataset.userId||''),
+        assignedToEmail:(document.getElementById('adminAssignEmail').value||'').trim(),
+        assignedToName:personName,
+        personName,
+        phone:(document.getElementById('adminAssignPhone').value||'').trim(),
+        email:(document.getElementById('adminAssignEmail').value||'').trim(),
+        note:(document.getElementById('adminAssignNote').value||'').trim(),
+        createdAt:new Date().toISOString(),
+        validUntil:(slot.endDate||ev.endDate)+' '+(slot.endTime||ev.endTime||'')
+      });
+    }
+  }else{
+    addWalletItem({
+      id:uid(),
+      type:'biglietto',
+      code:manualAssignmentCode('biglietto',ev.id,slotId),
+      eventId:ev.id,
+      eventTitle:ev.title,
+      slotId:slotId,
+      slotName:slot.name||'Biglietto manuale',
+      price:(document.getElementById('adminAssignPrice').value||slot.price||'0'),
+      paid:document.getElementById('adminAssignPaid').value,
+      paymentMethod:document.getElementById('adminAssignPayment').value,
+      assignedManually:true,
+      assignedBy:'Super Admin',
+        assignedToUserId:(document.getElementById('adminAssignName').dataset.userId||''),
+        assignedToEmail:(document.getElementById('adminAssignEmail').value||'').trim(),
+        assignedToName:personName,
+      personName,
+      phone:(document.getElementById('adminAssignPhone').value||'').trim(),
+      email:(document.getElementById('adminAssignEmail').value||'').trim(),
+      note:(document.getElementById('adminAssignNote').value||'Pagamento in cassa').trim(),
+      createdAt:new Date().toISOString(),
+      validUntil:(ev.endDate||'')+' '+(ev.endTime||'')
+    });
+  }
+
+  if(typeof renderAll==='function') renderAll();
+  if(typeof renderManagedEvents==='function') renderManagedEvents();
+  closeAdminAssignModal();
+  alert(type==='omaggio'?'Omaggio assegnato correttamente':'Biglietto assegnato correttamente');
+}
+document.addEventListener('submit',function(e){
+  if(e.target && e.target.id==='adminAssignForm'){
+    e.preventDefault();
+    saveManualAssignment();
+  }
+});
+document.addEventListener('click',function(e){
+  const gift=e.target.closest('[data-admin-assign-gift-id]');
+  if(gift){
+    e.preventDefault();
+    e.stopPropagation();
+    openAdminAssignModal(gift.getAttribute('data-admin-assign-gift-id'),'omaggio');
+    return;
+  }
+  const ticket=e.target.closest('[data-admin-assign-ticket-id]');
+  if(ticket){
+    e.preventDefault();
+    e.stopPropagation();
+    openAdminAssignModal(ticket.getAttribute('data-admin-assign-ticket-id'),'biglietto');
+  }
+});
+
+
+/* AUTOCOMPLETE UTENTI REGISTRATI */
+function getRegisteredUsers(){
+  try{
+    return JSON.parse(localStorage.getItem('ndt_users_v1') || '[]');
+  }catch(e){
+    return [];
+  }
+}
+function renderAdminUserSuggestions(query){
+  const box=document.getElementById('adminAssignSuggestList');
+  if(!box) return;
+
+  query=(query||'').trim().toLowerCase();
+
+  if(!query){
+    box.style.display='none';
+    box.innerHTML='';
+    return;
+  }
+
+  const users=getRegisteredUsers();
+
+  const filtered=users.filter(u=>{
+    const name=((u.name||'')+' '+(u.surname||'')+' '+(u.fullName||'')).toLowerCase();
+    const email=(u.email||'').toLowerCase();
+    const phone=(u.phone||u.telefono||'').toLowerCase();
+
+    return name.includes(query) || email.includes(query) || phone.includes(query);
+  }).slice(0,8);
+
+  if(!filtered.length){
+    box.style.display='none';
+    box.innerHTML='';
+    return;
+  }
+
+  box.innerHTML=filtered.map((u,i)=>{
+    const name=(u.fullName || ((u.name||'')+' '+(u.surname||''))).trim() || 'Utente';
+    return `<div class="userSuggestItem" data-user-index="${i}">
+      <strong>${esc(name)}</strong>
+      <small>${esc(u.email||'Nessuna email')} ${u.phone ? '• '+esc(u.phone) : ''}</small>
+    </div>`;
+  }).join('');
+
+  box.style.display='block';
+
+  box.querySelectorAll('.userSuggestItem').forEach((el,i)=>{
+    el.addEventListener('click',function(){
+      const u=filtered[i];
+      const name=(u.fullName || ((u.name||'')+' '+(u.surname||''))).trim();
+
+      document.getElementById('adminAssignSearch').value=name || u.email || '';
+      document.getElementById('adminAssignName').value=name || '';
+      document.getElementById('adminAssignEmail').value=u.email || '';
+      document.getElementById('adminAssignPhone').value=u.phone || u.telefono || '';
+
+      document.getElementById('adminAssignName').dataset.userId=u.id || '';
+      box.style.display='none';
+    });
+  });
+}
+document.addEventListener('input',function(e){
+  if(e.target && e.target.id==='adminAssignSearch'){
+    renderAdminUserSuggestions(e.target.value);
+  }
+});
+document.addEventListener('click',function(e){
+  const box=document.getElementById('adminAssignSuggestList');
+  if(!box) return;
+  if(!e.target.closest('.userSuggestBox')){
+    box.style.display='none';
+  }
+});
+
+
+/* WALLET FILTRA ELEMENTI UTENTE */
+function currentWalletIdentity(){
+  try{
+    const p=typeof getProfile==='function' ? getProfile() : {};
+    return {
+      email:(p.email||'').toLowerCase().trim(),
+      phone:(p.phone||p.telefono||'').trim()
+    };
+  }catch(e){
+    return {email:'',phone:''};
+  }
+}
+
+
+/* SISTEMA RUOLI E PERMESSI */
+const NDT_ROLES={
+  cliente:{label:'Cliente',pages:['homePage','ricordiPage','walletPage','profiloPage','privacyPage','eventDetailPage']},
+  scanner:{label:'Scanner',pages:['scannerPage','profiloPage','privacyPage']},
+  admin:{label:'Admin evento',pages:['homePage','ricordiPage','scannerPage','walletPage','profiloPage','privacyPage','eventDetailPage','manageEventsPage','manageLocalsPage']},
+  superAdmin:{label:'Super Admin',pages:['homePage','ricordiPage','scannerPage','walletPage','profiloPage','privacyPage','eventDetailPage','manageEventsPage','manageLocalsPage','manageUsersPage']}
+};
+
+function normalizeRole(role){
+  if(role==='Admin') return 'admin';
+  if(role==='Staff' || role==='Scanner') return 'scanner';
+  if(role==='Utente') return 'cliente';
+  if(role==='superadmin') return 'superAdmin';
+  return NDT_ROLES[role] ? role : 'cliente';
+}
+function getCurrentUserRole(){
+  try{
+    const profile=typeof getProfile==='function' ? getProfile() : {};
+    if(profile.role) return normalizeRole(profile.role);
+    const saved=localStorage.getItem('ndt_current_role');
+    if(saved) return normalizeRole(saved);
+    return 'superAdmin'; /* provvisorio: il proprietario parte Super Admin */
+  }catch(e){
+    return 'superAdmin';
+  }
+}
+function setCurrentUserRole(role){
+  role=normalizeRole(role);
+  localStorage.setItem('ndt_current_role',role);
+  try{
+    if(typeof getProfile==='function' && typeof saveProfile==='function'){
+      const p=getProfile();
+      p.role=role;
+      saveProfile(p);
+    }
+  }catch(e){}
+  applyRolePermissions();
+}
+function roleCanOpen(pageId){
+  const role=getCurrentUserRole();
+  return (NDT_ROLES[role]?.pages || []).includes(pageId);
+}
+function roleBadgeHtml(role){
+  role=normalizeRole(role);
+  return `<span class="roleBadge ${role}">${NDT_ROLES[role]?.label||'Cliente'}</span>`;
+}
+function showPermissionDenied(pageId){
+  const home=document.getElementById('homePage');
+  document.querySelectorAll('.app-page').forEach(p=>{p.classList.remove('active');p.style.display='none';});
+  let box=document.getElementById('permissionDeniedPage');
+  if(!box){
+    box=document.createElement('section');
+    box.id='permissionDeniedPage';
+    box.className='app-page active';
+    const main=document.querySelector('main');
+    if(main) main.appendChild(box);
+  }
+  box.style.display='block';
+  box.classList.add('active');
+  box.innerHTML=`<div class="permissionDenied">Accesso non consentito per il tuo ruolo.<br><br>${roleBadgeHtml(getCurrentUserRole())}</div>`;
+}
+function applyRolePermissions(){
+  const role=getCurrentUserRole();
+  const allowed=NDT_ROLES[role]?.pages || [];
+  document.querySelectorAll('[data-page]').forEach(btn=>{
+    const page=btn.dataset.page;
+    btn.style.display=allowed.includes(page)?'':'none';
+  });
+
+  document.querySelectorAll('.adminOnlyAction').forEach(el=>{
+    el.style.display=(role==='superAdmin')?'':'none';
+  });
+
+  const roleView=document.getElementById('profileRoleView');
+  if(roleView) roleView.innerHTML=roleBadgeHtml(role);
+
+  const usersButtons=document.querySelectorAll('[onclick*="openManageUsers"]');
+  usersButtons.forEach(btn=>btn.style.display=(role==='superAdmin')?'':'none');
+}
+(function(){
+  const originalGoPage=window.goPage;
+  window.goPage=function(id){
+    if(!roleCanOpen(id)){
+      showPermissionDenied(id);
+      return;
+    }
+    if(typeof originalGoPage==='function') originalGoPage(id);
+    applyRolePermissions();
+  };
+})();
+window.addEventListener('load',function(){
+  applyRolePermissions();
+});
+
+/* GESTIONE UTENTI CON RUOLI */
+function getAppUsers(){
+  try{return JSON.parse(localStorage.getItem('ndt_users_v1')||'[]');}catch(e){return [];}
+}
+function saveAppUsers(list){
+  localStorage.setItem('ndt_users_v1',JSON.stringify(list||[]));
+}
+function renderUsers(){
+  const box=document.getElementById('usersList');
+  if(!box) return;
+  const list=getAppUsers();
+  box.innerHTML=list.length?list.map(u=>{
+    const name=(u.fullName||((u.name||'')+' '+(u.surname||''))).trim()||'Utente';
+    const role=normalizeRole(u.role||'cliente');
+    return `<div class="managerRow">
+      <div>
+        <h3>${esc(name)}</h3>
+        <p>${esc(u.email||'')} ${u.phone?'· '+esc(u.phone):''}</p>
+        ${roleBadgeHtml(role)}
+      </div>
+      <div class="managerRowActions">
+        <select class="roleSelect" data-user-role-id="${u.id||u.email}">
+          <option value="cliente" ${role==='cliente'?'selected':''}>Cliente</option>
+          <option value="scanner" ${role==='scanner'?'selected':''}>Scanner</option>
+          <option value="admin" ${role==='admin'?'selected':''}>Admin evento</option>
+          <option value="superAdmin" ${role==='superAdmin'?'selected':''}>Super Admin</option>
+        </select>
+        <button class="btn danger small" type="button" data-delete-app-user="${u.id||u.email}">Elimina</button>
+      </div>
+    </div>`;
+  }).join(''):'<div class="empty">Nessun utente registrato.</div>';
+}
+document.addEventListener('change',function(e){
+  const sel=e.target.closest('[data-user-role-id]');
+  if(!sel) return;
+  const id=sel.getAttribute('data-user-role-id');
+  const list=getAppUsers();
+  const u=list.find(x=>String(x.id||x.email)===String(id));
+  if(u){
+    u.role=normalizeRole(sel.value);
+    saveAppUsers(list);
+    renderUsers();
+  }
+});
+document.addEventListener('click',function(e){
+  const del=e.target.closest('[data-delete-app-user]');
+  if(!del) return;
+  const id=del.getAttribute('data-delete-app-user');
+  if(!confirm('Eliminare questo utente?')) return;
+  const list=getAppUsers().filter(x=>String(x.id||x.email)!==String(id));
+  saveAppUsers(list);
+  renderUsers();
+});
+
+
+/* FIX APERTURA GESTIONE UTENTI */
+function openManageUsers(){
+  const page=document.getElementById('manageUsersPage');
+  if(!page){
+    alert('Pagina gestione utenti non trovata');
+    return;
+  }
+
+  document.querySelectorAll('.app-page').forEach(p=>{
+    p.classList.remove('active');
+    p.style.display='none';
+  });
+
+  page.classList.add('active');
+  page.style.display='block';
+
+  if(typeof renderUsers==='function'){
+    renderUsers();
+  }
+
+  window.scrollTo({top:0,behavior:'auto'});
+}
+
+
+/* CHIUDE IMPOSTAZIONI PRIMA DI APRIRE GESTIONE UTENTI */
+window.openManageUsers=function(){
+  try{
+    if(typeof closeSettings==='function'){
+      closeSettings();
+    }
+
+    const settingsModal=document.getElementById('settingsModal');
+    if(settingsModal){
+      settingsModal.classList.remove('open');
+      settingsModal.style.display='none';
+    }
+
+    const settingsOverlay=document.querySelector('.settingsOverlay');
+    if(settingsOverlay){
+      settingsOverlay.style.display='none';
+    }
+  }catch(e){}
+
+  const page=document.getElementById('manageUsersPage');
+
+  if(!page){
+    alert('Gestione utenti non trovata');
+    return false;
+  }
+
+  document.querySelectorAll('.app-page').forEach(function(p){
+    p.classList.remove('active');
+    p.style.display='none';
+  });
+
+  page.style.display='block';
+  page.classList.add('active');
+
+  if(typeof renderUsers==='function'){
+    try{
+      renderUsers();
+    }catch(err){
+      console.error(err);
+    }
+  }
+
+  window.scrollTo(0,0);
+
+  return false;
+};
+
+/* intercetta click mobile */
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('[onclick*="openManageUsers"]');
+  if(!btn) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  window.openManageUsers();
+
+  return false;
+},true);
+
+
+/* FIX NAVIGAZIONE MOBILE SCROLL TOP */
+function forcePageTop(){
+  try{
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    window.scrollTo({
+      top:0,
+      left:0,
+      behavior:'instant'
+    });
+  }catch(e){
+    window.scrollTo(0,0);
+  }
+}
+
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('[data-page]');
+  if(!btn) return;
+
+  setTimeout(function(){
+    forcePageTop();
+  },10);
+
+  setTimeout(function(){
+    forcePageTop();
+  },120);
+
+  setTimeout(function(){
+    forcePageTop();
+  },260);
+},true);
+
+/* override goPage mobile */
+if(typeof window.goPage==='function'){
+  const originalGoPageMobileFix=window.goPage;
+
+  window.goPage=function(id){
+    originalGoPageMobileFix(id);
+
+    forcePageTop();
+
+    requestAnimationFrame(function(){
+      forcePageTop();
+    });
+
+    setTimeout(function(){
+      forcePageTop();
+    },120);
+  };
+}
+
+
+/* FORCE REMOVE MOBILE HORIZONTAL SCROLL */
+function removeMobileHorizontalScroll(){
+  try{
+    document.documentElement.style.overflowX='hidden';
+    document.body.style.overflowX='hidden';
+
+    document.querySelectorAll('*').forEach(function(el){
+      const w=el.scrollWidth;
+      const vw=window.innerWidth;
+
+      if(w > vw + 6){
+        el.style.maxWidth='100%';
+        el.style.overflowX='hidden';
+      }
+    });
+  }catch(e){}
+}
+
+window.addEventListener('load',removeMobileHorizontalScroll);
+window.addEventListener('resize',removeMobileHorizontalScroll);
+
+document.addEventListener('click',function(){
+  setTimeout(removeMobileHorizontalScroll,50);
+});
+
+
+/* RESET SCROLL VERTICALE PAGINE MOBILE */
+function resetAllPageScrolls(){
+  try{
+    window.scrollTo(0,0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+
+    document.querySelectorAll('.app-page').forEach(function(page){
+      page.scrollTop = 0;
+      page.style.scrollBehavior='auto';
+    });
+
+    const main=document.querySelector('main');
+    if(main){
+      main.scrollTop=0;
+    }
+  }catch(e){}
+}
+
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('[data-page], .bottomNav button, .navBtn');
+  if(!btn) return;
+
+  setTimeout(resetAllPageScrolls,0);
+  setTimeout(resetAllPageScrolls,60);
+  setTimeout(resetAllPageScrolls,180);
+},true);
+
+window.addEventListener('hashchange',resetAllPageScrolls);
+window.addEventListener('load',resetAllPageScrolls);
+
+if(typeof window.goPage==='function'){
+  const oldGoPageReset = window.goPage;
+
+  window.goPage = function(id){
+    oldGoPageReset(id);
+
+    resetAllPageScrolls();
+
+    requestAnimationFrame(function(){
+      resetAllPageScrolls();
+    });
+
+    setTimeout(resetAllPageScrolls,120);
+  };
+}
+
+
+
+/* FIX SCROLL MOBILE SENZA LAMPEGGIO */
+function ndtSmoothTop(){
+  const active=document.querySelector('.app-page.active');
+
+  requestAnimationFrame(function(){
+    window.scrollTo(0,0);
+    document.body.scrollTop=0;
+    document.documentElement.scrollTop=0;
+
+    if(active){
+      active.scrollTop=0;
+    }
+  });
+}
+
+if(typeof window.goPage==='function'){
+  const ndtOriginalPageOpen=window.goPage;
+
+  window.goPage=function(id){
+    ndtOriginalPageOpen(id);
+    ndtSmoothTop();
+  };
+}
+
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('[data-page], .bottomNav button, .navBtn');
+  if(!btn) return;
+  ndtSmoothTop();
+},true);
+
+
+/* OVERRIDE STABILE SCROLL MOBILE */
+window.ndtStableScrollTop = function(){
+  try{
+    window.scrollTo(0,0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+
+    const active=document.querySelector('.app-page.active');
+    if(active){
+      active.scrollTop = 0;
+    }
+  }catch(e){}
+};
+
+if(typeof window.goPage === 'function' && !window.__ndtScrollPatched){
+  window.__ndtScrollPatched = true;
+
+  const __oldGoPage = window.goPage;
+
+  window.goPage = function(id){
+    __oldGoPage(id);
+
+    requestAnimationFrame(function(){
+      window.ndtStableScrollTop();
+    });
+  };
+}
+
+
+/* FIX DEFINITIVO MOBILE SCROLL RESTORATION */
+try{
+  if('scrollRestoration' in history){
+    history.scrollRestoration='manual';
+  }
+}catch(e){}
+
+window.__ndtNavigating=false;
+
+function ndtResetPagePosition(){
+  const active=document.querySelector('.app-page.active');
+
+  document.documentElement.scrollTop=0;
+  document.body.scrollTop=0;
+  window.scrollTo(0,0);
+
+  if(active){
+    active.scrollTop=0;
+  }
+
+  const main=document.querySelector('main');
+  if(main){
+    main.scrollTop=0;
+  }
+}
+
+if(typeof window.goPage==='function' && !window.__ndtFinalScrollFix){
+  window.__ndtFinalScrollFix=true;
+
+  const __originalGoPageFinal=window.goPage;
+
+  window.goPage=function(id){
+    window.__ndtNavigating=true;
+
+    __originalGoPageFinal(id);
+
+    setTimeout(function(){
+      ndtResetPagePosition();
+      window.__ndtNavigating=false;
+    },0);
+  };
+}
+
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('[data-page], .bottomNav button, .navBtn');
+
+  if(!btn) return;
+
+  ndtResetPagePosition();
+},true);
+
+
+/* MENU DINAMICO PER RUOLO */
+function ndtRole(){
+  try{
+    if(window.ndtCurrentUserData && ndtCurrentUserData.role){
+      return String(ndtCurrentUserData.role).toLowerCase();
+    }
+    const profile=typeof getProfile==='function' ? getProfile() : {};
+    return (profile.role || localStorage.getItem('ndt_current_role') || 'superAdmin').toLowerCase();
+  }catch(e){
+    return 'superadmin';
+  }
+}
+
+function applyDynamicMenuByRole(){
+  const role=ndtRole();
+
+  const map={
+    cliente:['home','wallet','profilo'],
+    scanner:['scanner','profilo'],
+    admin:['home','eventi','scanner','wallet','profilo'],
+    superadmin:['home','eventi','scanner','wallet','profilo','utenti'], superAdmin:['home','eventi','scanner','wallet','profilo','utenti']
+  };
+
+  const allowed=map[role] || map.superadmin;
+
+  document.querySelectorAll('.bottomNav button,[data-page]').forEach(btn=>{
+    const txt=(btn.textContent||'').toLowerCase();
+    const page=(btn.dataset.page||'').toLowerCase();
+
+    let key='';
+
+    if(txt.includes('home') || page.includes('home')) key='home';
+    else if(txt.includes('scanner') || page.includes('scanner')) key='scanner';
+    else if(txt.includes('wallet') || page.includes('wallet')) key='wallet';
+    else if(txt.includes('profilo') || page.includes('profilo')) key='profilo';
+    else if(txt.includes('utente') || page.includes('user')) key='utenti';
+    else if(txt.includes('event') || page.includes('manageevents')) key='eventi';
+
+    if(key && !allowed.includes(key)){
+      btn.style.display='none';
+    }else{
+      btn.style.display='';
+    }
+  });
+
+  const adminOnlyPages=['manageEventsPage','manageLocalsPage'];
+  if(role==='cliente' || role==='scanner'){
+    adminOnlyPages.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.style.display='none';
+    });
+  }
+
+  if(role==='scanner'){
+    const home=document.getElementById('homePage');
+    if(home) home.style.display='none';
+  }
+}
+
+window.addEventListener('load',function(){
+  setTimeout(applyDynamicMenuByRole,100);
+});
+
+document.addEventListener('click',function(){
+  setTimeout(applyDynamicMenuByRole,50);
+},true);
+
+</script>
+
+<script>
+window.addEventListener('load', function(){
+
+  const form=document.getElementById('eventForm');
+  if(!form) return;
+
+  form.onsubmit=function(e){
+    e.preventDefault();
+
+    const id=document.getElementById('eventId').value || uid();
+
+    const data={
+      id:id,
+      title:(document.getElementById('eventTitle').value || '').trim(),
+      age:(document.getElementById('eventAge')?.value || '+18').trim(),
+      startDate:document.getElementById('eventStartDate').value,
+      startTime:document.getElementById('eventStartTime').value,
+      endDate:document.getElementById('eventEndDate').value,
+      endTime:document.getElementById('eventEndTime').value,
+      localId:document.getElementById('eventLocal').value,
+      location:(document.getElementById('eventLocation').value || '').trim(),
+      city:(document.getElementById('eventCity').value || '').trim(),
+      localAddress:(document.getElementById('eventLocalAddress')?.value || '').trim(),
+      localCapacity:(document.getElementById('eventLocalCapacity')?.value || '').trim(),
+      image:(document.getElementById('eventImage').value || '').trim(),
+      desc:(document.getElementById('eventDesc').value || '').trim(),
+      showLocalCard:document.getElementById('eventShowLocalCard').checked,
+      suggested:document.getElementById('eventSuggested').checked,
+      giftSlots:collectGiftSlots(),
+      ticketSlots:collectTicketSlots(),
+      artistSlots:collectArtistSlots()
+    };
+
+    if(!data.title){
+      alert('Inserisci il titolo evento');
+      return false;
+    }
+
+    const idx=events.findIndex(ev=>String(ev.id)===String(id));
+
+    if(idx >= 0){
+      events[idx]=data;
+    }else{
+      events.push(data);
+    }
+
+    save(LS_EVENTS, events);
+
+    renderAll();
+    renderManagedEvents();
+
+    resetEventForm();
+    hideEventForm();
+    showEventSavedMessage();
+
+    return false;
+  };
+
+});
+</script>
+
+
+<script id="NDT_SAFE_BADGE_HOME_SCRIPT">
+(function(){
+  const BADGE_DEFAULT = '🔥 Reggaeton • Dembow • Latin Trap • Perreo Party';
+  const KEY = 'ndt_home_badge_settings_v1';
+
+  function getBadgeSettings(){
+    try{
+      return JSON.parse(localStorage.getItem(KEY)) || {enabled:true,text:BADGE_DEFAULT};
+    }catch(e){
+      return {enabled:true,text:BADGE_DEFAULT};
+    }
+  }
+
+  function saveBadgeSettings(data){
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }
+
+  function applyBadge(){
+    const data = getBadgeSettings();
+    const badge = document.getElementById('homeBadge');
+    if(!badge) return;
+    badge.textContent = data.text || BADGE_DEFAULT;
+    badge.style.display = data.enabled === false ? 'none' : 'inline-flex';
+  }
+
+  function fillFields(){
+    const data = getBadgeSettings();
+    const enabled = document.getElementById('setHomeBadgeEnabled');
+    const text = document.getElementById('setHomeBadgeText');
+    if(enabled) enabled.checked = data.enabled !== false;
+    if(text) text.value = data.text || BADGE_DEFAULT;
+  }
+
+  document.addEventListener('click', function(e){
+    if(e.target && e.target.closest && e.target.closest('[onclick*="openSettings"]')){
+      setTimeout(fillFields, 120);
+    }
+  });
+
+  document.addEventListener('change', function(e){
+    if(e.target && (e.target.id === 'setHomeBadgeEnabled' || e.target.id === 'setHomeBadgeText')){
+      const enabled = document.getElementById('setHomeBadgeEnabled');
+      const text = document.getElementById('setHomeBadgeText');
+      saveBadgeSettings({
+        enabled: enabled ? enabled.checked : true,
+        text: text ? (text.value || BADGE_DEFAULT) : BADGE_DEFAULT
+      });
+      applyBadge();
+    }
+  });
+
+  document.addEventListener('input', function(e){
+    if(e.target && e.target.id === 'setHomeBadgeText'){
+      const enabled = document.getElementById('setHomeBadgeEnabled');
+      saveBadgeSettings({
+        enabled: enabled ? enabled.checked : true,
+        text: e.target.value || BADGE_DEFAULT
+      });
+      applyBadge();
+    }
+  });
+
+  window.addEventListener('load', function(){
+    applyBadge();
+    fillFields();
+  });
+})();
+</script>
+
+
+<script id="NDT_SAFE_HOME_DESCRIPTION_DEFAULT">
+(function(){
+  const DEFAULT_HOME_DESC = "Vivi l'energia di Noche De Teteo! Il format itinerante con il meglio di reggaeton, dembow e animazione travolgente. Scopri le prossime date e balla con noi!";
+
+  function applyDefaultHomeDescription(){
+    const desc = document.getElementById('homeDesc');
+    if(desc && (!desc.textContent || desc.textContent.trim()==='' || desc.textContent.includes('Pubblica i tuoi eventi'))){
+      desc.textContent = DEFAULT_HOME_DESC;
+    }
+
+    const field = document.getElementById('setHomeDesc');
+    if(field && (!field.value || field.value.trim()==='' || field.value.includes('Pubblica i tuoi eventi'))){
+      field.value = DEFAULT_HOME_DESC;
+    }
+  }
+
+  document.addEventListener('click', function(e){
+    if(e.target && e.target.closest && e.target.closest('[onclick*="openSettings"]')){
+      setTimeout(applyDefaultHomeDescription,120);
+    }
+  });
+
+  window.addEventListener('load', applyDefaultHomeDescription);
+})();
+</script>
+
+</body>
+</html>
