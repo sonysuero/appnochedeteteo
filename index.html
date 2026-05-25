@@ -1974,6 +1974,75 @@ html,body{height:auto!important;min-height:100%!important;overflow-x:hidden!impo
 }
 </style>
 
+
+<script id="NDT_FIREBASE_CONFIG_INIT">
+window.ndtFirebaseConfig = {
+  apiKey: "AIzaSyCHi8baDRr_yqVpsDBbSas3HwgQ7m90SGI",
+  authDomain: "nochedeteteo-b813b.firebaseapp.com",
+  projectId: "nochedeteteo-b813b",
+  storageBucket: "nochedeteteo-b813b.firebasestorage.app",
+  messagingSenderId: "335533337458",
+  appId: "1:335533337458:web:4a06edbb8af3f11e060beb",
+  measurementId: "G-59FGE400B9"
+};
+
+function ndtEnsureFirebaseReady(){
+  if(typeof firebase === 'undefined'){
+    throw new Error('Firebase non caricato');
+  }
+
+  if(!firebase.apps.length){
+    firebase.initializeApp(window.ndtFirebaseConfig);
+  }
+
+  return {
+    auth: firebase.auth(),
+    db: firebase.firestore()
+  };
+}
+</script>
+
+
+<style id="NDT_LOGIN_DESKTOP_SPACING_FIX">
+@media(min-width:900px){
+  #ndtAuthGate{
+    padding:54px 32px 70px !important;
+  }
+  #ndtAuthGate .authBox{
+    width:min(980px,92vw) !important;
+    padding:42px !important;
+    margin:20px auto !important;
+  }
+  #ndtAuthGate h1{
+    font-size:42px !important;
+    margin-bottom:10px !important;
+  }
+  #ndtAuthGate p{
+    font-size:18px !important;
+    line-height:1.5 !important;
+    margin-bottom:26px !important;
+  }
+  #ndtAuthGate .grid{
+    gap:22px !important;
+  }
+  #ndtAuthGate .split{
+    gap:22px !important;
+  }
+  #ndtAuthGate input{
+    padding:18px !important;
+    font-size:16px !important;
+  }
+  #ndtAuthGate .actions{
+    margin-top:10px !important;
+    gap:18px !important;
+  }
+  #ndtAuthGate button{
+    padding:18px !important;
+    font-size:17px !important;
+  }
+}
+</style>
+
 </head>
 <body class="ndt-logged-out">
 
@@ -5855,7 +5924,7 @@ window.addEventListener('load', function(){
   window.ndtForceLoggedOut=setOut; window.ndtForceLoggedIn=setIn;
   window.showPermissionDenied=function(){ if(!window.__NDT_LOGGED_IN__ && !window.ndtCurrentUser) setOut(); else if(typeof goPage==='function') goPage('homePage') };
   window.roleCanOpen=function(){return true};
-  async function ensureFirebase(){if(typeof firebase==='undefined')throw new Error('Firebase non caricato'); if(!firebase.apps.length && typeof firebaseConfig!=='undefined')firebase.initializeApp(firebaseConfig); return {auth:firebase.auth(),db:firebase.firestore()}}
+  async function ensureFirebase(){return ndtEnsureFirebaseReady()}
   async function firstUser(db){var snap=await db.collection('users').limit(1).get();return snap.empty}
   window.ndtGateRegister=async function(){
     try{
@@ -5901,7 +5970,7 @@ window.addEventListener('load', function(){
     setTimeout(function(){
       try{
         if(typeof firebase==='undefined')return setOut();
-        if(!firebase.apps.length&&typeof firebaseConfig!=='undefined')firebase.initializeApp(firebaseConfig);
+        ndtEnsureFirebaseReady();
         firebase.auth().onAuthStateChanged(async function(user){
           if(user){
             window.ndtCurrentUser=user;
