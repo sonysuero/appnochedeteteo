@@ -2043,52 +2043,222 @@ function ndtEnsureFirebaseReady(){
 }
 </style>
 
+
+<style id="NDT_LOGOUT_PROFILE_USERS_SCROLL_FIX_CSS">
+/* SCROLL DESKTOP DEFINITIVO */
+html,body{
+  height:auto!important;
+  min-height:100%!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  position:static!important;
+}
+body.ndt-logged-in{
+  overflow-y:auto!important;
+  padding-bottom:140px!important;
+}
+main,.app-page,.app-page.active{
+  height:auto!important;
+  min-height:100vh!important;
+  max-height:none!important;
+  overflow:visible!important;
+  position:relative!important;
+}
+.ndtLogoutFloating{
+  position:fixed;
+  top:92px;
+  right:24px;
+  z-index:9999;
+  padding:12px 16px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,71,126,.18);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+}
+body.ndt-logged-out .ndtLogoutFloating{
+  display:none!important;
+}
+.userFirestoreRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  padding:14px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.05);
+  margin-bottom:10px;
+}
+.userFirestoreRow select{
+  min-width:160px;
+}
+@media(max-width:640px){
+  .ndtLogoutFloating{
+    top:14px;
+    right:14px;
+    padding:10px 12px;
+  }
+  .userFirestoreRow{
+    display:grid;
+  }
+}
+</style>
+
+
+<style id="NDT_AUTH_TABS_LOGIN_FIX_CSS">
+#ndtAuthGate .authTabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:18px 0 20px;
+}
+#ndtAuthGate .authTabs button{
+  background:rgba(255,255,255,.07)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+}
+#ndtAuthGate .authTabs button.active{
+  background:linear-gradient(135deg,#ff2bd6,#ffe600)!important;
+  color:#111!important;
+}
+#ndtAuthGate .passwordWrap{
+  position:relative;
+}
+#ndtAuthGate .passwordWrap input{
+  padding-right:56px!important;
+}
+#ndtAuthGate .togglePassBtn{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  padding:0!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.10)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+}
+#ndtAuthGate .authSmallLink{
+  margin-top:10px;
+  text-align:center;
+}
+#ndtAuthGate .authSmallLink button{
+  background:transparent!important;
+  color:#ffe600!important;
+  border:0!important;
+  padding:8px!important;
+}
+#ndtAuthGate.login-mode .registerOnly{
+  display:none!important;
+}
+#ndtAuthGate.register-mode .loginOnly{
+  display:none!important;
+}
+</style>
+
+
+<style id="NDT_FIRST_ADMIN_AUTH_FLOW_CSS">
+#ndtAuthGate.first-admin-mode .normalRegisterOnly,
+#ndtAuthGate.first-admin-mode .loginOnly,
+#ndtAuthGate.first-admin-mode .authTabs,
+#ndtAuthGate.first-admin-mode .forgotOnly{
+  display:none!important;
+}
+#ndtAuthGate.login-mode .registerOnly,
+#ndtAuthGate.login-mode .firstAdminOnly,
+#ndtAuthGate.login-mode .normalRegisterOnly{
+  display:none!important;
+}
+#ndtAuthGate.register-mode .loginOnly,
+#ndtAuthGate.register-mode .firstAdminOnly,
+#ndtAuthGate.register-mode .forgotOnly{
+  display:none!important;
+}
+#ndtAuthGate .passwordWrap{position:relative}
+#ndtAuthGate .passwordWrap input{padding-right:56px!important}
+#ndtAuthGate .togglePassBtn{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  padding:0!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.10)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+}
+</style>
+
 </head>
 <body class="ndt-logged-out">
+<button id="ndtLogoutBtn" class="ndtLogoutFloating" onclick="firebaseLogout()">Esci</button>
 
-<div id="ndtAuthGate">
+
+<div id="ndtAuthGate" class="login-mode">
   <div class="authBox">
-    <h1>Accedi a Noche De Teteo</h1>
-    <p>Registrati o accedi per usare Wallet, omaggi, biglietti e profilo.</p>
+    <h1 id="authGateTitle">Accedi a Noche De Teteo</h1>
+    <p id="authGateSubtitle">Inserisci email e password per entrare nel tuo account.</p>
+
+    <div class="authTabs normalRegisterOnly">
+      <button id="authTabLogin" class="active" type="button" onclick="setAuthMode('login')">Accedi</button>
+      <button id="authTabRegister" type="button" onclick="setAuthMode('register')">Registrati</button>
+    </div>
+
     <div id="ndtGateMsg"></div>
+
     <div class="grid">
-      <div class="split">
+      <div class="split registerOnly firstAdminOnly normalRegisterOnly">
         <div><label>Nome</label><input id="gateName" placeholder="Nome"></div>
         <div><label>Cognome</label><input id="gateSurname" placeholder="Cognome"></div>
       </div>
-      <div class="split">
+
+      <div class="split registerOnly firstAdminOnly normalRegisterOnly">
         <div><label>Telefono</label><input id="gatePhone" placeholder="+39..."></div>
         <div><label>Data di nascita</label><input id="gateBirthDate" type="date"></div>
       </div>
+
       <div><label>Email</label><input id="gateEmail" type="email" placeholder="email@esempio.it"></div>
-      <div><label>Password</label><input id="gatePassword" type="password" placeholder="Password minimo 6 caratteri"></div>
-      <div class="consent">
+
+      <div>
+        <label>Password</label>
+        <div class="passwordWrap">
+          <input id="gatePassword" type="password" placeholder="Password minimo 6 caratteri">
+          <button class="togglePassBtn" type="button" onclick="toggleGatePassword()">👁</button>
+        </div>
+      </div>
+
+      <div class="consent registerOnly firstAdminOnly normalRegisterOnly">
         <label><input id="gatePrivacy" type="checkbox"> Acconsento alla privacy</label>
         <label><input id="gateMarketing" type="checkbox"> Acconsento al marketing</label>
       </div>
-      <div class="actions">
+
+      <div class="actions firstAdminOnly">
+        <button class="primary" type="button" onclick="ndtGateRegister()">Crea Super Admin</button>
+      </div>
+
+      <div class="actions registerOnly normalRegisterOnly">
         <button class="primary" type="button" onclick="ndtGateRegister()">Registrati</button>
-        <button class="secondary" type="button" onclick="ndtGateLogin()">Accedi</button>
+        <button class="secondary" type="button" onclick="setAuthMode('login')">Ho già un account</button>
+      </div>
+
+      <div class="actions loginOnly">
+        <button class="primary" type="button" onclick="ndtGateLogin()">Accedi</button>
+        <button class="secondary" type="button" onclick="setAuthMode('register')">Registrati</button>
+      </div>
+
+      <div class="authSmallLink loginOnly forgotOnly">
+        <button type="button" onclick="resetGatePassword()">Password dimenticata?</button>
       </div>
     </div>
   </div>
 </div>
-
-
-<header>
-  <div class="container nav">
-    <a href="#" class="brand" onclick="goPage('homePage');return false;">
-      <div class="logoMark" id="logoMark"><span id="logoLetters">NT</span><img id="logoImage" alt="Logo"></div>
-      <div class="appName"><span id="brandName">NOCHE DE TETEO</span><small>Eventi & Prenotazioni</small></div>
-    </a>
-    <button class="iconBtn" onclick="openSettings()" aria-label="Impostazioni">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0A1.65 1.65 0 0 0 9 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0A1.65 1.65 0 0 0 20.91 11H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-      </svg>
-    </button>
-  </div>
-</header>
 
 <main>
 
@@ -5983,6 +6153,421 @@ window.addEventListener('load', function(){
   });
   document.addEventListener('wheel',function(e){if(document.body.classList.contains('ndt-logged-out')){var g=document.getElementById('ndtAuthGate');if(g){g.scrollTop+=e.deltaY;e.preventDefault()}}},{passive:false,capture:true});
 })();
+</script>
+
+
+<script id="NDT_LOGOUT_PROFILE_USERS_SCROLL_FIX_JS">
+(function(){
+  function ensureFB(){
+    if(typeof firebase==='undefined') throw new Error('Firebase non caricato');
+    if(!firebase.apps.length){
+      if(window.ndtFirebaseConfig) firebase.initializeApp(window.ndtFirebaseConfig);
+      else if(typeof firebaseConfig!=='undefined') firebase.initializeApp(firebaseConfig);
+    }
+    return {auth:firebase.auth(), db:firebase.firestore()};
+  }
+
+  window.firebaseLogout = async function(){
+    try{
+      const f=ensureFB();
+      await f.auth.signOut();
+    }catch(e){}
+    window.ndtCurrentUser=null;
+    window.ndtCurrentUserData=null;
+    localStorage.removeItem('ndt_current_role');
+    if(typeof ndtForceLoggedOut==='function') ndtForceLoggedOut();
+    location.reload();
+  };
+
+  function fillProfileFromFirebase(){
+    const u=window.ndtCurrentUserData;
+    if(!u) return;
+
+    const full=(u.fullName || ((u.name||'')+' '+(u.surname||''))).trim();
+
+    const mappings=[
+      ['profileName', full],
+      ['profileFullName', full],
+      ['profileDisplayName', full],
+      ['profileEmail', u.email||''],
+      ['profileDisplayEmail', u.email||''],
+      ['profilePhone', u.phone||''],
+      ['profileBirthDate', u.birthDate||''],
+      ['profileRoleView', u.role||'cliente']
+    ];
+
+    mappings.forEach(([id,val])=>{
+      const el=document.getElementById(id);
+      if(!el) return;
+      if(el.tagName==='INPUT' || el.tagName==='TEXTAREA') el.value=val;
+      else if(id==='profileRoleView') el.innerHTML='<span class="roleBadge '+(u.role||'cliente')+'">'+(u.role||'cliente')+'</span>';
+      else el.textContent=val;
+    });
+
+    // campi modifica profilo più comuni
+    ['editName','profName','accountName'].forEach(id=>{const el=document.getElementById(id); if(el) el.value=u.name||full;});
+    ['editSurname','profSurname','accountSurname'].forEach(id=>{const el=document.getElementById(id); if(el) el.value=u.surname||'';});
+    ['editEmail','profEmail','accountEmail'].forEach(id=>{const el=document.getElementById(id); if(el) el.value=u.email||'';});
+    ['editPhone','profPhone','accountPhone'].forEach(id=>{const el=document.getElementById(id); if(el) el.value=u.phone||'';});
+    ['editBirthDate','profBirthDate','accountBirthDate'].forEach(id=>{const el=document.getElementById(id); if(el) el.value=u.birthDate||'';});
+
+    try{
+      if(typeof getProfile==='function' && typeof saveProfile==='function'){
+        const p=getProfile();
+        p.name=u.name||'';
+        p.surname=u.surname||'';
+        p.email=u.email||'';
+        p.phone=u.phone||'';
+        p.birthDate=u.birthDate||'';
+        p.role=u.role||'cliente';
+        p.privacyConsent=!!u.privacyConsent;
+        p.marketingConsent=!!u.marketingConsent;
+        saveProfile(p);
+      }
+    }catch(e){}
+  }
+
+  window.ndtFillProfileFromFirebase=fillProfileFromFirebase;
+
+  async function renderUsersFromFirestore(){
+    const box=document.getElementById('usersList');
+    if(!box) return;
+
+    try{
+      const f=ensureFB();
+      const snap=await f.db.collection('users').orderBy('createdAt','desc').get();
+
+      if(snap.empty){
+        box.innerHTML='<div class="empty">Nessun utente registrato.</div>';
+        return;
+      }
+
+      box.innerHTML=snap.docs.map(doc=>{
+        const u=doc.data();
+        const name=(u.fullName || ((u.name||'')+' '+(u.surname||''))).trim() || 'Utente';
+        const role=(u.role||'cliente');
+        return `<div class="userFirestoreRow">
+          <div>
+            <h3 style="margin:0 0 6px">${name}</h3>
+            <p style="margin:0;color:var(--muted)">${u.email||''}${u.phone?' · '+u.phone:''}</p>
+            <span class="roleBadge ${role}">${role}</span>
+          </div>
+          <select data-firestore-role="${doc.id}">
+            <option value="cliente" ${role==='cliente'?'selected':''}>Cliente</option>
+            <option value="scanner" ${role==='scanner'?'selected':''}>Scanner</option>
+            <option value="admin" ${role==='admin'?'selected':''}>Admin evento</option>
+            <option value="superadmin" ${role==='superadmin'?'selected':''}>Super Admin</option>
+          </select>
+        </div>`;
+      }).join('');
+
+    }catch(err){
+      box.innerHTML='<div class="empty">Errore caricamento utenti: '+(err.message||err)+'</div>';
+    }
+  }
+
+  window.renderUsers = renderUsersFromFirestore;
+
+  document.addEventListener('change',async function(e){
+    const sel=e.target.closest('[data-firestore-role]');
+    if(!sel) return;
+
+    try{
+      const f=ensureFB();
+      await f.db.collection('users').doc(sel.getAttribute('data-firestore-role')).set({role:sel.value},{merge:true});
+      await renderUsersFromFirestore();
+    }catch(err){
+      alert('Errore cambio ruolo: '+(err.message||err));
+    }
+  });
+
+  const oldGo=window.goPage;
+  window.goPage=function(id){
+    if(typeof oldGo==='function') oldGo(id);
+    setTimeout(()=>{
+      fillProfileFromFirebase();
+      if(id==='manageUsersPage') renderUsersFromFirestore();
+      document.documentElement.style.overflowY='auto';
+      document.body.style.overflowY='auto';
+      document.body.style.position='static';
+    },80);
+  };
+
+  document.addEventListener('wheel',function(e){
+    if(document.body.classList.contains('ndt-logged-in')){
+      document.documentElement.style.overflowY='auto';
+      document.body.style.overflowY='auto';
+      document.body.style.position='static';
+    }
+  },{passive:true,capture:true});
+
+  window.addEventListener('load',function(){
+    setTimeout(()=>{
+      fillProfileFromFirebase();
+      if(document.querySelector('#manageUsersPage.active')) renderUsersFromFirestore();
+    },800);
+  });
+
+  // Aggancio Firebase state per profilo
+  window.addEventListener('load',function(){
+    setTimeout(()=>{
+      try{
+        const f=ensureFB();
+        f.auth.onAuthStateChanged(async user=>{
+          if(user){
+            const doc=await f.db.collection('users').doc(user.uid).get();
+            if(doc.exists){
+              window.ndtCurrentUserData=Object.assign({uid:user.uid},doc.data());
+              fillProfileFromFirebase();
+            }
+          }
+        });
+      }catch(e){}
+    },500);
+  });
+})();
+</script>
+
+
+<script id="NDT_AUTH_TABS_LOGIN_FIX_JS">
+function setAuthMode(mode){
+  const gate=document.getElementById('ndtAuthGate');
+  const title=document.getElementById('authGateTitle');
+  const sub=document.getElementById('authGateSubtitle');
+  const reg=document.getElementById('authTabRegister');
+  const log=document.getElementById('authTabLogin');
+  const msg=document.getElementById('ndtGateMsg');
+
+  if(msg){
+    msg.textContent='';
+    msg.style.display='none';
+  }
+
+  if(mode==='login'){
+    gate.classList.remove('register-mode');
+    gate.classList.add('login-mode');
+    if(title) title.textContent='Accedi a Noche De Teteo';
+    if(sub) sub.textContent='Inserisci email e password per entrare nel tuo account.';
+    if(reg) reg.classList.remove('active');
+    if(log) log.classList.add('active');
+  }else{
+    gate.classList.remove('login-mode');
+    gate.classList.add('register-mode');
+    if(title) title.textContent='Registrati a Noche De Teteo';
+    if(sub) sub.textContent='Crea il tuo account per usare Wallet, omaggi, biglietti e profilo.';
+    if(log) log.classList.remove('active');
+    if(reg) reg.classList.add('active');
+  }
+}
+
+function toggleGatePassword(){
+  const input=document.getElementById('gatePassword');
+  if(!input) return;
+  input.type=input.type==='password'?'text':'password';
+}
+
+async function resetGatePassword(){
+  try{
+    const email=(document.getElementById('gateEmail')?.value||'').trim();
+    if(!email){
+      const box=document.getElementById('ndtGateMsg');
+      if(box){box.textContent='Inserisci prima la tua email.';box.style.display='block';}
+      return;
+    }
+
+    if(typeof firebase==='undefined') throw new Error('Firebase non caricato');
+    if(!firebase.apps.length){
+      if(window.ndtFirebaseConfig) firebase.initializeApp(window.ndtFirebaseConfig);
+      else if(typeof firebaseConfig!=='undefined') firebase.initializeApp(firebaseConfig);
+    }
+
+    await firebase.auth().sendPasswordResetEmail(email);
+
+    const box=document.getElementById('ndtGateMsg');
+    if(box){
+      box.textContent='Ti abbiamo inviato una email per reimpostare la password.';
+      box.style.display='block';
+    }
+  }catch(err){
+    const box=document.getElementById('ndtGateMsg');
+    if(box){
+      box.textContent='Errore recupero password: '+(err.message||err);
+      box.style.display='block';
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  setAuthMode('register');
+});
+</script>
+
+
+<script id="NDT_FIRST_ADMIN_AUTH_FLOW_JS">
+async function ndtUsersCollectionEmpty(){
+  const f = await ndtEnsureAuthFirebase();
+  const snap = await f.db.collection('users').limit(1).get();
+  return snap.empty;
+}
+
+async function ndtEnsureAuthFirebase(){
+  if(typeof firebase === 'undefined') throw new Error('Firebase non caricato');
+
+  if(!firebase.apps.length){
+    if(window.ndtFirebaseConfig) firebase.initializeApp(window.ndtFirebaseConfig);
+    else if(typeof firebaseConfig !== 'undefined') firebase.initializeApp(firebaseConfig);
+    else throw new Error('Configurazione Firebase mancante');
+  }
+
+  return {auth:firebase.auth(), db:firebase.firestore()};
+}
+
+function setAuthMode(mode){
+  const gate=document.getElementById('ndtAuthGate');
+  const title=document.getElementById('authGateTitle');
+  const sub=document.getElementById('authGateSubtitle');
+  const msg=document.getElementById('ndtGateMsg');
+
+  if(msg){msg.textContent='';msg.style.display='none';}
+
+  gate.classList.remove('login-mode','register-mode','first-admin-mode');
+
+  if(mode==='firstAdmin'){
+    gate.classList.add('first-admin-mode');
+    if(title) title.textContent='Prima configurazione Super Admin';
+    if(sub) sub.textContent='Crea il primo account proprietario per prendere il controllo della web app.';
+  }else if(mode==='register'){
+    gate.classList.add('register-mode');
+    if(title) title.textContent='Registrati a Noche De Teteo';
+    if(sub) sub.textContent='Crea il tuo account cliente per usare Wallet, omaggi e biglietti.';
+  }else{
+    gate.classList.add('login-mode');
+    if(title) title.textContent='Accedi a Noche De Teteo';
+    if(sub) sub.textContent='Inserisci email e password per entrare nel tuo account.';
+  }
+}
+
+function toggleGatePassword(){
+  const input=document.getElementById('gatePassword');
+  if(input) input.type=input.type==='password'?'text':'password';
+}
+
+function ndtAuthMsg(t){
+  const b=document.getElementById('ndtGateMsg');
+  if(b){b.textContent=t;b.style.display='block';}
+  else alert(t);
+}
+
+async function ndtCheckFirstAdminFlow(){
+  try{
+    const empty=await ndtUsersCollectionEmpty();
+    if(empty) setAuthMode('firstAdmin');
+    else setAuthMode('login');
+  }catch(e){
+    setAuthMode('login');
+  }
+}
+
+window.ndtGateRegister = async function(){
+  try{
+    const f=await ndtEnsureAuthFirebase();
+
+    const name=(document.getElementById('gateName').value||'').trim();
+    const surname=(document.getElementById('gateSurname').value||'').trim();
+    const phone=(document.getElementById('gatePhone').value||'').trim();
+    const birthDate=(document.getElementById('gateBirthDate').value||'').trim();
+    const email=(document.getElementById('gateEmail').value||'').trim();
+    const password=(document.getElementById('gatePassword').value||'').trim();
+    const privacy=document.getElementById('gatePrivacy').checked;
+    const marketing=document.getElementById('gateMarketing').checked;
+    const isFirst=await ndtUsersCollectionEmpty();
+
+    if(!name||!surname) return ndtAuthMsg('Inserisci nome e cognome.');
+    if(!email) return ndtAuthMsg('Inserisci email.');
+    if(!password||password.length<6) return ndtAuthMsg('Password minimo 6 caratteri.');
+    if(!privacy) return ndtAuthMsg('Devi accettare la privacy.');
+
+    const cred=await f.auth.createUserWithEmailAndPassword(email,password);
+    const role=isFirst?'superadmin':'cliente';
+
+    const data={
+      uid:cred.user.uid,
+      name,
+      surname,
+      fullName:(name+' '+surname).trim(),
+      phone,
+      birthDate,
+      email,
+      role,
+      privacyConsent:privacy,
+      marketingConsent:marketing,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    await f.db.collection('users').doc(cred.user.uid).set(data,{merge:true});
+
+    window.ndtCurrentUser=cred.user;
+    window.ndtCurrentUserData=data;
+    localStorage.setItem('ndt_current_role',role);
+
+    if(isFirst){
+      ndtAuthMsg('Super Admin creato correttamente. Ora accedi con email e password.');
+      await f.auth.signOut();
+      window.ndtCurrentUser=null;
+      window.ndtCurrentUserData=null;
+      localStorage.removeItem('ndt_current_role');
+      setAuthMode('login');
+      document.getElementById('gatePassword').value='';
+      return;
+    }
+
+    if(typeof ndtForceLoggedIn==='function') ndtForceLoggedIn();
+    if(typeof goPage==='function') goPage('homePage');
+
+  }catch(err){
+    ndtAuthMsg('Errore registrazione: '+(err.message||err));
+  }
+};
+
+window.ndtGateLogin = async function(){
+  try{
+    const f=await ndtEnsureAuthFirebase();
+
+    const email=(document.getElementById('gateEmail').value||'').trim();
+    const password=(document.getElementById('gatePassword').value||'').trim();
+
+    if(!email||!password) return ndtAuthMsg('Inserisci email e password.');
+
+    const cred=await f.auth.signInWithEmailAndPassword(email,password);
+    const doc=await f.db.collection('users').doc(cred.user.uid).get();
+
+    window.ndtCurrentUser=cred.user;
+    window.ndtCurrentUserData=doc.exists?Object.assign({uid:cred.user.uid},doc.data()):{uid:cred.user.uid,role:'cliente'};
+    localStorage.setItem('ndt_current_role',window.ndtCurrentUserData.role||'cliente');
+
+    if(typeof ndtForceLoggedIn==='function') ndtForceLoggedIn();
+    if(typeof goPage==='function') goPage('homePage');
+
+  }catch(err){
+    ndtAuthMsg('Errore accesso: '+(err.message||err));
+  }
+};
+
+async function resetGatePassword(){
+  try{
+    const f=await ndtEnsureAuthFirebase();
+    const email=(document.getElementById('gateEmail').value||'').trim();
+    if(!email) return ndtAuthMsg('Inserisci prima la tua email.');
+    await f.auth.sendPasswordResetEmail(email);
+    ndtAuthMsg('Ti abbiamo inviato una email per reimpostare la password.');
+  }catch(err){
+    ndtAuthMsg('Errore recupero password: '+(err.message||err));
+  }
+}
+
+window.addEventListener('load',function(){
+  setTimeout(ndtCheckFirstAdminFlow,300);
+});
 </script>
 
 </body>
