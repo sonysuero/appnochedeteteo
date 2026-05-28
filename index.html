@@ -2196,6 +2196,132 @@ body.ndt-logged-out .ndtLogoutFloating{
 }
 </style>
 
+
+<style id="NDT_APP_AFTER_LOGIN_RESTORE_CSS">
+/* DOPO LOGIN: ripristina app, header, impostazioni e scroll */
+html, body{
+  height:auto !important;
+  min-height:100% !important;
+  max-height:none !important;
+  overflow-x:hidden !important;
+}
+
+body.ndt-logged-in,
+body.logged-in{
+  height:auto !important;
+  min-height:100% !important;
+  max-height:none !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  position:static !important;
+  padding-bottom:130px !important;
+}
+
+body.ndt-logged-in header,
+body.ndt-logged-in .appHeader,
+body.ndt-logged-in #appHeader,
+body.ndt-logged-in .topbar,
+body.ndt-logged-in main,
+body.ndt-logged-in .settingsBtn,
+body.ndt-logged-in #settingsBtn,
+body.ndt-logged-in [onclick*="openSettings"]{
+  display:revert !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+
+body.ndt-logged-in main{
+  display:block !important;
+}
+
+body.ndt-logged-in .bottomNav,
+body.ndt-logged-in #bottomNav{
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+
+main{
+  height:auto !important;
+  min-height:100vh !important;
+  max-height:none !important;
+  overflow:visible !important;
+  overflow-y:visible !important;
+  overflow-x:hidden !important;
+  position:relative !important;
+  padding-bottom:140px !important;
+}
+
+.app-page{
+  height:auto !important;
+  min-height:100vh !important;
+  max-height:none !important;
+  overflow:visible !important;
+  overflow-y:visible !important;
+  overflow-x:hidden !important;
+  position:relative !important;
+}
+
+.app-page:not(.active){
+  display:none !important;
+}
+
+.app-page.active{
+  display:block !important;
+}
+
+#ricordiPage.active,
+#homePage.active,
+#walletPage.active,
+#profiloPage.active,
+#scannerPage.active,
+#manageEventsPage.active,
+#manageLocalsPage.active,
+#manageUsersPage.active{
+  display:block !important;
+  height:auto !important;
+  min-height:100vh !important;
+  overflow:visible !important;
+}
+
+body.ndt-logged-out #ndtAuthGate{
+  display:block !important;
+}
+
+body.ndt-logged-in #ndtAuthGate{
+  display:none !important;
+}
+
+@media(min-width:768px){
+  html, body{
+    overflow-y:auto !important;
+  }
+  body.ndt-logged-in{
+    overflow-y:scroll !important;
+  }
+  .bottomNav{
+    pointer-events:none !important;
+  }
+  .bottomNav button,
+  .bottomNav *{
+    pointer-events:auto !important;
+  }
+}
+</style>
+
+
+<style id="NDT_DESKTOP_HEADER_SCROLL_FINAL_CSS">
+html,body{height:auto!important;min-height:100%!important;max-height:none!important;overflow-x:hidden!important}
+body.ndt-logged-in,body.logged-in{overflow-y:auto!important;height:auto!important;min-height:100%!important;max-height:none!important;position:static!important;padding-bottom:140px!important}
+body.ndt-logged-in header,body.ndt-logged-in .appHeader,body.ndt-logged-in #appHeader,body.ndt-logged-in .topbar,body.ndt-logged-in .brand,body.ndt-logged-in .settingsBtn,body.ndt-logged-in #settingsBtn,body.ndt-logged-in [onclick*="openSettings"]{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+body.ndt-logged-in main{display:block!important;visibility:visible!important;opacity:1!important;overflow:visible!important;height:auto!important;max-height:none!important}
+main,.app-page,.app-page.active{height:auto!important;min-height:100vh!important;max-height:none!important;overflow:visible!important;overflow-y:visible!important;overflow-x:hidden!important;position:relative!important}
+body.ndt-logged-in .bottomNav,body.ndt-logged-in #bottomNav{display:flex!important;visibility:visible!important;opacity:1!important}
+@media(min-width:768px){html,body,body.ndt-logged-in{overflow-y:scroll!important}}
+</style>
+
 </head>
 <body class="ndt-logged-out">
 <button id="ndtLogoutBtn" class="ndtLogoutFloating" onclick="firebaseLogout()">Esci</button>
@@ -6568,6 +6694,320 @@ async function resetGatePassword(){
 window.addEventListener('load',function(){
   setTimeout(ndtCheckFirstAdminFlow,300);
 });
+</script>
+
+
+<script id="NDT_APP_AFTER_LOGIN_RESTORE_JS">
+(function(){
+  function restoreChrome(){
+    document.body.classList.remove('locked-before-login');
+    document.body.classList.remove('ndt-logged-out');
+    document.body.classList.add('ndt-logged-in');
+    document.body.classList.add('logged-in');
+    document.body.style.overflowY='auto';
+    document.body.style.position='static';
+    document.documentElement.style.overflowY='auto';
+
+    const gate=document.getElementById('ndtAuthGate');
+    if(gate) gate.style.display='none';
+
+    const main=document.querySelector('main');
+    if(main){
+      main.style.display='block';
+      main.style.overflow='visible';
+      main.style.height='auto';
+      main.style.maxHeight='none';
+    }
+
+    document.querySelectorAll('header,.appHeader,#appHeader,.topbar,[onclick*="openSettings"],.settingsBtn,#settingsBtn').forEach(function(el){
+      el.style.display='';
+      el.style.visibility='visible';
+      el.style.opacity='1';
+      el.style.pointerEvents='auto';
+    });
+
+    const bottom=document.querySelector('.bottomNav,#bottomNav');
+    if(bottom){
+      bottom.style.display='flex';
+      bottom.style.visibility='visible';
+      bottom.style.opacity='1';
+    }
+  }
+
+  function lockBeforeLogin(){
+    if(window.ndtCurrentUser || window.__NDT_LOGGED_IN__) return;
+    document.body.classList.remove('ndt-logged-in');
+    document.body.classList.remove('logged-in');
+    document.body.classList.add('ndt-logged-out');
+
+    const gate=document.getElementById('ndtAuthGate');
+    if(gate) gate.style.display='block';
+
+    const main=document.querySelector('main');
+    if(main) main.style.display='none';
+
+    const bottom=document.querySelector('.bottomNav,#bottomNav');
+    if(bottom) bottom.style.display='none';
+  }
+
+  function showPageClean(id){
+    restoreChrome();
+
+    document.querySelectorAll('.app-page').forEach(function(page){
+      page.classList.remove('active');
+      page.style.display='none';
+      page.style.overflow='visible';
+      page.style.height='auto';
+      page.style.maxHeight='none';
+    });
+
+    const target=document.getElementById(id) || document.getElementById('homePage');
+    if(target){
+      target.classList.add('active');
+      target.style.display='block';
+      target.style.overflow='visible';
+      target.style.height='auto';
+      target.style.maxHeight='none';
+    }
+
+    document.querySelectorAll('.bottomNav button').forEach(function(btn){
+      btn.classList.toggle('active', btn.dataset.page===id);
+    });
+
+    window.scrollTo(0,0);
+    document.body.scrollTop=0;
+    document.documentElement.scrollTop=0;
+  }
+
+  window.ndtRestoreAppAfterLogin=restoreChrome;
+
+  const oldGoPage=window.goPage;
+  window.goPage=function(id){
+    if(!window.ndtCurrentUser && !window.__NDT_LOGGED_IN__ && id!=='authPage'){
+      lockBeforeLogin();
+      return;
+    }
+    if(id==='authPage'){
+      lockBeforeLogin();
+      return;
+    }
+    showPageClean(id);
+  };
+
+  // sovrascrive funzioni di login/logout visuali, mantenendo Firebase
+  const oldForceIn=window.ndtForceLoggedIn;
+  window.ndtForceLoggedIn=function(){
+    window.__NDT_LOGGED_IN__=true;
+    if(typeof oldForceIn==='function'){
+      try{ oldForceIn(); }catch(e){}
+    }
+    restoreChrome();
+  };
+
+  const oldForceOut=window.ndtForceLoggedOut;
+  window.ndtForceLoggedOut=function(){
+    window.__NDT_LOGGED_IN__=false;
+    if(typeof oldForceOut==='function'){
+      try{ oldForceOut(); }catch(e){}
+    }
+    lockBeforeLogin();
+  };
+
+  document.addEventListener('wheel',function(e){
+    if(document.body.classList.contains('ndt-logged-in') || window.ndtCurrentUser || window.__NDT_LOGGED_IN__){
+      // evita che vecchi listener blocchino la rotellina
+      document.documentElement.style.overflowY='auto';
+      document.body.style.overflowY='auto';
+      document.body.style.position='static';
+      const delta=e.deltaY || 0;
+      window.scrollBy(0,delta);
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  },{capture:true,passive:false});
+
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      if(window.ndtCurrentUser || window.__NDT_LOGGED_IN__){
+        restoreChrome();
+        const active=document.querySelector('.app-page.active');
+        if(!active || active.id==='authPage') showPageClean('homePage');
+      }else{
+        lockBeforeLogin();
+      }
+    },600);
+  });
+
+  setInterval(function(){
+    if(window.ndtCurrentUser || window.__NDT_LOGGED_IN__){
+      restoreChrome();
+    }
+  },1200);
+})();
+</script>
+
+
+<script id="NDT_FIX_REGISTER_BUTTON_MODE_JS">
+(function(){
+  function msgClear(){
+    const box=document.getElementById('ndtGateMsg');
+    if(box){box.textContent='';box.style.display='none';}
+  }
+
+  window.setAuthMode=function(mode){
+    const gate=document.getElementById('ndtAuthGate');
+    const title=document.getElementById('authGateTitle') || gate?.querySelector('h1');
+    const subtitle=document.getElementById('authGateSubtitle') || gate?.querySelector('p');
+    if(!gate) return;
+
+    msgClear();
+
+    gate.classList.remove('login-mode','register-mode','first-admin-mode');
+
+    if(mode==='register'){
+      gate.classList.add('register-mode');
+      if(title) title.textContent='Registrati a Noche De Teteo';
+      if(subtitle) subtitle.textContent='Crea il tuo account cliente per usare Wallet, omaggi e biglietti.';
+
+      document.querySelectorAll('.registerOnly,.normalRegisterOnly').forEach(el=>el.style.display='');
+      document.querySelectorAll('.loginOnly,.firstAdminOnly').forEach(el=>el.style.display='none');
+
+      const reg=document.getElementById('authTabRegister');
+      const log=document.getElementById('authTabLogin');
+      if(reg) reg.classList.add('active');
+      if(log) log.classList.remove('active');
+
+    }else if(mode==='firstAdmin'){
+      gate.classList.add('first-admin-mode');
+      if(title) title.textContent='Prima configurazione Super Admin';
+      if(subtitle) subtitle.textContent='Crea il primo account proprietario per prendere il controllo della web app.';
+
+      document.querySelectorAll('.firstAdminOnly,.registerOnly').forEach(el=>el.style.display='');
+      document.querySelectorAll('.loginOnly,.normalRegisterOnly,.authTabs').forEach(el=>el.style.display='none');
+
+    }else{
+      gate.classList.add('login-mode');
+      if(title) title.textContent='Accedi a Noche De Teteo';
+      if(subtitle) subtitle.textContent='Inserisci email e password per entrare nel tuo account.';
+
+      document.querySelectorAll('.loginOnly').forEach(el=>el.style.display='');
+      document.querySelectorAll('.registerOnly,.firstAdminOnly,.normalRegisterOnly').forEach(el=>el.style.display='none');
+
+      const reg=document.getElementById('authTabRegister');
+      const log=document.getElementById('authTabLogin');
+      if(log) log.classList.add('active');
+      if(reg) reg.classList.remove('active');
+    }
+  };
+
+  // Corregge tutti i bottoni "Registrati" dentro login: devono cambiare form, non fare login.
+  function patchRegisterButtons(){
+    const gate=document.getElementById('ndtAuthGate');
+    if(!gate) return;
+
+    gate.querySelectorAll('button').forEach(btn=>{
+      const text=(btn.textContent||'').trim().toLowerCase();
+
+      if(text==='registrati' && btn.getAttribute('onclick')!=='ndtGateRegister()'){
+        btn.setAttribute('type','button');
+        btn.onclick=function(e){
+          e.preventDefault();
+          setAuthMode('register');
+          return false;
+        };
+      }
+
+      if(text==='ho già un account'){
+        btn.onclick=function(e){
+          e.preventDefault();
+          setAuthMode('login');
+          return false;
+        };
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    patchRegisterButtons();
+    setTimeout(patchRegisterButtons,300);
+  });
+
+  window.addEventListener('load',function(){
+    patchRegisterButtons();
+    setTimeout(patchRegisterButtons,500);
+  });
+})();
+</script>
+
+
+<script id="NDT_DESKTOP_HEADER_SCROLL_FINAL_JS">
+(function(){
+  function restoreDesktopUI(){
+    if(!(window.ndtCurrentUser || window.__NDT_LOGGED_IN__ || document.body.classList.contains('ndt-logged-in'))) return;
+    document.body.classList.remove('ndt-logged-out');
+    document.body.classList.add('ndt-logged-in');
+    document.body.classList.add('logged-in');
+    document.body.style.overflowY='auto';
+    document.body.style.height='auto';
+    document.body.style.maxHeight='none';
+    document.body.style.position='static';
+    document.documentElement.style.overflowY='auto';
+    document.documentElement.style.height='auto';
+    const gate=document.getElementById('ndtAuthGate');
+    if(gate) gate.style.display='none';
+    const main=document.querySelector('main');
+    if(main){
+      main.style.display='block';
+      main.style.visibility='visible';
+      main.style.opacity='1';
+      main.style.overflow='visible';
+      main.style.height='auto';
+      main.style.maxHeight='none';
+    }
+    document.querySelectorAll('header,.appHeader,#appHeader,.topbar,.brand,.settingsBtn,#settingsBtn,[onclick*="openSettings"]').forEach(function(el){
+      el.style.display='flex';
+      el.style.visibility='visible';
+      el.style.opacity='1';
+      el.style.pointerEvents='auto';
+    });
+    const bottom=document.querySelector('.bottomNav,#bottomNav');
+    if(bottom){
+      bottom.style.display='flex';
+      bottom.style.visibility='visible';
+      bottom.style.opacity='1';
+    }
+    document.querySelectorAll('.app-page.active').forEach(function(page){
+      page.style.display='block';
+      page.style.overflow='visible';
+      page.style.height='auto';
+      page.style.maxHeight='none';
+    });
+  }
+  const oldGoPage=window.goPage;
+  window.goPage=function(id){
+    if(typeof oldGoPage==='function'){oldGoPage(id);}
+    setTimeout(restoreDesktopUI,30);
+    setTimeout(restoreDesktopUI,200);
+  };
+  const oldForceIn=window.ndtForceLoggedIn;
+  window.ndtForceLoggedIn=function(){
+    window.__NDT_LOGGED_IN__=true;
+    if(typeof oldForceIn==='function'){try{oldForceIn();}catch(e){}}
+    restoreDesktopUI();
+  };
+  document.addEventListener('wheel',function(e){
+    if(window.ndtCurrentUser || window.__NDT_LOGGED_IN__ || document.body.classList.contains('ndt-logged-in')){
+      document.body.style.overflowY='auto';
+      document.body.style.position='static';
+      document.documentElement.style.overflowY='auto';
+      window.scrollBy(0,e.deltaY);
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  },{capture:true,passive:false});
+  window.addEventListener('load',function(){setTimeout(restoreDesktopUI,500);setTimeout(restoreDesktopUI,1200);});
+  setInterval(restoreDesktopUI,1200);
+})();
 </script>
 
 </body>
