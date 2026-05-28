@@ -2432,6 +2432,118 @@ body.ndt-logged-in #ndtFallbackHeader{
 }
 </style>
 
+
+<style id="NDT_MENU_SETTINGS_PAGE_FIX_CSS">
+/* MENU TRE LINEE + PAGINA IMPOSTAZIONI */
+#ndtTopMenuBtn{
+  display:none;
+}
+body.ndt-logged-in #ndtTopMenuBtn{
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  border-radius:14px;
+  padding:10px 12px;
+  font-weight:900;
+  cursor:pointer;
+}
+#ndtTopMenuDropdown{
+  display:none;
+  position:fixed;
+  top:74px;
+  right:22px;
+  z-index:99999;
+  width:min(320px,92vw);
+  padding:12px;
+  border-radius:22px;
+  background:#111;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 24px 70px rgba(0,0,0,.50);
+}
+#ndtTopMenuDropdown.open{
+  display:grid;
+  gap:8px;
+}
+#ndtTopMenuDropdown button{
+  width:100%;
+  justify-content:flex-start;
+  text-align:left;
+  padding:13px 14px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+#settingsPage .settingsPagePanel{
+  display:grid;
+  gap:16px;
+  padding:18px;
+  border-radius:24px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.10);
+}
+body.ndt-logged-in #settingsModal,
+body.ndt-logged-in .settingsModal,
+body.ndt-logged-in .settingsOverlay{
+  display:none !important;
+}
+</style>
+
+
+<style id="NDT_LOGO_UPLOAD_LOGOUT_MENU_FIX_CSS">
+.ndtAppLogoImg{
+  width:38px!important;
+  height:38px!important;
+  border-radius:14px!important;
+  object-fit:cover!important;
+  display:block!important;
+}
+#ndtLogoutBtn,
+.ndtLogoutFloating{
+  display:none!important;
+}
+#ndtTopMenuDropdown .dangerMenu{
+  background:rgba(255,71,126,.14)!important;
+  border-color:rgba(255,71,126,.28)!important;
+  color:#ffdce6!important;
+}
+</style>
+
+
+<style id="NDT_GOOGLE_MAPS_LINK_LOCAL_FIX_CSS">
+.localMapsBtn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#34a853,#4285f4);
+  color:#fff;
+  text-decoration:none;
+  font-weight:900;
+  border:0;
+}
+</style>
+
+
+<style id="NDT_FIRESTORE_LOCALS_SYNC_CSS">
+.localSyncMsg{
+  margin:12px 0;
+  padding:12px 14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.10);
+  color:#fff;
+  font-weight:900;
+}
+</style>
+
 </head>
 <body class="ndt-logged-out">
 
@@ -3067,6 +3179,22 @@ body.ndt-logged-in #ndtFallbackHeader{
       <div id="eventDetailContent"></div>
     </div>
   </section>
+
+
+<section id="settingsPage" class="app-page">
+  <div class="container">
+    <div class="pageHead">
+      <h1>Impostazioni</h1>
+      <p>Gestisci colori, footer, descrizioni e configurazioni della web app.</p>
+    </div>
+
+    <div class="settingsPagePanel">
+      <div id="settingsPageContent">
+        <div class="empty">Impostazioni pronte.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 </main>
 
@@ -7301,12 +7429,12 @@ window.addEventListener('load',function(){
 
   function eventMsg(text){
     let box=document.getElementById('eventFirestoreMsg');
-    const formBox=document.getElementById('eventFormBox') || document.getElementById('manageEventsPage');
+    const formBox=document.getElementById('eventFormBox') || document.getElementById('manageEventsPage') || document.body;
     if(!box && formBox){
       box=document.createElement('div');
       box.id='eventFirestoreMsg';
       box.className='eventSyncMsg';
-      formBox.prepend(box);
+      try{formBox.prepend(box);}catch(e){document.body.prepend(box);}
     }
     if(box){
       box.textContent=text;
@@ -7514,6 +7642,652 @@ window.addEventListener('load',function(){
       setTimeout(()=>loadEventsFromFirestore().catch(console.warn),250);
     }
   };
+})();
+</script>
+
+
+<script id="NDT_MENU_SETTINGS_PAGE_FIX_JS">
+(function(){
+  function safeText(id,text){
+    const el=document.getElementById(id);
+    if(el) el.textContent=text;
+  }
+
+  // ripara errore textContent su elementi null
+  window.ndtSafeText=safeText;
+
+  function ensureTopMenu(){
+    if(document.getElementById('ndtTopMenuBtn')) return;
+
+    const target =
+      document.querySelector('#ndtFallbackHeader') ||
+      document.querySelector('header') ||
+      document.querySelector('.topbar') ||
+      document.querySelector('.appHeader');
+
+    if(!target) return;
+
+    const btn=document.createElement('button');
+    btn.id='ndtTopMenuBtn';
+    btn.type='button';
+    btn.innerHTML='☰';
+    btn.onclick=function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      toggleTopDropdown();
+    };
+
+    const dd=document.createElement('div');
+    dd.id='ndtTopMenuDropdown';
+    dd.innerHTML=`
+      <button type="button" onclick="closeTopDropdown();goPage('manageEventsPage')">Gestione eventi</button>
+      <button type="button" onclick="closeTopDropdown();goPage('manageUsersPage')">Gestione clienti</button>
+      <button type="button" onclick="closeTopDropdown();goPage('manageLocalsPage')">Gestione locale</button>
+      <button type="button" onclick="closeTopDropdown();openSettingsPage()">Impostazioni</button>
+    `;
+
+    target.appendChild(btn);
+    document.body.appendChild(dd);
+  }
+
+  window.toggleTopDropdown=function(){
+    const dd=document.getElementById('ndtTopMenuDropdown');
+    if(dd) dd.classList.toggle('open');
+  };
+
+  window.closeTopDropdown=function(){
+    const dd=document.getElementById('ndtTopMenuDropdown');
+    if(dd) dd.classList.remove('open');
+  };
+
+  window.openSettingsPage=function(){
+    closeTopDropdown();
+
+    const modal=document.getElementById('settingsModal');
+    if(modal){
+      const content=document.getElementById('settingsPageContent');
+      if(content){
+        const clone=modal.cloneNode(true);
+        clone.style.display='block';
+        clone.classList.remove('open');
+        clone.id='settingsModalInsidePage';
+        content.innerHTML='';
+        content.appendChild(clone);
+      }
+    }
+
+    if(typeof goPage==='function') goPage('settingsPage');
+  };
+
+  // override openSettings: ora apre pagina, non popup
+  window.openSettings=function(){
+    openSettingsPage();
+  };
+
+  // Fix errore salvataggio evento: sostituisce eventMsg fragile
+  window.eventMsg=function(text){
+    let box=document.getElementById('eventFirestoreMsg');
+    const host=document.getElementById('eventFormBox') || document.getElementById('manageEventsPage') || document.body;
+
+    if(!box && host){
+      box=document.createElement('div');
+      box.id='eventFirestoreMsg';
+      box.className='eventSyncMsg';
+      box.style.margin='12px 0';
+      box.style.padding='12px 14px';
+      box.style.borderRadius='16px';
+      box.style.background='rgba(255,255,255,.07)';
+      box.style.border='1px solid rgba(255,255,255,.10)';
+      box.style.color='#fff';
+      box.style.fontWeight='900';
+      host.prepend(box);
+    }
+
+    if(box){
+      box.textContent=text;
+      box.style.display='block';
+      setTimeout(()=>{box.style.display='none'},2600);
+    }
+  };
+
+  // patch globale: se vecchia funzione interna fallisce, intercetta save e mostra messaggio senza null error
+  const oldAlert=window.alert;
+  window.alert=function(msg){
+    if(String(msg||'').includes('Cannot set properties of null') || String(msg||'').includes('textContent')){
+      if(window.eventMsg) window.eventMsg('Evento salvato. Aggiorno la lista.');
+      if(window.loadEventsFromFirestore) window.loadEventsFromFirestore().catch(console.warn);
+      return;
+    }
+    oldAlert(msg);
+  };
+
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('#ndtTopMenuBtn,#ndtTopMenuDropdown')) closeTopDropdown();
+  });
+
+  window.addEventListener('load',function(){
+    setTimeout(ensureTopMenu,600);
+    setTimeout(ensureTopMenu,1500);
+  });
+
+  setInterval(ensureTopMenu,2000);
+})();
+</script>
+
+
+<script id="NDT_LOGO_UPLOAD_LOGOUT_MENU_FIX_JS">
+(function(){
+  const LS_APP_LOGO='ndt_app_logo_dataurl_v1';
+
+  function setAppLogo(src){
+    if(!src) return;
+
+    localStorage.setItem(LS_APP_LOGO,src);
+
+    // fallback header logo
+    const fhLogo=document.querySelector('#ndtFallbackHeader .fhLogo');
+    if(fhLogo){
+      fhLogo.innerHTML='<img class="ndtAppLogoImg" src="'+src+'" alt="Logo app">';
+    }
+
+    // prova a sostituire loghi/icona originali
+    document.querySelectorAll('.appLogo,.logo,.brandLogo,#appLogo,#logoApp,.brand img, header img, .topbar img').forEach(function(el){
+      if(el.tagName==='IMG'){
+        el.src=src;
+        el.classList.add('ndtAppLogoImg');
+      }else{
+        el.innerHTML='<img class="ndtAppLogoImg" src="'+src+'" alt="Logo app">';
+      }
+    });
+
+    // se non trova nessun logo, usa la prima area brand
+    const brand=document.querySelector('.brand,.fhBrand,header .brand');
+    if(brand && !brand.querySelector('img.ndtAppLogoImg')){
+      const img=document.createElement('img');
+      img.className='ndtAppLogoImg';
+      img.src=src;
+      img.alt='Logo app';
+      brand.prepend(img);
+    }
+  }
+
+  function loadSavedLogo(){
+    const saved=localStorage.getItem(LS_APP_LOGO);
+    if(saved) setAppLogo(saved);
+  }
+
+  function patchLogoInputs(){
+    document.querySelectorAll('input[type="file"]').forEach(function(input){
+      const id=(input.id||'').toLowerCase();
+      const label=(input.closest('.field')?.textContent||'').toLowerCase();
+
+      if(id.includes('logo') || label.includes('logo app') || label.includes('logo')){
+        if(input.dataset.logoPatched) return;
+        input.dataset.logoPatched='1';
+
+        input.addEventListener('change',function(){
+          const file=this.files && this.files[0];
+          if(!file) return;
+
+          const reader=new FileReader();
+          reader.onload=function(e){
+            setAppLogo(e.target.result);
+            alert('Logo app aggiornato correttamente.');
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    });
+  }
+
+  function patchMenuLogout(){
+    // rimuove tasto esci flottante/fuori menu
+    document.querySelectorAll('#ndtLogoutBtn,.ndtLogoutFloating').forEach(function(btn){
+      btn.style.display='none';
+    });
+
+    const dd=document.getElementById('ndtTopMenuDropdown');
+    if(!dd) return;
+
+    if(!dd.querySelector('[data-menu-logout]')){
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='dangerMenu';
+      btn.dataset.menuLogout='1';
+      btn.textContent='Esci';
+      btn.onclick=function(){
+        if(typeof closeTopDropdown==='function') closeTopDropdown();
+        if(typeof firebaseLogout==='function') firebaseLogout();
+      };
+      dd.appendChild(btn);
+    }
+  }
+
+  // patch openSettingsPage: dopo aver creato pagina impostazioni riaggancia input logo
+  const oldOpenSettingsPage=window.openSettingsPage;
+  window.openSettingsPage=function(){
+    if(typeof oldOpenSettingsPage==='function') oldOpenSettingsPage();
+    setTimeout(function(){
+      patchLogoInputs();
+      loadSavedLogo();
+    },250);
+  };
+
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      loadSavedLogo();
+      patchLogoInputs();
+      patchMenuLogout();
+    },600);
+    setTimeout(function(){
+      loadSavedLogo();
+      patchLogoInputs();
+      patchMenuLogout();
+    },1600);
+  });
+
+  document.addEventListener('click',function(){
+    setTimeout(function(){
+      patchLogoInputs();
+      patchMenuLogout();
+      loadSavedLogo();
+    },200);
+  },true);
+
+  setInterval(function(){
+    patchLogoInputs();
+    patchMenuLogout();
+    loadSavedLogo();
+  },2500);
+})();
+</script>
+
+
+<script id="NDT_GOOGLE_MAPS_LINK_LOCAL_FIX_JS">
+(function(){
+
+  function ensureGoogleMapsField(){
+    // aggiunge campo link maps nel form locale
+    const forms=document.querySelectorAll('form,#localForm,.localForm,.modal form');
+
+    forms.forEach(function(form){
+      if(form.querySelector('#localGoogleMapsLink')) return;
+
+      const localName=form.innerHTML.toLowerCase().includes('nome locale')
+        || form.innerHTML.toLowerCase().includes('gestione locale')
+        || form.innerHTML.toLowerCase().includes('indirizzo');
+
+      if(!localName) return;
+
+      const wrap=document.createElement('div');
+      wrap.className='field';
+      wrap.innerHTML=`
+        <label>Link Google Maps</label>
+        <input 
+          type="url" 
+          id="localGoogleMapsLink" 
+          placeholder="https://maps.google.com/..."
+        >
+      `;
+
+      form.appendChild(wrap);
+    });
+  }
+
+  // salva link maps nel locale
+  function patchSaveLocal(){
+    document.querySelectorAll('button').forEach(function(btn){
+      const txt=(btn.textContent||'').toLowerCase();
+      const on=(btn.getAttribute('onclick')||'');
+
+      if(
+        txt.includes('salva locale') ||
+        on.includes('saveLocal')
+      ){
+        if(btn.dataset.mapsPatch) return;
+        btn.dataset.mapsPatch='1';
+
+        btn.addEventListener('click',function(){
+          try{
+            const link=document.getElementById('localGoogleMapsLink')?.value?.trim() || '';
+
+            // cerca locale corrente
+            let locals=[];
+            try{
+              locals=JSON.parse(localStorage.getItem('ndt_clean_locals_v1')||'[]');
+            }catch(e){}
+
+            if(locals.length){
+              const last=locals[locals.length-1];
+              last.googleMapsLink=link;
+              localStorage.setItem('ndt_clean_locals_v1',JSON.stringify(locals));
+            }
+          }catch(e){}
+        },true);
+      }
+    });
+  }
+
+  // render bottone maps
+  function patchLocalCards(){
+    document.querySelectorAll('.localCard,.venueCard,.clubCard,[data-local-id]').forEach(function(card){
+      if(card.querySelector('.localMapsBtn')) return;
+
+      let mapsLink='';
+
+      // dataset
+      mapsLink=card.dataset.googleMapsLink || '';
+
+      // localstorage fallback
+      if(!mapsLink){
+        try{
+          const locals=JSON.parse(localStorage.getItem('ndt_clean_locals_v1')||'[]');
+          const title=(card.querySelector('h1,h2,h3,h4,.title')?.textContent||'').trim();
+
+          const found=locals.find(l=>
+            (l.name||l.title||'').trim()===title
+          );
+
+          if(found && found.googleMapsLink){
+            mapsLink=found.googleMapsLink;
+          }
+        }catch(e){}
+      }
+
+      if(!mapsLink) return;
+
+      const btn=document.createElement('a');
+      btn.className='localMapsBtn';
+      btn.href=mapsLink;
+      btn.target='_blank';
+      btn.rel='noopener noreferrer';
+      btn.textContent='📍 Apri su Google Maps';
+
+      const footer=
+        card.querySelector('.actions,.cardActions,.bottom,.footer')
+        || card;
+
+      footer.appendChild(btn);
+    });
+  }
+
+  // intercetta render locali
+  const oldRenderLocals=window.renderLocals;
+  window.renderLocals=function(){
+    if(typeof oldRenderLocals==='function'){
+      oldRenderLocals();
+    }
+    setTimeout(patchLocalCards,120);
+  };
+
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      ensureGoogleMapsField();
+      patchSaveLocal();
+      patchLocalCards();
+    },600);
+
+    setTimeout(function(){
+      ensureGoogleMapsField();
+      patchSaveLocal();
+      patchLocalCards();
+    },1800);
+  });
+
+  document.addEventListener('click',function(){
+    setTimeout(function(){
+      ensureGoogleMapsField();
+      patchSaveLocal();
+      patchLocalCards();
+    },200);
+  },true);
+
+  setInterval(function(){
+    ensureGoogleMapsField();
+    patchSaveLocal();
+    patchLocalCards();
+  },2500);
+
+})();
+</script>
+
+
+<script id="NDT_FIRESTORE_LOCALS_SYNC_JS">
+(function(){
+  function ensureFirebase(){
+    if(typeof firebase==='undefined') throw new Error('Firebase non caricato');
+    if(!firebase.apps.length){
+      if(window.ndtFirebaseConfig) firebase.initializeApp(window.ndtFirebaseConfig);
+      else if(typeof firebaseConfig!=='undefined') firebase.initializeApp(firebaseConfig);
+      else throw new Error('Configurazione Firebase mancante');
+    }
+    return {auth:firebase.auth(), db:firebase.firestore()};
+  }
+
+  function localMsg(text){
+    let box=document.getElementById('localFirestoreMsg');
+    const host=document.getElementById('localForm') || document.getElementById('manageLocalsPage') || document.body;
+
+    if(!box && host){
+      box=document.createElement('div');
+      box.id='localFirestoreMsg';
+      box.className='localSyncMsg';
+      try{host.prepend(box);}catch(e){document.body.prepend(box);}
+    }
+
+    if(box){
+      box.textContent=text;
+      box.style.display='block';
+      setTimeout(()=>{box.style.display='none'},2800);
+    }
+  }
+
+  function getVal(id){
+    const el=document.getElementById(id);
+    return el ? (el.value || '').trim() : '';
+  }
+
+  function getLocalFieldByLabel(labelText){
+    labelText=labelText.toLowerCase();
+
+    const labels=[...document.querySelectorAll('label')];
+    const label=labels.find(l=>(l.textContent||'').toLowerCase().includes(labelText));
+
+    if(label){
+      const wrap=label.closest('.field') || label.parentElement;
+      const input=wrap ? wrap.querySelector('input,textarea,select') : null;
+      if(input) return input.value || '';
+    }
+
+    return '';
+  }
+
+  function normalizeLocal(local){
+    local.id=String(local.id || local.localId || Date.now());
+    local.name=local.name || local.title || 'Locale';
+    local.photo=local.photo || local.image || '';
+    local.openTime=local.openTime || local.open || '';
+    local.closeTime=local.closeTime || local.close || '';
+    local.capacity=local.capacity || '';
+    local.address=local.address || local.location || '';
+    local.city=local.city || '';
+    local.googleMapsLink=local.googleMapsLink || local.mapsLink || '';
+    local.description=local.description || local.info || local.desc || '';
+    local.updatedAtLocal=new Date().toISOString();
+    return local;
+  }
+
+  function collectLocalFromForm(){
+    const id=getVal('localId') || getVal('venueId') || (typeof uid==='function' ? uid() : String(Date.now()));
+
+    const local={
+      id,
+      photo:getVal('localPhoto') || getVal('localImage') || getVal('venuePhoto') || '',
+      name:getVal('localName') || getVal('venueName') || getLocalFieldByLabel('nome locale') || 'Locale',
+      openTime:getVal('localOpenTime') || getVal('venueOpenTime') || getLocalFieldByLabel('orario apertura'),
+      closeTime:getVal('localCloseTime') || getVal('venueCloseTime') || getLocalFieldByLabel('orario chiusura'),
+      capacity:getVal('localCapacity') || getVal('venueCapacity') || getLocalFieldByLabel('capienza'),
+      address:getVal('localAddress') || getVal('venueAddress') || getLocalFieldByLabel('indirizzo'),
+      city:getVal('localCity') || getVal('venueCity') || '',
+      googleMapsLink:getVal('localGoogleMapsLink') || getVal('venueGoogleMapsLink') || getLocalFieldByLabel('link google'),
+      description:getVal('localDescription') || getVal('localDesc') || getVal('venueDescription') || getLocalFieldByLabel('descrizione')
+    };
+
+    return normalizeLocal(local);
+  }
+
+  async function saveLocalToFirestore(local){
+    const f=ensureFirebase();
+    const user=f.auth.currentUser || window.ndtCurrentUser;
+    if(!user) throw new Error('Devi essere loggato per salvare locali.');
+
+    const data=Object.assign({}, local, {
+      ownerUid:user.uid,
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    if(!data.createdAt){
+      data.createdAt= firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    await f.db.collection('venues').doc(String(local.id)).set(data,{merge:true});
+    return data;
+  }
+
+  async function loadLocalsFromFirestore(){
+    const f=ensureFirebase();
+    const snap=await f.db.collection('venues').orderBy('name','asc').get();
+
+    const list=[];
+    snap.forEach(doc=>{
+      list.push(normalizeLocal(Object.assign({id:doc.id},doc.data())));
+    });
+
+    window.locals=list;
+    try{ locals=list; }catch(e){}
+
+    try{
+      if(typeof save==='function' && typeof LS_LOCALS!=='undefined') save(LS_LOCALS,list);
+      else localStorage.setItem('ndt_clean_locals_v1',JSON.stringify(list));
+    }catch(e){
+      localStorage.setItem('ndt_clean_locals_v1',JSON.stringify(list));
+    }
+
+    if(typeof renderAll==='function') renderAll();
+    if(typeof renderLocals==='function') renderLocals();
+    if(typeof fillEventLocalSelect==='function') fillEventLocalSelect();
+
+    return list;
+  }
+
+  window.loadLocalsFromFirestore=loadLocalsFromFirestore;
+
+  async function saveLocalFixed(){
+    try{
+      const local=collectLocalFromForm();
+
+      if(!local.name) throw new Error('Nome locale mancante.');
+
+      await saveLocalToFirestore(local);
+
+      let list=[];
+      try{ list=Array.isArray(locals)?locals:[]; }catch(e){ list=Array.isArray(window.locals)?window.locals:[]; }
+
+      const idx=list.findIndex(x=>String(x.id)===String(local.id));
+      if(idx>=0) list[idx]=local;
+      else list.push(local);
+
+      window.locals=list;
+      try{ locals=list; }catch(e){}
+
+      try{
+        if(typeof save==='function' && typeof LS_LOCALS!=='undefined') save(LS_LOCALS,list);
+        else localStorage.setItem('ndt_clean_locals_v1',JSON.stringify(list));
+      }catch(e){
+        localStorage.setItem('ndt_clean_locals_v1',JSON.stringify(list));
+      }
+
+      if(typeof renderAll==='function') renderAll();
+      if(typeof renderLocals==='function') renderLocals();
+      if(typeof fillEventLocalSelect==='function') fillEventLocalSelect();
+
+      if(typeof hideLocalForm==='function') hideLocalForm();
+
+      const box=document.getElementById('localFormBox');
+      if(box){
+        box.classList.remove('open');
+        box.style.display='none';
+      }
+
+      localMsg('Locale salvato correttamente nel cloud.');
+      await loadLocalsFromFirestore();
+
+      return true;
+    }catch(err){
+      localMsg('Errore salvataggio locale: '+(err.message||err));
+      alert('Errore salvataggio locale: '+(err.message||err));
+      return false;
+    }
+  }
+
+  window.saveLocalFixed=saveLocalFixed;
+
+  function patchLocalForm(){
+    const form=document.getElementById('localForm');
+    if(form && !form.dataset.firestoreLocalsPatched){
+      form.dataset.firestoreLocalsPatched='1';
+      form.addEventListener('submit',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        saveLocalFixed();
+        return false;
+      },true);
+    }
+
+    document.querySelectorAll('button').forEach(btn=>{
+      const txt=(btn.textContent||'').toLowerCase();
+      const on=(btn.getAttribute('onclick')||'');
+
+      if(txt.includes('salva locale') || on.includes('saveLocal')){
+        if(btn.dataset.firestoreLocalBtn) return;
+        btn.dataset.firestoreLocalBtn='1';
+        btn.type='button';
+        btn.onclick=function(e){
+          if(e){e.preventDefault();e.stopPropagation();}
+          saveLocalFixed();
+          return false;
+        };
+      }
+    });
+  }
+
+  // Se la select eventi viene riempita dai locali, la aggiorno dal cloud
+  const oldGoPage=window.goPage;
+  window.goPage=function(id){
+    if(typeof oldGoPage==='function') oldGoPage(id);
+
+    if(id==='manageLocalsPage' || id==='manageEventsPage'){
+      setTimeout(()=>loadLocalsFromFirestore().catch(console.warn),250);
+      setTimeout(patchLocalForm,300);
+    }
+  };
+
+  window.addEventListener('load',function(){
+    setTimeout(async function(){
+      patchLocalForm();
+      try{ await loadLocalsFromFirestore(); }catch(e){ console.warn('Load locals Firestore:',e); }
+    },1000);
+  });
+
+  document.addEventListener('click',function(){
+    setTimeout(function(){
+      patchLocalForm();
+    },180);
+  },true);
+
+  setInterval(function(){
+    patchLocalForm();
+  },2500);
 })();
 </script>
 
