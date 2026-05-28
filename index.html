@@ -2322,8 +2322,130 @@ body.ndt-logged-in .bottomNav,body.ndt-logged-in #bottomNav{display:flex!importa
 @media(min-width:768px){html,body,body.ndt-logged-in{overflow-y:scroll!important}}
 </style>
 
+
+<style id="NDT_HEADER_REGISTER_FINAL_FIX_CSS">
+/* HEADER / BARRA SUPERIORE DOPO LOGIN */
+body.ndt-logged-in header,
+body.ndt-logged-in .topbar,
+body.ndt-logged-in .appHeader,
+body.ndt-logged-in #appHeader,
+body.ndt-logged-in .brandBar,
+body.ndt-logged-in .brandHeader{
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+
+body.ndt-logged-in .settingsBtn,
+body.ndt-logged-in #settingsBtn,
+body.ndt-logged-in [onclick*="openSettings"]{
+  display:inline-flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+
+/* fallback header se quello originale non viene mostrato */
+#ndtFallbackHeader{
+  display:none;
+}
+
+body.ndt-logged-in #ndtFallbackHeader{
+  display:flex !important;
+  position:sticky;
+  top:0;
+  z-index:9998;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 18px;
+  background:rgba(5,0,9,.88);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+
+#ndtFallbackHeader .fhBrand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+}
+
+#ndtFallbackHeader .fhLogo{
+  width:38px;
+  height:38px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#ff2bd6,#ffe600);
+  color:#111;
+  font-weight:1000;
+}
+
+#ndtFallbackHeader button{
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  border-radius:14px;
+  padding:10px 12px;
+  font-weight:900;
+}
+
+/* REGISTRAZIONE: visibilità campi corretta */
+#ndtAuthGate.register-mode .registerOnly,
+#ndtAuthGate.register-mode .normalRegisterOnly{
+  display:grid !important;
+}
+
+#ndtAuthGate.register-mode .consent.registerOnly,
+#ndtAuthGate.register-mode .actions.registerOnly{
+  display:grid !important;
+}
+
+#ndtAuthGate.register-mode .loginOnly,
+#ndtAuthGate.register-mode .firstAdminOnly{
+  display:none !important;
+}
+
+#ndtAuthGate.login-mode .loginOnly{
+  display:grid !important;
+}
+
+#ndtAuthGate.login-mode .registerOnly,
+#ndtAuthGate.login-mode .normalRegisterOnly,
+#ndtAuthGate.login-mode .firstAdminOnly{
+  display:none !important;
+}
+</style>
+
+
+<style id="NDT_FIRESTORE_EVENTS_FIX_CSS">
+.eventSyncMsg{
+  margin:12px 0;
+  padding:12px 14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.10);
+  color:#fff;
+  font-weight:900;
+}
+</style>
+
 </head>
 <body class="ndt-logged-out">
+
+<div id="ndtFallbackHeader">
+  <div class="fhBrand">
+    <div class="fhLogo">N</div>
+    <div>
+      <div>Noche De Teteo</div>
+      <small style="color:#cfc3d9">La notte più caliente</small>
+    </div>
+  </div>
+  <button type="button" onclick="openSettings()">⚙️ Impostazioni</button>
+</div>
+
 <button id="ndtLogoutBtn" class="ndtLogoutFloating" onclick="firebaseLogout()">Esci</button>
 
 
@@ -7007,6 +7129,391 @@ window.addEventListener('load',function(){
   },{capture:true,passive:false});
   window.addEventListener('load',function(){setTimeout(restoreDesktopUI,500);setTimeout(restoreDesktopUI,1200);});
   setInterval(restoreDesktopUI,1200);
+})();
+</script>
+
+
+<script id="NDT_HEADER_REGISTER_FINAL_FIX_JS">
+(function(){
+  function forceHeader(){
+    if(!(window.ndtCurrentUser || window.__NDT_LOGGED_IN__ || document.body.classList.contains('ndt-logged-in'))) return;
+
+    document.body.classList.add('ndt-logged-in');
+    document.body.classList.add('logged-in');
+    document.body.classList.remove('ndt-logged-out');
+
+    document.querySelectorAll('header,.topbar,.appHeader,#appHeader,.brandBar,.brandHeader,.settingsBtn,#settingsBtn,[onclick*="openSettings"]').forEach(function(el){
+      el.style.display = (el.tagName === 'BUTTON' || el.getAttribute('onclick')) ? 'inline-flex' : 'flex';
+      el.style.visibility='visible';
+      el.style.opacity='1';
+      el.style.pointerEvents='auto';
+    });
+
+    const fallback=document.getElementById('ndtFallbackHeader');
+    if(fallback){
+      fallback.style.display='flex';
+      fallback.style.visibility='visible';
+      fallback.style.opacity='1';
+    }
+  }
+
+  window.setAuthMode=function(mode){
+    const gate=document.getElementById('ndtAuthGate');
+    if(!gate) return;
+
+    const title=document.getElementById('authGateTitle') || gate.querySelector('h1');
+    const sub=document.getElementById('authGateSubtitle') || gate.querySelector('p');
+    const msg=document.getElementById('ndtGateMsg');
+
+    if(msg){
+      msg.textContent='';
+      msg.style.display='none';
+    }
+
+    gate.classList.remove('login-mode','register-mode','first-admin-mode');
+
+    if(mode==='register'){
+      gate.classList.add('register-mode');
+
+      if(title) title.textContent='Registrati a Noche De Teteo';
+      if(sub) sub.textContent='Crea il tuo account cliente per usare Wallet, omaggi e biglietti.';
+
+      gate.querySelectorAll('.registerOnly,.normalRegisterOnly').forEach(function(el){
+        el.style.display='grid';
+      });
+
+      gate.querySelectorAll('.loginOnly,.firstAdminOnly').forEach(function(el){
+        el.style.display='none';
+      });
+
+      const reg=document.getElementById('authTabRegister');
+      const log=document.getElementById('authTabLogin');
+      if(reg) reg.classList.add('active');
+      if(log) log.classList.remove('active');
+
+    }else if(mode==='firstAdmin'){
+      gate.classList.add('first-admin-mode');
+
+      if(title) title.textContent='Prima configurazione Super Admin';
+      if(sub) sub.textContent='Crea il primo account proprietario per prendere il controllo della web app.';
+
+      gate.querySelectorAll('.firstAdminOnly,.registerOnly').forEach(function(el){
+        el.style.display='grid';
+      });
+
+      gate.querySelectorAll('.loginOnly,.normalRegisterOnly,.authTabs').forEach(function(el){
+        el.style.display='none';
+      });
+
+    }else{
+      gate.classList.add('login-mode');
+
+      if(title) title.textContent='Accedi a Noche De Teteo';
+      if(sub) sub.textContent='Inserisci email e password per entrare nel tuo account.';
+
+      gate.querySelectorAll('.loginOnly').forEach(function(el){
+        el.style.display='grid';
+      });
+
+      gate.querySelectorAll('.registerOnly,.normalRegisterOnly,.firstAdminOnly').forEach(function(el){
+        el.style.display='none';
+      });
+
+      const reg=document.getElementById('authTabRegister');
+      const log=document.getElementById('authTabLogin');
+      if(log) log.classList.add('active');
+      if(reg) reg.classList.remove('active');
+    }
+  };
+
+  function patchRegisterButtons(){
+    const gate=document.getElementById('ndtAuthGate');
+    if(!gate) return;
+
+    gate.querySelectorAll('button').forEach(function(btn){
+      const text=(btn.textContent||'').trim().toLowerCase();
+
+      if(text==='registrati' && !btn.closest('.actions.registerOnly')){
+        btn.onclick=function(e){
+          e.preventDefault();
+          setAuthMode('register');
+          return false;
+        };
+      }
+
+      if(text==='ho già un account'){
+        btn.onclick=function(e){
+          e.preventDefault();
+          setAuthMode('login');
+          return false;
+        };
+      }
+    });
+  }
+
+  const oldGo=window.goPage;
+  window.goPage=function(id){
+    if(typeof oldGo==='function') oldGo(id);
+    setTimeout(forceHeader,50);
+    setTimeout(forceHeader,300);
+  };
+
+  const oldForceIn=window.ndtForceLoggedIn;
+  window.ndtForceLoggedIn=function(){
+    window.__NDT_LOGGED_IN__=true;
+    if(typeof oldForceIn==='function'){
+      try{oldForceIn();}catch(e){}
+    }
+    forceHeader();
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    patchRegisterButtons();
+    setTimeout(patchRegisterButtons,300);
+  });
+
+  window.addEventListener('load',function(){
+    patchRegisterButtons();
+    setTimeout(patchRegisterButtons,500);
+    setTimeout(forceHeader,800);
+    setTimeout(forceHeader,1500);
+  });
+
+  setInterval(function(){
+    patchRegisterButtons();
+    forceHeader();
+  },1500);
+})();
+</script>
+
+
+<script id="NDT_FIRESTORE_EVENTS_FIX_JS">
+(function(){
+  function ensureFirebase(){
+    if(typeof firebase==='undefined') throw new Error('Firebase non caricato');
+    if(!firebase.apps.length){
+      if(window.ndtFirebaseConfig) firebase.initializeApp(window.ndtFirebaseConfig);
+      else if(typeof firebaseConfig!=='undefined') firebase.initializeApp(firebaseConfig);
+      else throw new Error('Configurazione Firebase mancante');
+    }
+    return {auth:firebase.auth(), db:firebase.firestore()};
+  }
+
+  function eventMsg(text){
+    let box=document.getElementById('eventFirestoreMsg');
+    const formBox=document.getElementById('eventFormBox') || document.getElementById('manageEventsPage');
+    if(!box && formBox){
+      box=document.createElement('div');
+      box.id='eventFirestoreMsg';
+      box.className='eventSyncMsg';
+      formBox.prepend(box);
+    }
+    if(box){
+      box.textContent=text;
+      box.style.display='block';
+      setTimeout(()=>{box.style.display='none'},2600);
+    }
+  }
+
+  function getVal(id){
+    const el=document.getElementById(id);
+    return el ? (el.value || '').trim() : '';
+  }
+
+  function getChecked(id){
+    const el=document.getElementById(id);
+    return !!(el && el.checked);
+  }
+
+  function safeCollect(fnName){
+    try{
+      if(typeof window[fnName]==='function') return window[fnName]();
+    }catch(e){}
+    try{
+      if(typeof eval(fnName)==='function') return eval(fnName)();
+    }catch(e){}
+    return [];
+  }
+
+  function normalizeEvent(ev){
+    if(!ev) return ev;
+    ev.id=String(ev.id || ev.eventId || Date.now());
+    ev.title=ev.title || ev.name || 'NOCHE DE TETEO';
+    ev.startDate=ev.startDate || ev.date || '';
+    ev.endDate=ev.endDate || ev.startDate || '';
+    ev.startTime=ev.startTime || ev.time || '';
+    ev.endTime=ev.endTime || '';
+    ev.age=ev.age || '+18';
+    ev.createdAtLocal=ev.createdAtLocal || new Date().toISOString();
+    return ev;
+  }
+
+  function collectEventFromForm(){
+    const existingId=getVal('eventId');
+    const id=existingId || (typeof uid==='function' ? uid() : String(Date.now()));
+
+    const ev={
+      id,
+      title:getVal('eventTitle') || 'NOCHE DE TETEO',
+      age:getVal('eventAge') || '+18',
+      startDate:getVal('eventStartDate'),
+      startTime:getVal('eventStartTime'),
+      endDate:getVal('eventEndDate') || getVal('eventStartDate'),
+      endTime:getVal('eventEndTime'),
+      localId:getVal('eventLocal'),
+      location:getVal('eventLocation'),
+      city:getVal('eventCity'),
+      localAddress:getVal('eventLocalAddress'),
+      localCapacity:getVal('eventLocalCapacity'),
+      image:getVal('eventImage'),
+      desc:getVal('eventDesc'),
+      showLocalCard:getChecked('eventShowLocalCard'),
+      suggested:getChecked('eventSuggested'),
+      artistSlots:safeCollect('collectArtistSlots'),
+      giftSlots:safeCollect('collectGiftSlots'),
+      ticketSlots:safeCollect('collectTicketSlots'),
+      updatedAtLocal:new Date().toISOString()
+    };
+
+    return normalizeEvent(ev);
+  }
+
+  async function saveEventToFirestore(ev){
+    const f=ensureFirebase();
+    const user=f.auth.currentUser || window.ndtCurrentUser;
+    if(!user) throw new Error('Devi essere loggato per salvare eventi.');
+
+    const data=Object.assign({}, ev, {
+      ownerUid:user.uid,
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    if(!data.createdAt){
+      data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    await f.db.collection('events').doc(String(ev.id)).set(data,{merge:true});
+    return data;
+  }
+
+  async function loadEventsFromFirestore(){
+    const f=ensureFirebase();
+    const snap=await f.db.collection('events').orderBy('startDate','asc').get();
+    const list=[];
+    snap.forEach(doc=>{
+      list.push(normalizeEvent(Object.assign({id:doc.id},doc.data())));
+    });
+
+    window.events=list;
+    try{ events=list; }catch(e){}
+    try{
+      if(typeof save==='function' && typeof LS_EVENTS!=='undefined') save(LS_EVENTS,list);
+      else localStorage.setItem('ndt_clean_events_v1',JSON.stringify(list));
+    }catch(e){
+      localStorage.setItem('ndt_clean_events_v1',JSON.stringify(list));
+    }
+
+    if(typeof renderAll==='function') renderAll();
+    if(typeof renderHome==='function') renderHome();
+    if(typeof renderManagedEvents==='function') renderManagedEvents();
+    return list;
+  }
+
+  window.loadEventsFromFirestore=loadEventsFromFirestore;
+
+  async function saveEventFixed(){
+    try{
+      const ev=collectEventFromForm();
+
+      if(!ev.title) throw new Error('Titolo evento mancante.');
+      if(!ev.startDate) throw new Error('Data inizio mancante.');
+
+      await saveEventToFirestore(ev);
+
+      // aggiorna anche memoria locale subito, così compare in Home senza refresh
+      let list=[];
+      try{ list=Array.isArray(events)?events:[]; }catch(e){ list=Array.isArray(window.events)?window.events:[]; }
+      const idx=list.findIndex(x=>String(x.id)===String(ev.id));
+      if(idx>=0) list[idx]=ev;
+      else list.push(ev);
+
+      window.events=list;
+      try{ events=list; }catch(e){}
+      try{
+        if(typeof save==='function' && typeof LS_EVENTS!=='undefined') save(LS_EVENTS,list);
+        else localStorage.setItem('ndt_clean_events_v1',JSON.stringify(list));
+      }catch(e){
+        localStorage.setItem('ndt_clean_events_v1',JSON.stringify(list));
+      }
+
+      if(typeof renderAll==='function') renderAll();
+      if(typeof renderHome==='function') renderHome();
+      if(typeof renderManagedEvents==='function') renderManagedEvents();
+
+      const box=document.getElementById('eventFormBox');
+      if(box){
+        box.classList.remove('open');
+        box.style.display='none';
+      }
+
+      eventMsg('Evento salvato correttamente.');
+      await loadEventsFromFirestore();
+      return true;
+
+    }catch(err){
+      eventMsg('Errore salvataggio evento: '+(err.message||err));
+      alert('Errore salvataggio evento: '+(err.message||err));
+      return false;
+    }
+  }
+
+  window.saveEventFromCompilerFixed=saveEventFixed;
+
+  function patchEventForm(){
+    const form=document.getElementById('eventForm');
+    if(form && !form.dataset.firestorePatched){
+      form.dataset.firestorePatched='1';
+      form.addEventListener('submit',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        saveEventFixed();
+        return false;
+      },true);
+    }
+
+    document.querySelectorAll('button').forEach(btn=>{
+      const txt=(btn.textContent||'').toLowerCase();
+      const on=(btn.getAttribute('onclick')||'');
+      if(txt.includes('salva evento') || on.includes('saveEvent')){
+        btn.type='button';
+        btn.onclick=function(e){
+          if(e){e.preventDefault();e.stopPropagation();}
+          saveEventFixed();
+          return false;
+        };
+      }
+    });
+  }
+
+  window.addEventListener('load',function(){
+    setTimeout(async function(){
+      patchEventForm();
+      try{ await loadEventsFromFirestore(); }catch(e){ console.warn('Load events Firestore:',e); }
+    },900);
+  });
+
+  document.addEventListener('click',function(){
+    setTimeout(patchEventForm,120);
+  },true);
+
+  // Quando si torna in Home, ricarica eventi da Firestore
+  const oldGoPage=window.goPage;
+  window.goPage=function(id){
+    if(typeof oldGoPage==='function') oldGoPage(id);
+    if(id==='homePage' || id==='manageEventsPage'){
+      setTimeout(()=>loadEventsFromFirestore().catch(console.warn),250);
+    }
+  };
 })();
 </script>
 
